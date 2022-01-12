@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>VSP SKU Encoder/Decoder</title>
+      <link rel="stylesheet" href="main.css" />
+   </head>
+
+   <body>
+      <div class="mainContainer">
+         <h2 id="mainTitle" class="bold24">VSP SKU Encoder/Decoder</h2>
+
+         <!--Encoder section starts here-->
+
+         <div id="jobNumberContainer" class="border2 subContainer responsive">
+            <div id="jobNumberContent" class="groupCenterCol responsive" style="padding: 9px 9px 36px 9px">
+               <h3 id="jobNumberTitle" class="bold20">Job Number</h3>
+               <input type="number" class="inputs" id="jobNumber" placeholder="Enter a job number." style="width: 45%; text-align: center" />
+            </div>
+            <div class="border2Top resultContent hide">
+               <div style="display: table-cell; text-align: right">
+                  <p class="decodedData"><strong>CREATED:</strong></p>
+                  <p class="decodedData"><strong>BRAND:</strong></p>
+                  <p class="decodedData"><strong>SUB-BRAND:</strong></p>
+                  <p class="decodedData"><strong>CATEGORY:</strong></p>
+                  <p class="decodedData"><strong>PRODUCT:</strong></p>
+                  <p class="decodedData"><strong>Identifier:</strong></p>
+                  <p class="decodedData"><strong>Related Jobs:</strong></p>
+               </div>
+               <div style="display: table-cell"><p>&nbsp;</p></div>
+               <div style="display: table-cell; text-align: left">
+                  <p class="decodedData" >{{DATE}}</p>
+                  <p class="decodedData" >{{BRAND}}</p>
+                  <p class="decodedData" >{{SUB-BRAND}}</p>
+                  <p class="decodedData" >{{CATEGORY}}</p>
+                  <p class="decodedData" >{{PRODUCT}}</p>
+                  <p class="decodedData" >{{IDENTIFIER}}</p>
+                  <p class="decodedData" >{{RELATED JOBS}}</p>
+               </div>
+               <p class="hide" id="errorMsg">ERROR</p>
+            </div>
+            <div class="groupCenterRow">
+               <div id="skipButton" style="flex: 2; text-align: center"><button>SKIP</button></div>
+               <div id="searchButton" style="flex: 2; text-align: center"><button>SEARCH</button></div>
+               <div id="addToSkuButton" style="flex: 3; text-align: center"><button>ADD TO SKU</button></div>
+            </div>
+         </div>
+
+         <div id="encoderContainer" class="border2 subContainer responsive hide">
+            <div id="encoderContent" class="groupCenterCol responsive" style="padding: 9px 9px 36px 9px">
+               <h3 id="encoderTitle" class="bold20">ENCODER</h3>
+               <div class="container">
+                  <div class="selectBox">
+                     <div class="optionContainer" id="brandOptionContainer">
+                        <!-- <div class="option">
+                              <input type="radio" class="radio" id="test1" name="brand" />
+                              <label for="test1">Test1</label>
+                           </div> -->
+                     </div>
+                     <div class="selected" id="selectedBrand">Choose a brand</div>
+                     <div class="searchBox">
+                        <input type="text" placeholder="Search" />
+                     </div>
+                  </div>
+                  <div class="selectBox hide" id="selectSBUContainer">
+                     <div class="optionContainer" id="sbuOptionContainer">
+                        <!-- <div class="option">
+                              <input type="radio" class="radio" id="test1" name="brand" />
+                              <label for="test1">Test1</label>
+                           </div> -->
+                     </div>
+                     <div class="selected" id="selectedSBU">Choose a SBU</div>
+                     <div class="searchBox">
+                        <input type="text" placeholder="Search" />
+                     </div>
+                  </div>
+
+                  <div class="selectBox hide" id="selectCategoryContainer">
+                     <div class="optionContainer" id="categoryOptionContainer">
+                        <!-- <div class="option">
+                              <input type="radio" class="radio" id="test1" name="brand" />
+                              <label for="test1">Test1</label>
+                           </div> -->
+                     </div>
+                     <div class="selected" id="selectedCategory">Choose a Category/Products</div>
+                     <div class="searchBox">
+                        <input type="text" placeholder="Search" />
+                     </div>
+                  </div>
+                  <!-- ///// -->
+                  <div class="indentifier" id="indentifierContainer">
+                     <input type="text" class="inputs hide" id="indentifierInput" placeholder="Indentifier" style="width: 87.8%; text-align: center" />
+                     <div id="generateCodeBtn" class="hide"><button>GENERATE CODE</button></div>
+                  </div>
+               </div>
+            </div>
+            <div id="encodedContent" class="border2Top encodedData hide">
+               <div style="display: flex; align-items: center; justify-content: center; text-align: center">
+                  <p id="codeText">00 00 02 300 400*</p>
+               </div>
+               <div class="resultContent hide" id="encodedResult">
+                  <div style="display: table-cell; text-align: right">
+                     <p><strong>CREATED:</strong></p>
+                     <p><strong>BRAND:</strong></p>
+                     <p><strong>SUB-BRAND:</strong></p>
+                     <p><strong>CATEGORY:</strong></p>
+                     <p><strong>PRODUCT:</strong></p>
+                     <p><strong>IDENTIFIER:</strong></p>
+                     <p><strong>Related Jobs:</strong></p>
+                  </div>
+                  <div style="display: table-cell"><p>&nbsp;</p></div>
+
+                  <div style="display: table-cell; text-align: left">
+                     <p id="encodedDate">{{DATE}}</p>
+                     <p id="encodedBrand">{{BRAND}}</p>
+                     <p id="encodedSBU">{{SUB-BRAND}}</p>
+                     <p id="encodedCategory">{{CATEGORY}}</p>
+                     <p id="encodedProduct">{{PRODUCT}}</p>
+                     <p id="encodedIdentifier">{{IDENTIFIER}}</p>
+                     <p>{{Related Jobs}}</p>
+                  </div>
+                  <p class="hide" id="errorMsg">ERROR</p>
+               </div>
+            </div>
+            <div class="groupCenterRow">
+               <div id="saveButton" class="hide" style="flex: 2; text-align: center"><button>SAVE</button></div>
+               <div id="copyButton" class="hide" style="flex: 2; text-align: center"><button onclick="copyToClipboard('codeText')">COPY</button></div>
+               <div hidden id="cancelButton" style="flex: 2; text-align: center"><button>CANCEL</button></div>
+               <div hidden id="removeButton" style="flex: 2; text-align: center"><button>REMOVE</button></div>
+               <div id="backButtonEncoder" class="backBtn" style="flex: 3; text-align: center; z-index: 100;"><button>BACK TO START</button></div>
+            </div>
+         </div>
+
+         <!--Decoder section starts here-->
+
+         <div id="decoderContainer" class="border2 subContainer responsive hide">
+            <div id="decoderContent" class="groupCenterCol responsive" style="padding: 9px 9px 36px 9px">
+               <h3 id="decoderTitle" class="bold20">EXISTING CODE SEARCH</h3>
+               <input type="number" class="inputs" id="decoder" placeholder="Enter 12 digit number" style="width: 45%; text-align: center" />
+            </div>
+            <div id="decodedResult" class="border2Top resultContent hide">
+               <div style="display: table-cell; text-align: right">
+                  <p class="decodedData"><strong>CREATED:</strong></p>
+                  <p class="decodedData"><strong>BRAND:</strong></p>
+                  <p class="decodedData"><strong>SUB-BRAND:</strong></p>
+                  <p class="decodedData"><strong>CATEGORY:</strong></p>
+                  <p class="decodedData"><strong>PRODUCT:</strong></p>
+                  <p class="decodedData"><strong>IDENTIFIER:</strong></p>
+               </div>
+               <div style="display: table-cell"><p>&nbsp;</p></div>
+               <div style="display: table-cell; text-align: left">
+                  <p class="decodedData" id="decodeDate">{{DATE}}</p>
+                  <p class="decodedData" id="decodeBrand">{{BRAND}}</p>
+                  <p class="decodedData" id="decodeSBU">{{SUB-BRAND}}</p>
+                  <p class="decodedData" id="decodeCategory">{{CATEGORY}}</p>
+                  <p class="decodedData" id="decodeProduct">{{PRODUCT}}</p>
+                  <p class="decodedData" id="decodeIdentifier">{{IDENTIFIER}}</p>
+               </div>
+               <p class="hide" id="errorMsg">ERROR</p>
+            </div>
+            <div class="groupCenterRow">
+               <div id="backButtonDecoder" class="backBtn" style="flex: 1; text-align: center"><button >BACK TO START</button></div>
+            </div>
+         </div>
+
+         <p><a id="allCodeBtn" class="responsive showAllBTN hide" href="#">View all codes created.</a></p>
+         <!-- <div class="listSearhContainer">
+            <input type="text" placeholder="Search code">
+         </div> -->
+         <!--List section starts here-->
+         <div id="tableConatainer" class="listContainer responsive hide">
+            <table id="dataTable">
+               <thead id="tableHead">
+                  <tr>
+                     <th scope="col">Code</th>
+                     <th scope="col">Time</th>
+                     <th scope="col">Date</th>
+                     <th scope="col">Brand</th>
+                     <th scope="col">Sub-Brand/SBU</th>
+                     <th scope="col">Category</th>
+                     <th scope="col">Product</th>
+                     <th scope="col">Identifier</th>
+                     <th scope="col">Related Jobs</th>
+                  </tr>
+               </thead>
+               <tbody id="tableBody"></tbody>
+            </table>
+            <div class="groupCenterRow" style="width: 50%">
+               <div id="downloadButton" style="flex: 1; text-align: center; margin-top: 20px">
+                  <a id="downloadCSV" download="VSP_SKU_Encoder_Decoder.csv"><button>DOWNLOAD</button> </a>
+               </div>
+               <div id="backButtonTable" style="flex: 1; text-align: center; margin-top: 20px">
+                  <button class="backBtn">BACK TO START</button>
+               </div>
+            </div>
+         </div>
+      </div>
+      <script src="index.js"></script>
+   </body>
+</html>

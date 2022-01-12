@@ -1,0 +1,372 @@
+@charset "UTF-8";
+/* CSS Document */
+
+body {
+   font-family: "Helvetica Neue", Helvetica, Arial, Gotham, "sans-serif";
+   margin: 0;
+}
+
+a {
+   text-decoration: none;
+}
+
+.bold18 {
+   font-weight: bold;
+   font-kerning: normal;
+   font-size: 18px;
+   line-height: 23px;
+}
+
+.bold20 {
+   font-weight: bold;
+   font-kerning: normal;
+   font-size: 20px;
+   line-height: 25px;
+}
+
+.bold24 {
+   font-kerning: normal;
+   font-weight: bold;
+   font-size: 24px;
+   line-height: 29px;
+}
+
+.reg18 {
+   font-weight: normal;
+   font-kerning: normal;
+   font-size: 18px;
+   line-height: 23px;
+}
+
+.reg20 {
+   font-weight: normal;
+   font-kerning: normal;
+   font-size: 20px;
+   line-height: 25px;
+}
+
+.reg24 {
+   font-kerning: normal;
+   font-weight: normal;
+   font-size: 24px;
+   line-height: 29px;
+}
+
+.whiteText {
+   color: #ffffff;
+}
+
+.blackText {
+   color: #000000;
+}
+
+.redText {
+   color: #dd0303;
+}
+
+.border2 {
+   border: 2px solid #000000;
+}
+
+.border2Top {
+   border-top: 2px solid #000000;
+}
+
+.mainContainer {
+   padding: 72px;
+   display: flex;
+   align-content: center;
+   align-items: center;
+   flex-direction: column;
+   width: 100%;
+   height: 100%;
+}
+
+.subContainer {
+   margin: 18px;
+   display: flex;
+   align-items: center;
+   flex-direction: column;
+   min-width: 450px;
+   min-height: 150px;
+   width: 40%;
+}
+
+.listContainer {
+   margin: 18px;
+   display: flex;
+   align-items: center;
+   flex-direction: column;
+   min-width: 450px;
+   min-height: 150px;
+   width: 80%;
+   box-sizing: border-box;
+   overflow-y: scroll;
+   overflow-x: hidden;
+}
+
+.groupCenterCol {
+   display: flex;
+   align-content: center;
+   align-items: center;
+   flex-direction: column;
+   width: 100%;
+   box-sizing: border-box;
+   text-align: center;
+}
+
+.groupLeftCol {
+   display: flex;
+   align-items: flex-start;
+   align-content: flex-start;
+   flex-direction: column;
+   width: 100%;
+   box-sizing: border-box;
+}
+
+.groupRightCol {
+   display: flex;
+   align-items: flex-end;
+   align-content: flex-end;
+   flex-direction: column;
+   width: 100%;
+   box-sizing: border-box;
+}
+
+.groupCenterRow {
+   display: flex;
+   align-items: stretch;
+   align-content: center;
+   flex-direction: row;
+   width: 100%;
+   box-sizing: border-box;
+   text-align: center;
+}
+
+button {
+   width: 100%;
+   box-sizing: border-box;
+   color: #fff;
+   background-color: #000;
+   text-decoration: none;
+   border: 0;
+   padding: 9px;
+   font-weight: bold;
+}
+
+button:hover {
+   color: #000;
+   background-color: #a2a2a2;
+}
+
+button:disabled {
+   background-color: #fff;
+   color: #000;
+}
+
+.resultContent {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   padding: 36px;
+   width: 100%;
+   box-sizing: border-box;
+}
+
+.encodedData {
+   display: table;
+   padding: 36px;
+   width: 100%;
+   box-sizing: border-box;
+}
+
+/* Table Style */
+/* overflow-y scroll   1280*/
+table {
+   border: 1px solid #ccc;
+   border-collapse: collapse;
+   margin: 0;
+   padding: 0;
+   width: 100%;
+   table-layout: fixed;
+}
+
+table caption {
+   font-size: 1.5em;
+   margin: 0.5em 0 0.75em;
+}
+
+table tr {
+   background-color: #f8f8f8;
+   border: 1px solid #ddd;
+   padding: 0.35em;
+}
+
+table th,
+table td {
+   padding: 0.625em;
+   text-align: center;
+   border: 2px solid #000;
+}
+
+table th {
+   font-size: 0.85em;
+   letter-spacing: 0.1em;
+   text-transform: uppercase;
+   background-color: #000;
+   color: #fff;
+}
+
+/* InputSelection */
+
+.selectBox {
+   position: relative;
+   display: flex;
+   flex-direction: column;
+   width: 400px;
+   color: #000;
+}
+
+.selected {
+   position: relative;
+   border: 1px solid #000;
+   border-radius: 8px;
+   margin-bottom: 8px;
+   order: 0;
+}
+
+/* .selected::before {
+   content: "";
+   background: url("./Symbol-Search.svg");
+   background-size: contain;
+   background-repeat: no-repeat;
+   position: absolute;
+   height: 100%;
+   width: 32px;
+   right: 35px;
+   top: 5px;
+   transition: all 0.5s;
+   z-index: 200;
+} */
+
+.selected::after {
+   content: "";
+   background: url("./arrow.svg");
+   background-size: contain;
+   background-repeat: no-repeat;
+   position: absolute;
+   height: 100%;
+   width: 32px;
+   right: 10px;
+   top: 0px;
+   transform: rotateZ(90deg);
+   transition: all 0.5s;
+}
+
+.selectBox .optionContainer.active + .selected::after {
+   transform: rotateZ(-90deg);
+   right: 0px;
+}
+
+.selectBox .optionContainer {
+   border: 1px solid #000;
+   border-radius: 8px;
+   max-height: 0;
+   width: 100%;
+   opacity: 0;
+   transition: all 0.5s;
+   overflow: hidden;
+   order: 1;
+}
+
+.selectBox .optionContainer.active {
+   max-height: 240px;
+   opacity: 1;
+   overflow-y: scroll;
+}
+
+.selectBox .optionContainer::-webkit-scrollbar {
+   width: 8px;
+   background-color: #000;
+   border-radius: 0px 8px 8px 0px;
+}
+
+.selectBox .optionContainer::-webkit-scrollbar-thumb {
+   background-color: #a2a2a2;
+}
+
+.selectBox .option,
+.selected {
+   padding: 12px 24px;
+   cursor: pointer;
+}
+
+.selectBox .option:hover {
+   background-color: #a2a2a2;
+   color: #000;
+}
+
+.selectBox label {
+   cursor: pointer;
+}
+
+.selectBox .option .radio {
+   display: none;
+}
+
+/* Searchbox */
+.searchBox input {
+   width: 330px;
+   padding: 12px 10px;
+   font-size: 16px;
+   position: absolute;
+   top: 0;
+   left: 0;
+   border-radius: 8px 0px 0 0;
+   z-index: 100;
+   border-top: 1px solid #2f3640;
+   border-bottom: 1px solid #2f3640;
+   border-left: 1px solid #2f3640;
+   border-right: none;
+   opacity: 0;
+   pointer-events: none;
+   transition: all 0.5s;
+}
+
+.searchBox input:focus {
+   outline: none;
+}
+
+.selectBox .optionContainer.active ~ .searchBox input {
+   opacity: 1;
+   pointer-events: auto;
+}
+
+/* Decoder input */
+.inputs {
+   padding: 12px 24px;
+   border: 1px solid #000;
+   border-radius: 8px;
+   font-size: 16px;
+   position: relative;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+   -webkit-appearance: none;
+   margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+   -moz-appearance: textfield;
+}
+
+/* Error style */
+#errorMsg {
+   color: #dd0303;
+}
+
+.hide {
+   display: none;
+}
