@@ -1,0 +1,15 @@
+
+<!--Scalable Vector Graphic-->
+<svg id="Search" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36">
+  <g id="SearchRectangle" data-name="SearchRectangle" fill="#fff" stroke="#000" stroke-width="1">
+    <rect width="36" height="36" stroke="none"/>
+    <rect x="0.5" y="0.5" width="35" height="35" fill="none"/>
+  </g>
+  <g id="SearchGroup" data-name="SearchGroup" transform="translate(-293)">
+    <g id="SearchEllipse" data-name="SearchEllipse" transform="translate(299 6)" fill="#fff" stroke="#000" stroke-width="2">
+      <circle cx="9" cy="9" r="9" stroke="none"/>
+      <circle cx="9" cy="9" r="8" fill="none"/>
+    </g>
+    <line id="SearchLine" data-name="SearchLine" x2="7" y2="7" transform="translate(314.5 20.5)" fill="none" stroke="#000" stroke-width="2"/>
+  </g>
+</svg>

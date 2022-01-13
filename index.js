@@ -37,6 +37,8 @@ const errorMsgDecoderContainer = document.querySelector(".errorMsgDecoderContain
 const decodedResult = document.getElementById("decodedResult");
 const decoderInput = document.getElementById("decoder");
 
+const tableSearchInput = document.getElementById("tableSearchInput");
+
 async function getData(path) {
    try {
       const response = await fetch(path, {
@@ -209,6 +211,8 @@ async function start() {
    for (let key in data[2]) {
       let size = Object.values(data[2][key]).length;
       let newTr = document.createElement("tr");
+      newTr.id = Object.values(data[2][key])[0];
+      newTr.classList.add("codeData");
       for (let i = 0; i < size; i++) {
          let newTD = document.createElement("td");
          //Check json
@@ -227,6 +231,27 @@ async function start() {
       }
       tableBody.appendChild(newTr);
    }
+   let allCodeData = document.querySelectorAll(".codeData");
+
+   tableSearchInput.addEventListener("change", function () {
+      if (tableSearchInput.value !== "") {
+         allCodeData.forEach(function (codedData) {
+            codedData.classList.add("hide");
+         });
+
+         for (let i = 0; i < allCodeData.length; i++) {
+            if (tableSearchInput.value === allCodeData[i].id) {
+               allCodeData[i].classList.remove("hide");
+               return;
+            }
+         }
+      } else {
+         allCodeData.forEach(function (codedData) {
+            codedData.classList.remove("hide");
+         });
+      }
+   });
+
    //Download CSV
    const keys = Object.keys(data[2][0]);
    const commaSeparatedString = [keys.join(","), data[2].map((row) => keys.map((key) => row[key]).join(",")).join("\n")].join("\n");
