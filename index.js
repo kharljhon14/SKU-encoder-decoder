@@ -31,6 +31,12 @@ const selectCategoryContainer = document.getElementById("selectCategoryContainer
 const indentifierInput = document.getElementById("indentifierInput");
 const encodedContent = document.getElementById("encodedContent");
 
+const errorMsgContainer = document.querySelector(".errorMsgContainer");
+const errorMsgDecoderContainer = document.querySelector(".errorMsgDecoderContainer");
+
+const decodedResult = document.getElementById("decodedResult");
+const decoderInput = document.getElementById("decoder");
+
 async function getData(path) {
    try {
       const response = await fetch(path, {
@@ -60,8 +66,6 @@ async function start() {
    const codeText = document.getElementById("codeText");
 
    //Decoder
-   const decodedResult = document.getElementById("decodedResult");
-   const decoderInput = document.getElementById("decoder");
    const decotedData = document.querySelectorAll(".decodedData");
    const decodeDate = document.getElementById("decodeDate");
    const decodeBrand = document.getElementById("decodeBrand");
@@ -95,7 +99,10 @@ async function start() {
             encodedContent.classList.remove("hide");
 
             removeOldList(selectedSBU);
-            resetSelectedValues(selectedSBU, "Choose a SBU");
+
+            if (selectedBrand.getAttribute("data-value") === "Global") resetSelectedValues(selectedSBU, "Choose a division");
+            else if (selectedBrand.getAttribute("data-value") === "Vision Care") resetSelectedValues(selectedSBU, "Choose a SBU");
+            else resetSelectedValues(selectedSBU, "Choose a brand");
 
             createEncoderSelection(sbuObject[selectedBrand.getAttribute("data-value")], sbuOptionContainer);
 
@@ -188,9 +195,12 @@ async function start() {
                decodeIdentifier.appendChild(newSpan);
             }
             decodedResult.classList.remove("hide");
+            errorMsgDecoderContainer.classList.add("hide");
+
             return;
          } else {
-            console.log("No Match");
+            errorMsgDecoderContainer.classList.remove("hide");
+            decodedResult.classList.add("hide");
          }
       }
    });
@@ -245,6 +255,8 @@ async function start() {
       decoderContainer.classList.add("hide");
       allCodeBtn.classList.remove("hide");
       backButtonEncoder.classList.add("hide");
+      errorMsgContainer.classList.add("hide");
+      encodedContent.classList.remove("errorMsgColor");
    });
 }
 
@@ -264,7 +276,7 @@ function dropdownOnClickEvents() {
             if (currentActive) currentActive.classList.remove("active");
             optionsContainer.classList.add("active");
          }
-         searchInputs.value = "";
+         searchInput.value = "";
          filterList(optionList, "");
       };
       optionList.forEach(function (option) {
@@ -365,6 +377,22 @@ function save() {
    let identiferObject = {};
    identiferObject[indentifierInput.getAttribute("data-value")] = "000";
 
+   for (let key in data[2]) {
+      if (codeText.innerText.replace(/\s/g, "") === Object.values(data[2][key])[0]) {
+         document.getElementById("encodedDate").innerText = Object.values(data[2][key])[2] + " / " + Object.values(data[2][key])[1];
+         document.getElementById("encodedBrand").innerText = Object.values(data[2][key])[3];
+         document.getElementById("encodedSBU").innerText = Object.values(data[2][key])[4];
+         document.getElementById("encodedCategory").innerText = Object.values(data[2][key])[5];
+         document.getElementById("encodedProduct").innerText = Object.values(data[2][key])[6];
+         document.getElementById("encodedIdentifier").innerText = Object.keys(Object.values(data[2][key])[7]);
+
+         errorMsgContainer.classList.remove("hide");
+         encodedContent.classList.add("errorMsgColor");
+         encodedResult.classList.remove("hide");
+         return;
+      }
+   }
+
    dataToSave["CODE"] = codeText.innerText.replace(/\s/g, "");
    dataToSave["TIME"] = time;
    dataToSave["DATE"] = result;
@@ -380,8 +408,11 @@ function save() {
    document.getElementById("encodedCategory").innerText = dataToSave["CATEGORY"];
    document.getElementById("encodedProduct").innerText = dataToSave["PRODUCT"];
    document.getElementById("encodedIdentifier").innerText = indentifierInput.getAttribute("data-value");
-   encodedResult.classList.remove("hide");
    saveButton.querySelector("button").disabled = true;
+
+   errorMsgContainer.classList.add("hide");
+   encodedContent.classList.remove("errorMsgColor");
+   encodedResult.classList.remove("hide");
    console.log(dataToSave);
 }
 
@@ -440,24 +471,27 @@ allCodeBtn.addEventListener("click", function () {
    encoderContainer.classList.add("hide");
    decoderContainer.classList.add("hide");
    tableConatainer.classList.remove("hide");
-   allCodeBtn.classList.add("hide")
+   allCodeBtn.classList.add("hide");
 });
 
-backButtonDecoder.addEventListener("click", function(){
+backButtonDecoder.addEventListener("click", function () {
    jobNumberContainer.classList.remove("hide");
    encoderContainer.classList.add("hide");
    decoderContainer.classList.add("hide");
    allCodeBtn.classList.add("hide");
    backButtonDecoder.classList.add("hide");
-})
+   errorMsgDecoderContainer.classList.add("hide");
+   decodedResult.classList.add("hide");
+   decoderInput.value = "";
+});
 
-backButtonTable.addEventListener("click", function(){
+backButtonTable.addEventListener("click", function () {
    jobNumberContainer.classList.remove("hide");
    encoderContainer.classList.add("hide");
    decoderContainer.classList.add("hide");
    allCodeBtn.classList.add("hide");
    tableConatainer.classList.add("hide");
-})
+});
 
 saveButton.onclick = function () {
    save();

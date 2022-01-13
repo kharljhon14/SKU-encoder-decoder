@@ -358,7 +358,17 @@ input[type="number"] {
 }
 
 /* Error style */
-#errorMsg {
+.errorMsgContainer {
+   display: flex;
+   flex-direction: column;
+}
+
+.errorMsgContainer p{
+   margin: 0;
+   color: #dd0303;
+}
+
+.errorMsgColor p{
    color: #dd0303;
 }
 

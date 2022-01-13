@@ -31,13 +31,13 @@
                </div>
                <div style="display: table-cell"><p>&nbsp;</p></div>
                <div style="display: table-cell; text-align: left">
-                  <p class="decodedData" >{{DATE}}</p>
-                  <p class="decodedData" >{{BRAND}}</p>
-                  <p class="decodedData" >{{SUB-BRAND}}</p>
-                  <p class="decodedData" >{{CATEGORY}}</p>
-                  <p class="decodedData" >{{PRODUCT}}</p>
-                  <p class="decodedData" >{{IDENTIFIER}}</p>
-                  <p class="decodedData" >{{RELATED JOBS}}</p>
+                  <p class="decodedData">{{DATE}}</p>
+                  <p class="decodedData">{{BRAND}}</p>
+                  <p class="decodedData">{{SUB-BRAND}}</p>
+                  <p class="decodedData">{{CATEGORY}}</p>
+                  <p class="decodedData">{{PRODUCT}}</p>
+                  <p class="decodedData">{{IDENTIFIER}}</p>
+                  <p class="decodedData">{{RELATED JOBS}}</p>
                </div>
                <p class="hide" id="errorMsg">ERROR</p>
             </div>
@@ -97,7 +97,11 @@
                </div>
             </div>
             <div id="encodedContent" class="border2Top encodedData hide">
-               <div style="display: flex; align-items: center; justify-content: center; text-align: center">
+               <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center">
+                  <div class="errorMsgContainer hide">
+                     <p>Error: Code already taken.</p>
+                     <p>Enter a different Identifier.</p>
+                  </div>
                   <p id="codeText">00 00 02 300 400*</p>
                </div>
                <div class="resultContent hide" id="encodedResult">
@@ -129,7 +133,7 @@
                <div id="copyButton" class="hide" style="flex: 2; text-align: center"><button onclick="copyToClipboard('codeText')">COPY</button></div>
                <div hidden id="cancelButton" style="flex: 2; text-align: center"><button>CANCEL</button></div>
                <div hidden id="removeButton" style="flex: 2; text-align: center"><button>REMOVE</button></div>
-               <div id="backButtonEncoder" class="backBtn" style="flex: 3; text-align: center; z-index: 100;"><button>BACK TO START</button></div>
+               <div id="backButtonEncoder" class="backBtn" style="flex: 3; text-align: center; z-index: 100"><button>BACK TO START</button></div>
             </div>
          </div>
 
@@ -158,10 +162,16 @@
                   <p class="decodedData" id="decodeProduct">{{PRODUCT}}</p>
                   <p class="decodedData" id="decodeIdentifier">{{IDENTIFIER}}</p>
                </div>
-               <p class="hide" id="errorMsg">ERROR</p>
+            </div>
+            <div class="errorMsgDecoderContainer errorMsgColor hide">
+               <p style="text-align: center; line-height: 1.5;">
+                  Error: Code has not been created <br />
+                  Either check the code and try again or please click <br />
+                  "BACK TO START" and choose Encoder option to create code
+               </p>
             </div>
             <div class="groupCenterRow">
-               <div id="backButtonDecoder" class="backBtn" style="flex: 1; text-align: center"><button >BACK TO START</button></div>
+               <div id="backButtonDecoder" class="backBtn" style="flex: 1; text-align: center"><button>BACK TO START</button></div>
             </div>
          </div>
 
