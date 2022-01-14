@@ -167,7 +167,8 @@ button:disabled {
 .resultContent {
    display: flex;
    justify-content: center;
-   align-items: center;
+   justify-content: center;
+   align-items: flex-start;
    padding: 36px;
    width: 100%;
    box-sizing: border-box;

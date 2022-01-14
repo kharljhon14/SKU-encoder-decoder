@@ -17,29 +17,43 @@
          <div id="jobNumberContainer" class="border2 subContainer responsive">
             <div id="jobNumberContent" class="groupCenterCol responsive" style="padding: 9px 9px 36px 9px">
                <h3 id="jobNumberTitle" class="bold20">Job Number</h3>
-               <input type="number" class="inputs" id="jobNumber" placeholder="Enter a job number." style="width: 45%; text-align: center" />
+               <input type="text" class="inputs" id="jobNumberInput" placeholder="Enter a job number." style="width: 45%; text-align: center" />
             </div>
-            <div class="border2Top resultContent hide">
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center">
+               <div class="errorMsgJR errorMsgColor hide">
+                  <p>
+                     Error: Job Number has not been created. <br />
+                     Please choose Encoder to generate this code.
+                  </p>
+               </div>
+
+               <div class="errorMsgAddToSKU errorMsgColor hide">
+                  <p>
+                     Error: Job Number already exists. <br />
+                     Please choose Encoder to generate this code.
+                  </p>
+               </div>
+            </div>
+            <div class="resultContent hide" id="jobNumberForm">
                <div style="display: table-cell; text-align: right">
-                  <p class="decodedData"><strong>CREATED:</strong></p>
-                  <p class="decodedData"><strong>BRAND:</strong></p>
-                  <p class="decodedData"><strong>SUB-BRAND:</strong></p>
-                  <p class="decodedData"><strong>CATEGORY:</strong></p>
-                  <p class="decodedData"><strong>PRODUCT:</strong></p>
-                  <p class="decodedData"><strong>Identifier:</strong></p>
-                  <p class="decodedData"><strong>Related Jobs:</strong></p>
+                  <p><strong>CREATED:</strong></p>
+                  <p><strong>BRAND:</strong></p>
+                  <p><strong>SUB-BRAND:</strong></p>
+                  <p><strong>CATEGORY:</strong></p>
+                  <p><strong>PRODUCT:</strong></p>
+                  <p><strong>IDENTIFIER:</strong></p>
+                  <p><strong>Related Jobs:</strong></p>
                </div>
                <div style="display: table-cell"><p>&nbsp;</p></div>
                <div style="display: table-cell; text-align: left">
-                  <p class="decodedData">{{DATE}}</p>
-                  <p class="decodedData">{{BRAND}}</p>
-                  <p class="decodedData">{{SUB-BRAND}}</p>
-                  <p class="decodedData">{{CATEGORY}}</p>
-                  <p class="decodedData">{{PRODUCT}}</p>
-                  <p class="decodedData">{{IDENTIFIER}}</p>
-                  <p class="decodedData">{{RELATED JOBS}}</p>
+                  <p id="jrDate">{{DATE}}</p>
+                  <p id="jrBrand">{{BRAND}}</p>
+                  <p id="jrSBU">{{SUB-BRAND}}</p>
+                  <p id="jrCategory">{{CATEGORY}}</p>
+                  <p id="jrProduct">{{PRODUCT}}</p>
+                  <p id="jrIdentifier">{{IDENTIFIER}}</p>
+                  <p id="jrRelatedJobs">{{RELATED JOBS}}</p>
                </div>
-               <p class="hide" id="errorMsg">ERROR</p>
             </div>
             <div class="groupCenterRow">
                <div id="skipButton" style="flex: 2; text-align: center"><button>SKIP</button></div>
@@ -105,7 +119,7 @@
                   <p id="codeText">00 00 02 300 400*</p>
                </div>
                <div class="resultContent hide" id="encodedResult">
-                  <div style="display: table-cell; text-align: right">
+                  <div>
                      <p><strong>CREATED:</strong></p>
                      <p><strong>BRAND:</strong></p>
                      <p><strong>SUB-BRAND:</strong></p>
@@ -115,17 +129,15 @@
                      <p><strong>Related Jobs:</strong></p>
                   </div>
                   <div style="display: table-cell"><p>&nbsp;</p></div>
-
-                  <div style="display: table-cell; text-align: left">
+                  <div>
                      <p id="encodedDate">{{DATE}}</p>
                      <p id="encodedBrand">{{BRAND}}</p>
                      <p id="encodedSBU">{{SUB-BRAND}}</p>
                      <p id="encodedCategory">{{CATEGORY}}</p>
                      <p id="encodedProduct">{{PRODUCT}}</p>
                      <p id="encodedIdentifier">{{IDENTIFIER}}</p>
-                     <p>{{Related Jobs}}</p>
+                     <p id="encodedJR">{{Related Jobs}}</p>
                   </div>
-                  <p class="hide" id="errorMsg">ERROR</p>
                </div>
             </div>
             <div class="groupCenterRow">
@@ -164,7 +176,7 @@
                </div>
             </div>
             <div class="errorMsgDecoderContainer errorMsgColor hide">
-               <p style="text-align: center; line-height: 1.5;">
+               <p style="text-align: center; line-height: 1.5">
                   Error: Code has not been created <br />
                   Either check the code and try again or please click <br />
                   "BACK TO START" and choose Encoder option to create code
@@ -182,7 +194,7 @@
          <!--List section starts here-->
          <div id="tableConatainer" class="listContainer responsive hide">
             <div class="searchTableContainer">
-               <input type="number" class="inputs" id="tableSearchInput">
+               <input type="number" class="inputs" id="tableSearchInput" />
             </div>
             <table id="dataTable">
                <thead id="tableHead">
