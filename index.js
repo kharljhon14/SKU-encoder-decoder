@@ -80,6 +80,8 @@ async function start() {
       data.push(jsonData[key]);
    }
 
+   if (!localStorage.getItem("encodeLogs")) localStorage.setItem("encodeLogs", JSON.stringify(data[2]));
+
    brands = data[0];
    category = data[1];
 
@@ -181,17 +183,18 @@ async function start() {
    };
 
    decoderInput.addEventListener("change", function () {
-      for (let key in data[2]) {
+      console.log(JSON.parse(localStorage.getItem("encodeLogs")));
+      for (let key in JSON.parse(localStorage.getItem("encodeLogs"))) {
          // console.log(Object.values(data[2][key])[0]);
-         if (decoderInput.value.replace(/ /g, "").trim() === Object.values(data[2][key])[0]) {
-            decodeDate.innerText = `${Object.values(data[2][key])[2]} / ${Object.values(data[2][key])[1]}`;
-            decodeBrand.innerText = Object.values(data[2][key])[3];
-            decodeSBU.innerText = Object.values(data[2][key])[4];
-            decodeCategory.innerText = Object.values(data[2][key])[5];
-            decodeProduct.innerText = Object.values(data[2][key])[6];
+         if (decoderInput.value.replace(/ /g, "").trim() === Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[0]) {
+            decodeDate.innerText = `${Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[2]} / ${Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[1]}`;
+            decodeBrand.innerText = Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[3];
+            decodeSBU.innerText = Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[4];
+            decodeCategory.innerText = Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[5];
+            decodeProduct.innerText = Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[6];
             decodeIdentifier.innerText = "";
 
-            for (let k in Object.values(data[2][key])[7]) {
+            for (let k in Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[7]) {
                let newSpan = document.createElement("span");
                newSpan.innerText = k;
                decodeIdentifier.appendChild(newSpan);
@@ -208,52 +211,10 @@ async function start() {
    });
 
    //GenerateTable
-   for (let key in data[2]) {
-      let size = Object.values(data[2][key]).length;
-      let newTr = document.createElement("tr");
-      newTr.id = Object.values(data[2][key])[0];
-      newTr.classList.add("codeData");
-      for (let i = 0; i < size; i++) {
-         let newTD = document.createElement("td");
-         //Check json
-         if (i === 0) {
-            let newLink = document.createElement("a");
-            newLink.href = "#";
-            newLink.innerText = Object.values(data[2][key])[i];
-            newTD.appendChild(newLink);
-         } else if (i === 7) {
-            newTD.innerText = Object.keys(Object.values(data[2][key])[i]);
-         } else {
-            newTD.innerText = Object.values(data[2][key])[i];
-         }
-
-         newTr.appendChild(newTD);
-      }
-      tableBody.appendChild(newTr);
-   }
-   let allCodeData = document.querySelectorAll(".codeData");
-
-   tableSearchInput.addEventListener("change", function () {
-      if (tableSearchInput.value !== "") {
-         allCodeData.forEach(function (codedData) {
-            codedData.classList.add("hide");
-         });
-
-         for (let i = 0; i < allCodeData.length; i++) {
-            if (tableSearchInput.value === allCodeData[i].id) {
-               allCodeData[i].classList.remove("hide");
-               return;
-            }
-         }
-      } else {
-         allCodeData.forEach(function (codedData) {
-            codedData.classList.remove("hide");
-         });
-      }
-   });
+   generateTable();
 
    //Download CSV
-   const keys = Object.keys(data[2][0]);
+   const keys = Object.keys(JSON.parse(localStorage.getItem("encodeLogs"))[0]);
    const commaSeparatedString = [keys.join(","), data[2].map((row) => keys.map((key) => row[key]).join(",")).join("\n")].join("\n");
    const csvBlob = new Blob([commaSeparatedString]);
    downloadCSV.href = URL.createObjectURL(csvBlob);
@@ -282,6 +243,61 @@ async function start() {
       backButtonEncoder.classList.add("hide");
       errorMsgContainer.classList.add("hide");
       encodedContent.classList.remove("errorMsgColor");
+   });
+}
+
+function generateTable() {
+   let allCodeData = document.querySelectorAll(".codeData");
+
+   allCodeData.forEach(function (codeData) {
+      codeData.remove();
+   });
+
+   for (let key in JSON.parse(localStorage.getItem("encodeLogs"))) {
+      let size = Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key]).length;
+      let newTr = document.createElement("tr");
+      newTr.id = Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[0];
+      newTr.classList.add("codeData");
+      for (let i = 0; i < size; i++) {
+         let newTD = document.createElement("td");
+         //Check json
+         if (i === 0) {
+            let newLink = document.createElement("a");
+            newLink.href = "#";
+            newLink.innerText = Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[i];
+            newTD.appendChild(newLink);
+         } else if (i === 7) {
+            newTD.innerText = Object.keys(Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[i]);
+         } else {
+            newTD.innerText = Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[i];
+         }
+
+         newTr.appendChild(newTD);
+      }
+      tableBody.appendChild(newTr);
+   }
+
+   allCodeData = document.querySelectorAll(".codeData");
+   tableSearchInput.addEventListener("change", function () {
+      if (tableSearchInput.value !== "") {
+         allCodeData.forEach(function (codedData) {
+            codedData.classList.add("hide");
+         });
+
+         for (let i = 0; i < allCodeData.length; i++) {
+            if (tableSearchInput.value === allCodeData[i].id) {
+               allCodeData[i].classList.remove("hide");
+               return;
+            }
+         }
+         allCodeData.forEach(function (codedData) {
+            codedData.classList.remove("hide");
+         });
+      } else {
+         allCodeData.forEach(function (codedData) {
+            codedData.classList.remove("hide");
+         });
+      }
    });
 }
 
@@ -391,7 +407,8 @@ function save() {
    let today = new Date();
    let ampm = today.getHours() >= 12 ? "PM" : "AM";
    let hour = (today.getHours() + 24) % 12 || 12;
-   let time = hour + ":" + today.getMinutes() + " " + ampm;
+   let minutes = ("0" + today.getMinutes()).slice(-2);
+   let time = hour + ":" + minutes + " " + ampm;
 
    var result = today.toLocaleDateString("en-GB", {
       // you can use undefined as first argument
@@ -402,14 +419,15 @@ function save() {
    let identiferObject = {};
    identiferObject[indentifierInput.getAttribute("data-value")] = "000";
 
-   for (let key in data[2]) {
-      if (codeText.innerText.replace(/\s/g, "") === Object.values(data[2][key])[0]) {
-         document.getElementById("encodedDate").innerText = Object.values(data[2][key])[2] + " / " + Object.values(data[2][key])[1];
-         document.getElementById("encodedBrand").innerText = Object.values(data[2][key])[3];
-         document.getElementById("encodedSBU").innerText = Object.values(data[2][key])[4];
-         document.getElementById("encodedCategory").innerText = Object.values(data[2][key])[5];
-         document.getElementById("encodedProduct").innerText = Object.values(data[2][key])[6];
-         document.getElementById("encodedIdentifier").innerText = Object.keys(Object.values(data[2][key])[7]);
+   for (let key in JSON.parse(localStorage.getItem("encodeLogs"))) {
+      if (codeText.innerText.replace(/\s/g, "") === Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[0]) {
+         document.getElementById("encodedDate").innerText =
+            Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[2] + " / " + Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[1];
+         document.getElementById("encodedBrand").innerText = Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[3];
+         document.getElementById("encodedSBU").innerText = Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[4];
+         document.getElementById("encodedCategory").innerText = Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[5];
+         document.getElementById("encodedProduct").innerText = Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[6];
+         document.getElementById("encodedIdentifier").innerText = Object.keys(Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[7]);
 
          errorMsgContainer.classList.remove("hide");
          encodedContent.classList.add("errorMsgColor");
@@ -438,7 +456,17 @@ function save() {
    errorMsgContainer.classList.add("hide");
    encodedContent.classList.remove("errorMsgColor");
    encodedResult.classList.remove("hide");
+
    console.log(dataToSave);
+
+   let newData = data[2];
+   newData.push(dataToSave);
+   console.log(newData);
+   localStorage.setItem("encodeLogs", JSON.stringify(newData));
+   console.log(JSON.parse(localStorage.getItem("encodeLogs")));
+   newData = [];
+   dataToSave = {};
+   console.log(newData);
 }
 
 function capitalizeFirstLetter(string) {
@@ -493,6 +521,7 @@ function resetValues() {
 }
 
 allCodeBtn.addEventListener("click", function () {
+   generateTable();
    encoderContainer.classList.add("hide");
    decoderContainer.classList.add("hide");
    tableConatainer.classList.remove("hide");
@@ -516,6 +545,11 @@ backButtonTable.addEventListener("click", function () {
    decoderContainer.classList.add("hide");
    allCodeBtn.classList.add("hide");
    tableConatainer.classList.add("hide");
+   tableSearchInput.value = "";
+
+   document.querySelectorAll(".codeData").forEach(function (codedData) {
+      codedData.classList.remove("hide");
+   });
 });
 
 saveButton.onclick = function () {

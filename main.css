@@ -362,6 +362,10 @@ input[type="number"] {
    position: relative;
 }
 
+#tableSearchInput{
+   width: 100%;
+}
+
 .searchTableContainer::after{
    content: "";
    background: url("./search.svg");
@@ -370,7 +374,7 @@ input[type="number"] {
    position: absolute;
    height: 100%;
    width: 32px;
-   right: 8px;
+   right: -40px;
    top: 5.7px;
    z-index: 100;
    cursor: pointer;
