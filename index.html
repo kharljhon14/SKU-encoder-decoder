@@ -98,7 +98,7 @@
                               <label for="test1">Test1</label>
                            </div> -->
                      </div>
-                     <div class="selected" id="selectedCategory">Choose a Category/Products</div>
+                     <div class="selected" id="selectedCategory">Choose a Products | Category</div>
                      <div class="searchBox">
                         <input type="text" placeholder="Search" />
                      </div>
@@ -148,7 +148,88 @@
                <div id="backButtonEncoder" class="backBtn" style="flex: 3; text-align: center; z-index: 100"><button>BACK TO START</button></div>
             </div>
          </div>
+         <!-- Edit Container -->
+         <div id="editContainer" class="border2 subContainer responsive hide">
+            <div id="editContent" class="groupCenterCol responsive" style="padding: 9px 9px 36px 9px">
+               <h3 id="editTitle" class="bold20">EDIT</h3>
+               <div class="container">
+                  <div class="selectBox">
+                     <div class="optionContainer" id="brandOptionContainerEdit">
+                        <!-- <div class="option">
+                              <input type="radio" class="radio" id="test1" name="brand" />
+                              <label for="test1">Test1</label>
+                           </div> -->
+                     </div>
+                     <div class="selected" id="selectedBrandEdit">Choose a brand</div>
+                     <div class="searchBox">
+                        <input type="text" placeholder="Search" />
+                     </div>
+                  </div>
+                  <div class="selectBox" id="selectSBUContainerEdit">
+                     <div class="optionContainer" id="sbuOptionContainerEdit">
+                        <!-- <div class="option">
+                              <input type="radio" class="radio" id="test1" name="brand" />
+                              <label for="test1">Test1</label>
+                           </div> -->
+                     </div>
+                     <div class="selected" id="selectedSBUEdit">Choose a SBU</div>
+                     <div class="searchBox">
+                        <input type="text" placeholder="Search" />
+                     </div>
+                  </div>
 
+                  <div class="selectBox" id="selectCategoryContainerEdit">
+                     <div class="optionContainer" id="categoryOptionContainerEdit">
+                        <!-- <div class="option">
+                              <input type="radio" class="radio" id="test1" name="brand" />
+                              <label for="test1">Test1</label>
+                           </div> -->
+                     </div>
+                     <div class="selected" id="selectedCategoryEdit">Choose a Products|Category</div>
+                     <div class="searchBox">
+                        <input type="text" placeholder="Search" />
+                     </div>
+                  </div>
+
+                  <div class="selectBox" id="indentifierContainerEdit">
+                     <div class="optionContainer" id="indentifierOptionContainerEdit">
+                        <!-- <div class="option">
+                              <input type="radio" class="radio" id="test1" name="brand" />
+                              <label for="test1">Test1</label>
+                           </div> -->
+                     </div>
+                     <div class="selected" id="selectedIndentifierEdit">Choose a Identifier</div>
+                     <div class="searchBox">
+                        <input type="text" placeholder="Search" />
+                     </div>
+                  </div>
+                  <div class="selectBox" id="jrContainerEdit">
+                     <div class="optionContainer" id="jrOptionContainerEdit">
+                        <!-- <div class="option">
+                              <input type="radio" class="radio" id="test1" name="brand" />
+                              <label for="test1">Test1</label>
+                           </div> -->
+                     </div>
+                     <div class="selected" id="selectedjrEdit">Choose a Job Number</div>
+                     <div class="searchBox">
+                        <input type="text" placeholder="Search" />
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div id="encodedContent" class="border2Top encodedData">
+               <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center">
+                  <div class="errorMsgContainer hide">
+                     <p>Error: Code already taken.</p>
+                     <p>Enter a different Identifier.</p>
+                  </div>
+                  <p id="codeTextEdit">00 00 02 300 400*</p>
+               </div>
+            </div>
+            <div class="groupCenterRow">
+               <div id="backButtonEncoder" class="backBtn" style="flex: 3; text-align: center; z-index: 100"><button>BACK TO START</button></div>
+            </div>
+         </div>
          <!--Decoder section starts here-->
 
          <div id="decoderContainer" class="border2 subContainer responsive hide">
@@ -164,6 +245,7 @@
                   <p class="decodedData"><strong>CATEGORY:</strong></p>
                   <p class="decodedData"><strong>PRODUCT:</strong></p>
                   <p class="decodedData"><strong>IDENTIFIER:</strong></p>
+                  <p class="decodedData"><strong>Related Jobs:</strong></p>
                </div>
                <div style="display: table-cell"><p>&nbsp;</p></div>
                <div style="display: table-cell; text-align: left">
@@ -173,6 +255,7 @@
                   <p class="decodedData" id="decodeCategory">{{CATEGORY}}</p>
                   <p class="decodedData" id="decodeProduct">{{PRODUCT}}</p>
                   <p class="decodedData" id="decodeIdentifier">{{IDENTIFIER}}</p>
+                  <p class="decodedData" id="decodedJR">{{Related Jobs}}</p>
                </div>
             </div>
             <div class="errorMsgDecoderContainer errorMsgColor hide">
@@ -183,6 +266,7 @@
                </p>
             </div>
             <div class="groupCenterRow">
+               <div id="editButtonDecoder" class="hide" style="flex: 1; text-align: center"><button>EDIT</button></div>
                <div id="backButtonDecoder" class="backBtn" style="flex: 1; text-align: center"><button>BACK TO START</button></div>
             </div>
          </div>

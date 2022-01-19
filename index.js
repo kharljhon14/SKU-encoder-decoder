@@ -1,6 +1,11 @@
 let dataToSave = {};
 let code = [];
 let codeCate = [];
+let codeEdit = [];
+let codeCateEdit = [];
+
+let productsTemplates = {};
+
 let data = []; //0 - Brands, 1-Category, 2- encodedlogs
 let brands;
 let sbuObject = {};
@@ -43,6 +48,7 @@ const errorMsgDecoderContainer = document.querySelector(".errorMsgDecoderContain
 
 const decodedResult = document.getElementById("decodedResult");
 const decoderInput = document.getElementById("decoder");
+const editButtonDecoder = document.getElementById("editButtonDecoder");
 
 const tableSearchInput = document.getElementById("tableSearchInput");
 
@@ -84,6 +90,7 @@ async function start() {
    const jrRelatedJobs = document.getElementById("jrRelatedJobs");
 
    //Decoder
+   let decodeCode;
    const decotedData = document.querySelectorAll(".decodedData");
    const decodeDate = document.getElementById("decodeDate");
    const decodeBrand = document.getElementById("decodeBrand");
@@ -91,6 +98,27 @@ async function start() {
    const decodeCategory = document.getElementById("decodeCategory");
    const decodeProduct = document.getElementById("decodeProduct");
    const decodeIdentifier = document.getElementById("decodeIdentifier");
+   const decodedJR = document.getElementById("decodedJR");
+   const editButtonDecoder = document.getElementById("editButtonDecoder");
+
+   //Edit
+   const editContainer = document.getElementById("editContainer");
+   const selectedBrandEdit = document.getElementById("selectedBrandEdit");
+   const brandOptionContainerEdit = document.getElementById("brandOptionContainerEdit");
+
+   const selectedSBUEdit = document.getElementById("selectedSBUEdit");
+   const sbuOptionContainerEdit = document.getElementById("sbuOptionContainerEdit");
+
+   const selectedCategoryEdit = document.getElementById("selectedCategoryEdit");
+   const categoryOptionContainerEdit = document.getElementById("categoryOptionContainerEdit");
+
+   const selectedIndentifierEdit = document.getElementById("selectedIndentifierEdit");
+   const indentifierOptionContainerEdit = document.getElementById("indentifierOptionContainerEdit");
+   const jrOptionContainerEdit = document.getElementById("jrOptionContainerEdit");
+
+   const selectedjrEdit = document.getElementById("selectedjrEdit");
+
+   const codeTextEdit = document.getElementById("codeTextEdit");
 
    for (let key in jsonData) {
       data.push(jsonData[key]);
@@ -98,7 +126,6 @@ async function start() {
 
    if (localStorage.getItem("encodeLogs") === null) {
       localStorage.setItem("encodeLogs", JSON.stringify(data[2]));
-      console.log("item Set");
    }
 
    brands = data[0];
@@ -110,6 +137,16 @@ async function start() {
 
    for (let key in category) {
       productsObject[key] = Object.values(category[key])[1];
+   }
+
+   for (let key in productsObject) {
+      for (let value in productsObject[key]) {
+         productsTemplates[key + " " + value] = [];
+      }
+   }
+
+   if (localStorage.getItem("productsTemplates") === null) {
+      localStorage.setItem("productsTemplates", JSON.stringify(productsTemplates));
    }
 
    //Create BrandDropdown
@@ -195,22 +232,42 @@ async function start() {
 
    generateCodeBtn.onclick = function () {
       saveButton.querySelector("button").disabled = false;
-      codeCate[2] = "000";
+      let templates = JSON.parse(localStorage.getItem("productsTemplates"))[selectedCategory.getAttribute("data-value") + " " + selectedCategory.getAttribute("data-value-child")];
+      let lastValue = Object.values(templates).at(-1);
+      if (lastValue !== undefined) codeCate[2] = ("00" + Object.values(templates).length).slice(-3);
+      else codeCate[2] = "000";
       codeText.innerText = code.concat(codeCate).join(" ") + "*";
       saveButton.classList.remove("hide");
       copyButton.classList.remove("hide");
    };
 
-   decoderInput.addEventListener("change", function () {
-      console.log(JSON.parse(localStorage.getItem("encodeLogs")));
+   decoderInput.addEventListener("keyup", function () {
       for (let key in JSON.parse(localStorage.getItem("encodeLogs"))) {
          // console.log(Object.values(data[2][key])[0]);
          if (decoderInput.value.replace(/ /g, "").trim() === Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[0]) {
+            decodeCode = Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[0];
+            // .match(/.{1,2}/g).join(" ");
+            let codeFirstHalf = decodeCode.slice(0, 6);
+            let codeSecondHalf = decodeCode.slice(6);
+            codeFirstHalf = codeFirstHalf.match(/.{1,2}/g).join(" ");
+            codeSecondHalf = codeSecondHalf.match(/.{1,3}/g).join(" ");
+
+            codeEdit = codeFirstHalf.split(/\s+/);
+            codeCateEdit = codeSecondHalf.split(/\s+/);
+
+            console.log(codeFirstHalf, codeSecondHalf);
+            console.log(codeEdit, codeCateEdit);
+
             decodeDate.innerText = `${Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[2]} / ${Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[1]}`;
             decodeBrand.innerText = Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[3];
             decodeSBU.innerText = Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[4];
             decodeCategory.innerText = Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[5];
             decodeProduct.innerText = Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[6];
+
+            if (Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key]).length > 8)
+               decodedJR.innerText = Object.values(Object.values(Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[8])[0])[0];
+            else decodedJR.innerText = "";
+
             decodeIdentifier.innerText = "";
 
             for (let k in Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[7]) {
@@ -218,19 +275,72 @@ async function start() {
                newSpan.innerText = k;
                decodeIdentifier.appendChild(newSpan);
             }
+
             decodedResult.classList.remove("hide");
             errorMsgDecoderContainer.classList.add("hide");
-
+            editButtonDecoder.classList.remove("hide");
             return;
          } else {
             errorMsgDecoderContainer.classList.remove("hide");
             decodedResult.classList.add("hide");
+            editButtonDecoder.classList.add("hide");
          }
       }
    });
 
+   //Edit Dropdown
+
+   editButtonDecoder.addEventListener("click", function () {
+      editContainer.classList.remove("hide");
+      setEditValues(selectedBrandEdit, decodeBrand);
+      setEditValues(selectedSBUEdit, decodeSBU);
+      selectedCategoryEdit.innerText = `${decodeProduct.innerText} | ${decodeCategory.innerText}`;
+      selectedCategoryEdit.setAttribute("data-value", `${decodeCategory.innerText}`);
+      selectedCategoryEdit.setAttribute("data-value-child", `${decodeProduct.innerText} `);
+      setEditValues(selectedIndentifierEdit, decodeIdentifier.querySelector("span"));
+      setEditValues(selectedjrEdit, decodedJR);
+      codeTextEdit.innerText = codeEdit.concat(codeCateEdit).join(" ");
+
+      createEncoderSelection(brands, brandOptionContainerEdit);
+      createEncoderSelection(sbuObject[selectedBrandEdit.getAttribute("data-value")], sbuOptionContainerEdit);
+      createEncoderSelection(productsObject, categoryOptionContainerEdit, true);
+
+      let templates = JSON.parse(localStorage.getItem("productsTemplates"))[decodeCategory.innerText + " " + decodeProduct.innerText];
+      let allTemplates = {};
+      for (let key in templates) {
+         for (let value in templates[key]) {
+            console.log(value);
+            allTemplates[value] = templates[key][value];
+         }
+      }
+      console.log(allTemplates);
+      createEncoderSelection(allTemplates, indentifierOptionContainerEdit);
+   });
+
+   const brandEditOberserver = new MutationObserver(function (mutations) {
+      mutations.forEach(function (mutation) {
+         if (mutation.type === "attributes") {
+            removeOldList(selectedSBUEdit);
+
+            if (selectedBrand.getAttribute("data-value") === "Global") resetSelectedValues(selectedSBU, "Choose a division");
+            else if (selectedBrand.getAttribute("data-value") === "Vision Care") resetSelectedValues(selectedSBU, "Choose a SBU");
+            else resetSelectedValues(selectedSBU, "Choose a brand");
+
+            createEncoderSelection(sbuObject[selectedBrandEdit.getAttribute("data-value")], sbuOptionContainerEdit);
+
+            // if (code[0]) code[0] = Object.values(brands[selectedBrandEdit.innerText])[0];
+            // else code.push(Object.values(brands[selectedBrandEdit.innerText])[0]);
+
+            // saveButton.querySelector("button").disabled = false;
+
+            // codeText.innerText = code.concat(codeCate).join(" ");
+         }
+      });
+   });
+
    //GenerateTable
    generateTable();
+
    //Download CSV
    const keys = Object.keys(JSON.parse(localStorage.getItem("encodeLogs"))[0]);
    const commaSeparatedString = [
@@ -288,7 +398,6 @@ async function start() {
    addToSkuButton.addEventListener("click", function () {
       if (jobNumberInput.value !== "" && jobNumberInput.value.length === 12) {
          let encodeLogData = JSON.parse(localStorage.getItem("encodeLogs"));
-         console.log();
          for (let i = 0; i < encodeLogData.length; i++) {
             for (let key in encodeLogData[i]) {
                if (key === "JOB") {
@@ -511,7 +620,14 @@ function save() {
       day: "2-digit",
    });
    let identiferObject = {};
-   identiferObject[indentifierInput.getAttribute("data-value")] = "000";
+   let selectedProduct = JSON.parse(localStorage.getItem("productsTemplates"))[selectedCategory.getAttribute("data-value") + " " + selectedCategory.getAttribute("data-value-child")];
+   if (selectedProduct.length <= 0) {
+      identiferObject[indentifierInput.getAttribute("data-value")] = "000";
+   }
+   identiferObject[indentifierInput.getAttribute("data-value")] = ("00" + Object.values(selectedProduct).length).slice(-3);
+
+   for (let key in selectedProduct) {
+   }
 
    for (let key in JSON.parse(localStorage.getItem("encodeLogs"))) {
       if (codeText.innerText.replace(/\s/g, "") === Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[0]) {
@@ -538,6 +654,11 @@ function save() {
    dataToSave["CATEGORY"] = selectedCategory.getAttribute("data-value");
    dataToSave["PRODUCT"] = selectedCategory.getAttribute("data-value-child");
    dataToSave["IDENTIFIER"] = identiferObject;
+
+   productsTemplates = JSON.parse(localStorage.getItem("productsTemplates"));
+   productsTemplates[dataToSave["CATEGORY"] + " " + dataToSave["PRODUCT"]].push(identiferObject);
+   localStorage.setItem("productsTemplates", JSON.stringify(productsTemplates));
+
    if (jobNumberInput.getAttribute("data-value")) {
       dataToSave["JOB"] = [{ JR: jobNumberInput.getAttribute("data-value").toUpperCase(), TIME: time, DATE: result }];
    }
@@ -549,6 +670,7 @@ function save() {
    document.getElementById("encodedProduct").innerText = dataToSave["PRODUCT"];
    document.getElementById("encodedIdentifier").innerText = indentifierInput.getAttribute("data-value");
    if (jobNumberInput.getAttribute("data-value")) document.getElementById("encodedJR").innerText = jobNumberInput.getAttribute("data-value").toUpperCase();
+   else document.getElementById("encodedJR").innerText = "";
    saveButton.querySelector("button").disabled = true;
 
    errorMsgContainer.classList.add("hide");
@@ -562,6 +684,16 @@ function save() {
    localStorage.setItem("encodeLogs", JSON.stringify(newData));
    newData = [];
    dataToSave = {};
+}
+
+function setEditValues(targetInput, dataInput) {
+   if (dataInput.innerText !== "") {
+      targetInput.innerText = dataInput.innerText;
+      targetInput.setAttribute("data-value", dataInput.innerText);
+   } else {
+      targetInput.innerText = "Choose a Job number";
+      targetInput.removeAttribute("data-value");
+   }
 }
 
 function capitalizeFirstLetter(string) {
@@ -631,6 +763,7 @@ backButtonDecoder.addEventListener("click", function () {
    backButtonDecoder.classList.add("hide");
    errorMsgDecoderContainer.classList.add("hide");
    decodedResult.classList.add("hide");
+   editButtonDecoder.classList.add("hide");
    decoderInput.value = "";
 });
 
