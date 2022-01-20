@@ -80,7 +80,7 @@ const backButtonToDecoder = document.getElementById("backButtonToDecoder");
 const editInputForm = document.getElementById("editInputForm");
 const editBrand = document.getElementById("editBrand");
 const editSBU = document.getElementById("editSBU");
-const editCategory = document.getElementById("editCategory");
+const z = document.getElementById("editCategory");
 const editIdentifier = document.getElementById("editIdentifier");
 const editJr = document.getElementById("editJr");
 
@@ -88,6 +88,7 @@ const editDropdownContainer = document.getElementById("editDropdownContainer");
 const editDropdownFormSelected = document.getElementById("editDropdownFormSelected");
 const editDropdownOptionsForm = document.getElementById("editDropdownOptionsForm");
 const updateButton = document.querySelector(".updateButton");
+const editSelected = document.getElementById("editSelected");
 
 async function getData(path) {
    try {
@@ -316,7 +317,6 @@ async function start() {
    editButtonDecoder.addEventListener("click", function () {
       currentData = JSON.parse(localStorage.getItem("encodeLogs"));
       currentDataToEdit = currentData[decodeKey];
-      console.log(currentData);
 
       editContainer.classList.remove("hide");
       decoderContainer.classList.add("hide");
@@ -339,6 +339,8 @@ async function start() {
    editSBU.addEventListener("click", function () {
       editKey = "SUB-BRAND";
       editDropdownContainer.classList.remove("hide");
+      editDropdownContainer.setAttribute("type", "Brands");
+
       setEditValues(editDropdownFormSelected, currentDataToEdit["BRAND"]);
       removeOldList(editDropdownFormSelected);
       createEncoderSelection(brands, editDropdownOptionsForm);
@@ -346,6 +348,31 @@ async function start() {
       editInputForm.value = selectedSBUEdit.innerText;
       editActiveContainer.classList.remove("hide");
       editContainer.classList.add("hide");
+   });
+
+   editCategory.addEventListener("click", function () {
+      editKey = "PRODUCT";
+      editDropdownContainer.classList.remove("hide");
+      editDropdownContainer.setAttribute("type", "Category");
+
+      editDropdownFormSelected.innerText = `${currentDataToEdit["CATEGORY"]}`;
+      editDropdownFormSelected.setAttribute("data-value", currentDataToEdit["CATEGORY"]);
+      editDropdownFormSelected.setAttribute("data-value-child", currentDataToEdit["PRODUCT"]);
+
+      removeOldList(editDropdownFormSelected);
+      createEncoderSelection(productsObject, editDropdownOptionsForm);
+
+      editInputForm.value = currentDataToEdit["PRODUCT"];
+      editActiveContainer.classList.remove("hide");
+      editContainer.classList.add("hide");
+   });
+
+   editSelected.addEventListener("click", function () {
+      editDropdownContainer.classList.add("hide");
+      if (editDropdownContainer.getAttribute("type") === "Brands") editKey = "BRAND";
+      else if (editDropdownContainer.getAttribute("type") === "Category") editKey = "CATEGORY";
+
+      editInputForm.value = editDropdownFormSelected.innerText;
    });
 
    updateButton.addEventListener("click", function () {
@@ -399,7 +426,7 @@ async function start() {
                      jrSBU.innerText = encodeLogData[i]["SUB-BRAND"];
                      jrCategory.innerText = encodeLogData[i]["CATEGORY"];
                      jrProduct.innerText = encodeLogData[i]["PRODUCT"];
-                     jrIdentifier.innerText = Object.keys(encodeLogData[i]["IDENTIFIER"]);
+                     jrIdentifier.innerText = Object.keys(encodeLogData[i]["INDENTIFIER"]);
                      jrRelatedJobs.innerText = Object.values(Object.values(encodeLogData[i]["JOB"])[0])[0];
                      jobNumberForm.classList.remove("hide");
                      errorMsgAddToSKU.classList.add("hide");
@@ -418,6 +445,14 @@ async function start() {
       }
    });
 
+   jobNumberInput.addEventListener("keyup", function () {
+      if(jobNumberInput.value === ""){
+         errorMsgAddToSKU.classList.add("hide");
+         errorMsgJR.classList.add("hide");
+         jobNumberForm.classList.add("hide");
+      }
+   });
+
    addToSkuButton.addEventListener("click", function () {
       if (jobNumberInput.value !== "" && jobNumberInput.value.length === 12) {
          let encodeLogData = JSON.parse(localStorage.getItem("encodeLogs"));
@@ -430,7 +465,7 @@ async function start() {
                      jrSBU.innerText = encodeLogData[i]["SUB-BRAND"];
                      jrCategory.innerText = encodeLogData[i]["CATEGORY"];
                      jrProduct.innerText = encodeLogData[i]["PRODUCT"];
-                     jrIdentifier.innerText = Object.keys(encodeLogData[i]["IDENTIFIER"]);
+                     jrIdentifier.innerText = Object.keys(encodeLogData[i]["INDENTIFIER"]);
                      jrRelatedJobs.innerText = Object.values(Object.values(encodeLogData[i]["JOB"])[0])[0];
 
                      errorMsgAddToSKU.classList.remove("hide");
@@ -673,7 +708,7 @@ function save() {
    dataToSave["SUB-BRAND"] = selectedSBU.getAttribute("data-value");
    dataToSave["CATEGORY"] = selectedCategory.getAttribute("data-value");
    dataToSave["PRODUCT"] = selectedCategory.getAttribute("data-value-child");
-   dataToSave["IDENTIFIER"] = identiferObject;
+   dataToSave["INDENTIFIER"] = identiferObject;
 
    productsTemplates = JSON.parse(localStorage.getItem("productsTemplates"));
    productsTemplates[dataToSave["CATEGORY"] + " " + dataToSave["PRODUCT"]].push(identiferObject);
@@ -773,7 +808,7 @@ function updateCurrentDataToDataForm() {
    selectedCategoryEdit.innerText = `${currentDataToEdit["PRODUCT"]} | ${currentDataToEdit["CATEGORY"]}`;
    selectedCategoryEdit.setAttribute("data-value", `${currentDataToEdit["CATEGORY"]}`);
    selectedCategoryEdit.setAttribute("data-value-child", `${currentDataToEdit["PRODUCT"]} `);
-   setEditValues(selectedIndentifierEdit, Object.keys(currentDataToEdit["IDENTIFIER"]).at(-1));
+   setEditValues(selectedIndentifierEdit, Object.keys(currentDataToEdit["INDENTIFIER"]).at(-1));
    setEditValues(selectedjrEdit, Object.values(currentDataToEdit["JOB"].at(-1))[0]);
    codeTextEdit.innerText = codeEdit.concat(codeCateEdit).join(" ");
 
