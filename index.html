@@ -160,10 +160,11 @@
                               <label for="test1">Test1</label>
                            </div> -->
                      </div>
-                     <div class="selected" id="selectedBrandEdit">Choose a brand</div>
+                     <div class="selected editDropdown" id="selectedBrandEdit">Choose a brand</div>
                      <div class="searchBox">
                         <input type="text" placeholder="Search" />
                      </div>
+                     <div class="editFormButton" id="editBrand"></div>
                   </div>
                   <div class="selectBox" id="selectSBUContainerEdit">
                      <div class="optionContainer" id="sbuOptionContainerEdit">
@@ -172,23 +173,25 @@
                               <label for="test1">Test1</label>
                            </div> -->
                      </div>
-                     <div class="selected" id="selectedSBUEdit">Choose a SBU</div>
+                     <div class="selected editDropdown" id="selectedSBUEdit">Choose a SBU</div>
                      <div class="searchBox">
                         <input type="text" placeholder="Search" />
                      </div>
+                     <div class="editFormButton" id="editSBU"></div>
                   </div>
 
-                  <div class="selectBox" id="selectCategoryContainerEdit">
+                  <div class="selectBox editDropdown" id="selectCategoryContainerEdit">
                      <div class="optionContainer" id="categoryOptionContainerEdit">
                         <!-- <div class="option">
                               <input type="radio" class="radio" id="test1" name="brand" />
                               <label for="test1">Test1</label>
                            </div> -->
                      </div>
-                     <div class="selected" id="selectedCategoryEdit">Choose a Products|Category</div>
+                     <div class="selected editDropdown" id="selectedCategoryEdit">Choose a Products|Category</div>
                      <div class="searchBox">
                         <input type="text" placeholder="Search" />
                      </div>
+                     <div class="editFormButton" id="editCategory"></div>
                   </div>
 
                   <div class="selectBox" id="indentifierContainerEdit">
@@ -198,10 +201,11 @@
                               <label for="test1">Test1</label>
                            </div> -->
                      </div>
-                     <div class="selected" id="selectedIndentifierEdit">Choose a Identifier</div>
+                     <div class="selected editDropdown" id="selectedIndentifierEdit">Choose a Identifier</div>
                      <div class="searchBox">
                         <input type="text" placeholder="Search" />
                      </div>
+                     <div class="editFormButton" id="editIdentifier"></div>
                   </div>
                   <div class="selectBox" id="jrContainerEdit">
                      <div class="optionContainer" id="jrOptionContainerEdit">
@@ -210,10 +214,11 @@
                               <label for="test1">Test1</label>
                            </div> -->
                      </div>
-                     <div class="selected" id="selectedjrEdit">Choose a Job Number</div>
+                     <div class="selected editDropdown" id="selectedjrEdit">Choose a Job Number</div>
                      <div class="searchBox">
                         <input type="text" placeholder="Search" />
                      </div>
+                     <div class="editFormButton" id="editJr"></div>
                   </div>
                </div>
             </div>
@@ -227,9 +232,48 @@
                </div>
             </div>
             <div class="groupCenterRow">
-               <div id="backButtonEncoder" class="backBtn" style="flex: 3; text-align: center; z-index: 100"><button>BACK TO START</button></div>
+               <div id="backButtonToDecoder" class="backBtn" style="flex: 3; text-align: center; z-index: 100"><button>BACK TO DECODER</button></div>
+               <div class="backBtn hide" style="flex: 3; text-align: center; z-index: 100"><button>BACK TO START</button></div>
             </div>
          </div>
+         <!-- //Edit Form -->
+         <div id="editActiveContainer" class="border2 subContainer responsive hide">
+            <div id="editActiveContent" class="groupCenterCol responsive" style="padding: 9px 9px 36px 9px">
+               <h3 id="decoderTitle" class="bold20">ENCODER BRAND UPDATE/ADD</h3>
+               <div class="selectBox hide" id="editDropdownContainer">
+                  <div class="optionContainer" id="editDropdownOptionsForm">
+                     <!-- <div class="option">
+                           <input type="radio" class="radio" id="test1" name="brand" />
+                           <label for="test1">Test1</label>
+                        </div> -->
+                  </div>
+                  <div class="selected editDropdown" id="editDropdownFormSelected">Choose a brand</div>
+                  <div class="searchBox">
+                     <input type="text" placeholder="Search" />
+                  </div>
+                  <div class="editFormButton" id="editSelected"></div>
+               </div>
+               <div class="editsContainer">
+                  <input type="text" class="inputs" id="editInputForm" placeholder="Entry" style="text-align: start" />
+                  <img class="updateButton" src="./Symbol-Update.svg" alt="" />
+                  <img class="addButton" src="./Symbol-Add.svg" alt="" />
+                  <img class="removeButton" src="./Symbol-Remove.svg" alt="" />
+               </div>
+            </div>
+
+            <div class="errorMsgDecoderContainer errorMsgColor hide">
+               <p style="text-align: center; line-height: 1.5">
+                  Error: Code has not been created <br />
+                  Either check the code and try again or please click <br />
+                  "BACK TO START" and choose Encoder option to create code
+               </p>
+            </div>
+            <div class="groupCenterRow">
+               <div id="cancelButtonEdit" style="flex: 1; text-align: center"><button>CANCEL</button></div>
+               <div id="backButtonEdit" class="backBtn" style="flex: 1; text-align: center"><button>BACK TO START</button></div>
+            </div>
+         </div>
+
          <!--Decoder section starts here-->
 
          <div id="decoderContainer" class="border2 subContainer responsive hide">

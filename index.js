@@ -1,4 +1,8 @@
 let dataToSave = {};
+
+let currentData;
+let currentDataToEdit;
+
 let code = [];
 let codeCate = [];
 let codeEdit = [];
@@ -52,6 +56,39 @@ const editButtonDecoder = document.getElementById("editButtonDecoder");
 
 const tableSearchInput = document.getElementById("tableSearchInput");
 
+//Edit
+const editContainer = document.getElementById("editContainer");
+const selectedBrandEdit = document.getElementById("selectedBrandEdit");
+const brandOptionContainerEdit = document.getElementById("brandOptionContainerEdit");
+
+const selectedSBUEdit = document.getElementById("selectedSBUEdit");
+const sbuOptionContainerEdit = document.getElementById("sbuOptionContainerEdit");
+
+const selectedCategoryEdit = document.getElementById("selectedCategoryEdit");
+const categoryOptionContainerEdit = document.getElementById("categoryOptionContainerEdit");
+
+const selectedIndentifierEdit = document.getElementById("selectedIndentifierEdit");
+const indentifierOptionContainerEdit = document.getElementById("indentifierOptionContainerEdit");
+const jrOptionContainerEdit = document.getElementById("jrOptionContainerEdit");
+
+const selectedjrEdit = document.getElementById("selectedjrEdit");
+const codeTextEdit = document.getElementById("codeTextEdit");
+
+const backButtonToDecoder = document.getElementById("backButtonToDecoder");
+
+// Edit forrm
+const editInputForm = document.getElementById("editInputForm");
+const editBrand = document.getElementById("editBrand");
+const editSBU = document.getElementById("editSBU");
+const editCategory = document.getElementById("editCategory");
+const editIdentifier = document.getElementById("editIdentifier");
+const editJr = document.getElementById("editJr");
+
+const editDropdownContainer = document.getElementById("editDropdownContainer");
+const editDropdownFormSelected = document.getElementById("editDropdownFormSelected");
+const editDropdownOptionsForm = document.getElementById("editDropdownOptionsForm");
+const updateButton = document.querySelector(".updateButton");
+
 async function getData(path) {
    try {
       const response = await fetch(path, {
@@ -91,6 +128,7 @@ async function start() {
 
    //Decoder
    let decodeCode;
+   let decodeKey;
    const decotedData = document.querySelectorAll(".decodedData");
    const decodeDate = document.getElementById("decodeDate");
    const decodeBrand = document.getElementById("decodeBrand");
@@ -101,24 +139,9 @@ async function start() {
    const decodedJR = document.getElementById("decodedJR");
    const editButtonDecoder = document.getElementById("editButtonDecoder");
 
-   //Edit
-   const editContainer = document.getElementById("editContainer");
-   const selectedBrandEdit = document.getElementById("selectedBrandEdit");
-   const brandOptionContainerEdit = document.getElementById("brandOptionContainerEdit");
-
-   const selectedSBUEdit = document.getElementById("selectedSBUEdit");
-   const sbuOptionContainerEdit = document.getElementById("sbuOptionContainerEdit");
-
-   const selectedCategoryEdit = document.getElementById("selectedCategoryEdit");
-   const categoryOptionContainerEdit = document.getElementById("categoryOptionContainerEdit");
-
-   const selectedIndentifierEdit = document.getElementById("selectedIndentifierEdit");
-   const indentifierOptionContainerEdit = document.getElementById("indentifierOptionContainerEdit");
-   const jrOptionContainerEdit = document.getElementById("jrOptionContainerEdit");
-
-   const selectedjrEdit = document.getElementById("selectedjrEdit");
-
-   const codeTextEdit = document.getElementById("codeTextEdit");
+   //Edit active
+   const editActiveContainer = document.getElementById("editActiveContainer");
+   const cancelButtonEdit = document.getElementById("cancelButtonEdit");
 
    for (let key in jsonData) {
       data.push(jsonData[key]);
@@ -243,8 +266,8 @@ async function start() {
 
    decoderInput.addEventListener("keyup", function () {
       for (let key in JSON.parse(localStorage.getItem("encodeLogs"))) {
-         // console.log(Object.values(data[2][key])[0]);
          if (decoderInput.value.replace(/ /g, "").trim() === Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[0]) {
+            decodeKey = key;
             decodeCode = Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[0];
             // .match(/.{1,2}/g).join(" ");
             let codeFirstHalf = decodeCode.slice(0, 6);
@@ -289,53 +312,53 @@ async function start() {
    });
 
    //Edit Dropdown
-
+   let editKey;
    editButtonDecoder.addEventListener("click", function () {
+      currentData = JSON.parse(localStorage.getItem("encodeLogs"));
+      currentDataToEdit = currentData[decodeKey];
+      console.log(currentData);
+
       editContainer.classList.remove("hide");
-      setEditValues(selectedBrandEdit, decodeBrand);
-      setEditValues(selectedSBUEdit, decodeSBU);
-      selectedCategoryEdit.innerText = `${decodeProduct.innerText} | ${decodeCategory.innerText}`;
-      selectedCategoryEdit.setAttribute("data-value", `${decodeCategory.innerText}`);
-      selectedCategoryEdit.setAttribute("data-value-child", `${decodeProduct.innerText} `);
-      setEditValues(selectedIndentifierEdit, decodeIdentifier.querySelector("span"));
-      setEditValues(selectedjrEdit, decodedJR);
-      codeTextEdit.innerText = codeEdit.concat(codeCateEdit).join(" ");
-
-      createEncoderSelection(brands, brandOptionContainerEdit);
-      createEncoderSelection(sbuObject[selectedBrandEdit.getAttribute("data-value")], sbuOptionContainerEdit);
-      createEncoderSelection(productsObject, categoryOptionContainerEdit, true);
-
-      let templates = JSON.parse(localStorage.getItem("productsTemplates"))[decodeCategory.innerText + " " + decodeProduct.innerText];
-      let allTemplates = {};
-      for (let key in templates) {
-         for (let value in templates[key]) {
-            console.log(value);
-            allTemplates[value] = templates[key][value];
-         }
-      }
-      console.log(allTemplates);
-      createEncoderSelection(allTemplates, indentifierOptionContainerEdit);
+      decoderContainer.classList.add("hide");
+      updateCurrentDataToDataForm();
    });
 
-   const brandEditOberserver = new MutationObserver(function (mutations) {
-      mutations.forEach(function (mutation) {
-         if (mutation.type === "attributes") {
-            removeOldList(selectedSBUEdit);
+   backButtonToDecoder.addEventListener("click", function () {
+      editContainer.classList.add("hide");
+      decoderContainer.classList.remove("hide");
+   });
 
-            if (selectedBrand.getAttribute("data-value") === "Global") resetSelectedValues(selectedSBU, "Choose a division");
-            else if (selectedBrand.getAttribute("data-value") === "Vision Care") resetSelectedValues(selectedSBU, "Choose a SBU");
-            else resetSelectedValues(selectedSBU, "Choose a brand");
+   editBrand.addEventListener("click", function () {
+      editKey = "BRAND";
+      editDropdownContainer.classList.add("hide");
+      editInputForm.value = selectedBrandEdit.innerText;
+      editActiveContainer.classList.remove("hide");
+      editContainer.classList.add("hide");
+   });
 
-            createEncoderSelection(sbuObject[selectedBrandEdit.getAttribute("data-value")], sbuOptionContainerEdit);
+   editSBU.addEventListener("click", function () {
+      editKey = "SUB-BRAND";
+      editDropdownContainer.classList.remove("hide");
+      setEditValues(editDropdownFormSelected, currentDataToEdit["BRAND"]);
+      removeOldList(editDropdownFormSelected);
+      createEncoderSelection(brands, editDropdownOptionsForm);
 
-            // if (code[0]) code[0] = Object.values(brands[selectedBrandEdit.innerText])[0];
-            // else code.push(Object.values(brands[selectedBrandEdit.innerText])[0]);
+      editInputForm.value = selectedSBUEdit.innerText;
+      editActiveContainer.classList.remove("hide");
+      editContainer.classList.add("hide");
+   });
 
-            // saveButton.querySelector("button").disabled = false;
+   updateButton.addEventListener("click", function () {
+      if (currentDataToEdit[editKey] !== editInputForm.value) {
+         currentDataToEdit[editKey] = editInputForm.value;
+         localStorage.setItem("encodeLogs", JSON.stringify(currentData));
+         updateCurrentDataToDataForm();
+      }
+   });
 
-            // codeText.innerText = code.concat(codeCate).join(" ");
-         }
-      });
+   cancelButtonEdit.addEventListener("click", function () {
+      editActiveContainer.classList.add("hide");
+      editContainer.classList.remove("hide");
    });
 
    //GenerateTable
@@ -626,9 +649,6 @@ function save() {
    }
    identiferObject[indentifierInput.getAttribute("data-value")] = ("00" + Object.values(selectedProduct).length).slice(-3);
 
-   for (let key in selectedProduct) {
-   }
-
    for (let key in JSON.parse(localStorage.getItem("encodeLogs"))) {
       if (codeText.innerText.replace(/\s/g, "") === Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[0]) {
          document.getElementById("encodedDate").innerText =
@@ -688,8 +708,8 @@ function save() {
 
 function setEditValues(targetInput, dataInput) {
    if (dataInput.innerText !== "") {
-      targetInput.innerText = dataInput.innerText;
-      targetInput.setAttribute("data-value", dataInput.innerText);
+      targetInput.innerText = dataInput;
+      targetInput.setAttribute("data-value", dataInput);
    } else {
       targetInput.innerText = "Choose a Job number";
       targetInput.removeAttribute("data-value");
@@ -745,6 +765,36 @@ function resetValues() {
    code = [];
    codeCate = [];
    codeText.innerText = "";
+}
+
+function updateCurrentDataToDataForm() {
+   setEditValues(selectedBrandEdit, currentDataToEdit["BRAND"]);
+   setEditValues(selectedSBUEdit, currentDataToEdit["SUB-BRAND"]);
+   selectedCategoryEdit.innerText = `${currentDataToEdit["PRODUCT"]} | ${currentDataToEdit["CATEGORY"]}`;
+   selectedCategoryEdit.setAttribute("data-value", `${currentDataToEdit["CATEGORY"]}`);
+   selectedCategoryEdit.setAttribute("data-value-child", `${currentDataToEdit["PRODUCT"]} `);
+   setEditValues(selectedIndentifierEdit, Object.keys(currentDataToEdit["IDENTIFIER"]).at(-1));
+   setEditValues(selectedjrEdit, Object.values(currentDataToEdit["JOB"].at(-1))[0]);
+   codeTextEdit.innerText = codeEdit.concat(codeCateEdit).join(" ");
+
+   removeOldList(selectedBrandEdit);
+   removeOldList(selectedSBUEdit);
+   removeOldList(selectedCategoryEdit);
+   removeOldList(selectedIndentifierEdit);
+   //removeOldList(selectedjrEdit);
+
+   createEncoderSelection(brands, brandOptionContainerEdit);
+   createEncoderSelection(sbuObject[selectedBrandEdit.getAttribute("data-value")], sbuOptionContainerEdit);
+   createEncoderSelection(productsObject, categoryOptionContainerEdit, true);
+
+   let templates = JSON.parse(localStorage.getItem("productsTemplates"))[decodeCategory.innerText + " " + decodeProduct.innerText];
+   let allTemplates = {};
+   for (let key in templates) {
+      for (let value in templates[key]) {
+         allTemplates[value] = templates[key][value];
+      }
+   }
+   createEncoderSelection(allTemplates, indentifierOptionContainerEdit);
 }
 
 allCodeBtn.addEventListener("click", function () {

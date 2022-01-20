@@ -1,0 +1,8 @@
+<!--Scalable Vector Graphic-->
+<svg id="Add" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36">
+  <g id="AddRectangle" data-name="AddRectangle" fill="#fff" stroke="#000" stroke-width="1">
+    <rect width="36" height="36" stroke="none"/>
+    <rect x="0.5" y="0.5" width="35" height="35" fill="none"/>
+  </g>
+  <path id="AddUnion" data-name="AddUnion" d="M-6206-496v-7h-7v-4h7v-7h4v7h7v4h-7v7Z" transform="translate(6222 523)"/>
+</svg>

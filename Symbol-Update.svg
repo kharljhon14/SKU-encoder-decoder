@@ -1,0 +1,8 @@
+<!--Scalable Vector Graphic-->
+<svg id="Update" data-name="Update" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36">
+  <g id="UpdateRectangle" data-name="UpdateRectangle" fill="#fff" stroke="#000" stroke-width="1">
+    <rect width="36" height="36" stroke="none"/>
+    <rect x="0.5" y="0.5" width="35" height="35" fill="none"/>
+  </g>
+  <circle id="UpdateEllipse" data-name="UpdateEllipse" cx="9" cy="9" r="9" transform="translate(9 9)"/>
+</svg>

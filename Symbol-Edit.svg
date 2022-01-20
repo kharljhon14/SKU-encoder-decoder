@@ -1,0 +1,26 @@
+<!--Scalable Vector Graphic-->
+<svg id="Edit_Button" data-name="Edit Button" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36">
+  <g id="Rectangle_Edit" data-name="Rectangle Edit" fill="#fff" stroke="#fff" stroke-width="1">
+    <rect width="36" height="36" stroke="none"/>
+    <rect x="0.5" y="0.5" width="35" height="35" fill="none"/>
+  </g>
+  <g id="EditGroup" data-name="EditGroup" transform="translate(-1 -1)">
+    <g id="EditPolygon_1" data-name="EditPolygon 1" transform="translate(32.036 28.5) rotate(135)">
+      <path d="M 4.190985202789307 4.5 L 0.8090149760246277 4.5 L 2.5 1.118029952049255 L 4.190985202789307 4.5 Z" stroke="none"/>
+      <path d="M 2.5 2.236069917678833 L 1.618035078048706 4 L 3.381965160369873 4 L 2.5 2.236069917678833 M 2.5 0 L 5 5 L 0 5 L 2.5 0 Z" stroke="none" fill="#000"/>
+    </g>
+    <g id="EditRectangle_10" data-name="EditRectangle 10" transform="translate(28.5 24.964) rotate(135)" fill="#fff" stroke="#000" stroke-width="1">
+      <rect width="5" height="17" stroke="none"/>
+      <rect x="0.5" y="0.5" width="4" height="16" fill="none"/>
+    </g>
+    <g id="EditRectangle_11" data-name="EditRectangle 11" transform="translate(14.711 11.176) rotate(135)" stroke="#000" stroke-width="1">
+      <rect width="5" height="3.5" stroke="none"/>
+      <rect x="0.5" y="0.5" width="4" height="2.5" fill="none"/>
+    </g>
+    <g id="EditRectangle_12" data-name="EditRectangle 12" transform="translate(17.54 14.004) rotate(135)" fill="#fff" stroke="#000" stroke-width="1">
+      <rect width="5" height="5.75" stroke="none"/>
+      <rect x="0.5" y="0.5" width="4" height="4.75" fill="none"/>
+    </g>
+    <line id="EditLine" data-name="EditLine" x2="11" y2="11" transform="translate(15.5 15.5)" fill="none" stroke="#000" stroke-width="1"/>
+  </g>
+</svg>

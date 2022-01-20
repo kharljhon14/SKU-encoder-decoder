@@ -4,6 +4,8 @@
 body {
    font-family: "Helvetica Neue", Helvetica, Arial, Gotham, "sans-serif";
    margin: 0;
+   font-size: 15px;
+   overflow-x: hidden;
 }
 
 a {
@@ -295,7 +297,7 @@ table th {
 
 .selectBox .option,
 .selected {
-   padding: 12px 24px;
+   padding: 8px 24px;
    cursor: pointer;
 }
 
@@ -314,16 +316,14 @@ table th {
 
 /* Searchbox */
 .searchBox input {
-   width: 330px;
-   padding: 12px 10px;
+   width: 315px;
+   padding: 5px 10px;
    font-size: 16px;
    position: absolute;
-   top: 0;
-   left: 0;
+   top: 3px;
+   left: 1px;
    z-index: 100;
-   border-top: 1px solid #2f3640;
-   border-bottom: 1px solid #2f3640;
-   border-left: 1px solid #2f3640;
+   border: none;
    border-right: none;
    opacity: 0;
    pointer-events: none;
@@ -358,16 +358,16 @@ input[type="number"] {
    -moz-appearance: textfield;
 }
 
-.searchTableContainer{
+.searchTableContainer {
    margin-bottom: 30px;
    position: relative;
 }
 
-#tableSearchInput{
+#tableSearchInput {
    width: 100%;
 }
 
-.searchTableContainer::after{
+.searchTableContainer::after {
    content: "";
    background: url("./search.svg");
    background-size: contain;
@@ -381,18 +381,78 @@ input[type="number"] {
    cursor: pointer;
 }
 
+/* Edit Form */
+.editFormButton {
+   background: url("./Symbol-Edit.svg");
+   background-size: contain;
+   background-repeat: no-repeat;
+   position: absolute;
+   height: 100%;
+   width: 32px;
+   right: 3px;
+   top: 1.2px;
+   z-index: 100;
+   cursor: pointer;
+}
+
+.editDropdown::after {
+   right: 40px;
+}
+
+.selectBox .optionContainer.active + .editDropdown::after {
+   transform: rotateZ(-90deg);
+   right: 30px;
+}
+
+.editsContainer {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   position: relative;
+}
+#editInputForm {
+   width: 225px;
+   padding: 8px 24px;
+}
+
+.updateButton {
+   background: url("./Symbol-Update.svg");
+   background-size: contain;
+   background-repeat: no-repeat;
+   background-position: center;
+   z-index: 100;
+   cursor: pointer;
+}
+
+.addButton {
+   background: url("./Symbol-Add.svg");
+   background-size: contain;
+   background-position: center;
+   background-repeat: no-repeat;
+   z-index: 100;
+   cursor: pointer;
+}
+.removeButton {
+   background: url("./Symbol-Remove.svg");
+   background-size: contain;
+   background-repeat: no-repeat;
+   background-position: center;
+   z-index: 100;
+   cursor: pointer;
+}
+
 /* Error style */
 .errorMsgContainer {
    display: flex;
    flex-direction: column;
 }
 
-.errorMsgContainer p{
+.errorMsgContainer p {
    margin: 0;
    color: #dd0303;
 }
 
-.errorMsgColor p{
+.errorMsgColor p {
    color: #dd0303;
 }
 
