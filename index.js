@@ -337,12 +337,11 @@ async function start() {
             errorMsgDecoderContainer.classList.add("hide");
             editButtonDecoder.classList.remove("hide");
             return;
-         } else {
-            errorMsgDecoderContainer.classList.remove("hide");
-            decodedResult.classList.add("hide");
-            editButtonDecoder.classList.add("hide");
          }
       }
+      errorMsgDecoderContainer.classList.remove("hide");
+      decodedResult.classList.add("hide");
+      editButtonDecoder.classList.add("hide");
    });
 
    //Edit Dropdown
@@ -412,7 +411,6 @@ async function start() {
       editIdentifierDropdownContainer.classList.add("hide");
       editCategoryProductDropdownContainer.classList.add("hide");
 
-
       editDropdownFormSelected.innerText = `${currentDataToEdit["BRAND"]}`;
       editDropdownFormSelected.setAttribute("data-value", currentDataToEdit["BRAND"]);
 
@@ -456,7 +454,7 @@ async function start() {
       editCategoryProductDropdownFormSelected.innerText = `${currentDataToEdit["PRODUCT"]} | ${currentDataToEdit["CATEGORY"]}`;
       editCategoryProductDropdownFormSelected.setAttribute("data-value", currentDataToEdit["CATEGORY"]);
       editCategoryProductDropdownFormSelected.setAttribute("data-value-child", currentDataToEdit["PRODUCT"]);
-      
+
       editCategoryDropdownFormSelected.innerText = `${currentDataToEdit["CATEGORY"]}`;
       editCategoryDropdownFormSelected.setAttribute("data-value", currentDataToEdit["CATEGORY"]);
       editCategoryDropdownFormSelected.setAttribute("data-value-child", currentDataToEdit["PRODUCT"]);
@@ -506,7 +504,7 @@ async function start() {
       editInputForm.value = editCategoryDropdownFormSelected.innerText;
    });
 
-   editCategoryProductSelected.addEventListener('click', function(){
+   editCategoryProductSelected.addEventListener("click", function () {
       editKey = "PRODUCT";
       editDropdownContainer.classList.remove("hide");
       editSBUDropdownContainer.classList.remove("hide");
@@ -514,7 +512,7 @@ async function start() {
       editCategoryProductDropdownContainer.classList.add("hide");
 
       editInputForm.value = currentDataToEdit["PRODUCT"];
-   })
+   });
 
    updateButton.addEventListener("click", function () {
       if (currentDataToEdit[editKey] !== editInputForm.value) {
@@ -684,6 +682,12 @@ function generateTable() {
       for (let i = 0; i < size; i++) {
          let newTD = document.createElement("td");
          //Check json
+
+         if (size === 8 && i === 7) {
+            size = 9;
+            i == 8;
+         }
+
          if (i === 0) {
             let newLink = document.createElement("a");
             newLink.href = "#";
@@ -692,7 +696,9 @@ function generateTable() {
          } else if (i === 7) {
             newTD.innerText = Object.keys(Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[i]);
          } else if (i === 8) {
-            newTD.innerText = Object.values(Object.values(Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[i])[0])[0];
+            if (Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[i] != undefined)
+               newTD.innerText = Object.values(Object.values(Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[i])[0])[0];
+            else newTD.innerText = "N/A";
          } else {
             newTD.innerText = Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[i];
          }
@@ -700,6 +706,7 @@ function generateTable() {
          newTr.appendChild(newTD);
       }
       tableBody.appendChild(newTr);
+      
    }
 
    allCodeData = document.querySelectorAll(".codeData");

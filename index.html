@@ -296,7 +296,6 @@
                   <div class="editFormButton" id="editCategoryProductSelected"></div>
                </div>
 
-
                <div class="selectBox hide" id="editIdentifierDropdownContainer">
                   <div class="optionContainer" id="editIdentifierDropdownOptionsForm">
                      <!-- <div class="option">
@@ -311,7 +310,6 @@
                   <div class="editFormButton" id="editIdentifierSelected"></div>
                </div>
 
-
                <div class="editsContainer">
                   <input type="text" class="inputs" id="editInputForm" placeholder="Entry" style="text-align: start" />
                   <img class="updateButton" src="./Symbol-Update.svg" alt="" />
@@ -320,7 +318,7 @@
                </div>
             </div>
 
-            <div class="errorMsgDecoderContainer errorMsgColor hide">
+            <div class="errorMsgEditContainer errorMsgColor hide">
                <p style="text-align: center; line-height: 1.5">
                   Error: Code has not been created <br />
                   Either check the code and try again or please click <br />
@@ -361,7 +359,7 @@
                   <p class="decodedData" id="decodedJR">{{Related Jobs}}</p>
                </div>
             </div>
-            <div class="errorMsgDecoderContainer errorMsgColor hide">
+            <div class="errorMsgDecoderContainer border2Top errorMsgColor hide">
                <p style="text-align: center; line-height: 1.5">
                   Error: Code has not been created <br />
                   Either check the code and try again or please click <br />
@@ -383,6 +381,7 @@
             <div class="searchTableContainer">
                <input type="number" class="inputs" id="tableSearchInput" />
             </div>
+            <div class="tableContent">
             <table id="dataTable">
                <thead id="tableHead">
                   <tr>
@@ -397,8 +396,11 @@
                      <th scope="col">Related Jobs</th>
                   </tr>
                </thead>
-               <tbody id="tableBody"></tbody>
+    
+                  <tbody id="tableBody"></tbody>
+       
             </table>
+         </div>
             <div class="groupCenterRow" style="width: 50%">
                <div id="downloadButton" style="flex: 1; text-align: center; margin-top: 20px">
                   <a id="downloadCSV" download="VSP_SKU_Encoder_Decoder.csv"><button>DOWNLOAD</button> </a>
