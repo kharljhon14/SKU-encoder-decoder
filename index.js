@@ -1,3 +1,16 @@
+let today = getDate();
+let ampm = getAMPM(today);
+let hour = getHours(today);
+let minutes = getMinutes(today);
+let time = getcurrentTime(hour, minutes, ampm);
+
+let result = today.toLocaleDateString("en-US", {
+   // you can use undefined as first argument
+   year: "2-digit",
+   month: "2-digit",
+   day: "2-digit",
+});
+
 let dataToSave = {};
 
 let currentData;
@@ -9,6 +22,8 @@ let codeEdit = [];
 let codeCateEdit = [];
 
 let productsTemplates = {};
+let allTemplates = {};
+
 
 let data = []; //0 - Brands, 1-Category, 2- encodedlogs
 let brands;
@@ -87,8 +102,25 @@ const editJr = document.getElementById("editJr");
 const editDropdownContainer = document.getElementById("editDropdownContainer");
 const editDropdownFormSelected = document.getElementById("editDropdownFormSelected");
 const editDropdownOptionsForm = document.getElementById("editDropdownOptionsForm");
+
+const editSBUDropdownContainer = document.getElementById("editSBUDropdownContainer");
+const editSBUDropdownOptionsForm = document.getElementById("editSBUDropdownOptionsForm");
+const editSBUDropdownFormSelected = document.getElementById("editSBUDropdownFormSelected");
+
+const editCategoryDropdownContainer = document.getElementById("editCategoryDropdownContainer");
+const editCategoryDropdownOptionsForm = document.getElementById("editCategoryDropdownOptionsForm");
+const editCategoryDropdownFormSelected = document.getElementById("editCategoryDropdownFormSelected");
+
+const editIdentifierDropdownContainer = document.getElementById("editIdentifierDropdownContainer");
+const editIdentifierDropdownOptionsForm = document.getElementById("editIdentifierDropdownOptionsForm");
+const editIdentifierDropdownFormSelected = document.getElementById("editIdentifierDropdownFormSelected");
+
 const updateButton = document.querySelector(".updateButton");
 const editSelected = document.getElementById("editSelected");
+const editSBUSelected = document.getElementById("editSBUSelected");
+const editCategorySelected = document.getElementById("editCategorySelected");
+const editIdentifier = document.getElementById("editIdentifier");
+const editJr = document.getElementById("editJr");
 
 async function getData(path) {
    try {
@@ -279,9 +311,6 @@ async function start() {
             codeEdit = codeFirstHalf.split(/\s+/);
             codeCateEdit = codeSecondHalf.split(/\s+/);
 
-            console.log(codeFirstHalf, codeSecondHalf);
-            console.log(codeEdit, codeCateEdit);
-
             decodeDate.innerText = `${Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[2]} / ${Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[1]}`;
             decodeBrand.innerText = Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[3];
             decodeSBU.innerText = Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[4];
@@ -317,19 +346,33 @@ async function start() {
    editButtonDecoder.addEventListener("click", function () {
       currentData = JSON.parse(localStorage.getItem("encodeLogs"));
       currentDataToEdit = currentData[decodeKey];
-
+      console.log(currentDataToEdit);
       editContainer.classList.remove("hide");
       decoderContainer.classList.add("hide");
       updateCurrentDataToDataForm();
    });
 
    backButtonToDecoder.addEventListener("click", function () {
+      decodeBrand.innerText = currentDataToEdit["BRAND"];
+      decodeSBU.innerText = currentDataToEdit["SUB-BRAND"];
+
+      decodeCategory.innerText = currentDataToEdit["CATEGORY"];
+
+      decodeProduct.innerText = currentDataToEdit["PRODUCT"];
+
+      decodeDate.innerText = `${currentDataToEdit["DATE"]} / ${currentDataToEdit["TIME"]} `;
+
+      if (selectedjrEdit.getAttribute("data-value") != "") decodedJR.innerText = selectedjrEdit.getAttribute("data-value");
+
       editContainer.classList.add("hide");
       decoderContainer.classList.remove("hide");
    });
 
    editBrand.addEventListener("click", function () {
       editKey = "BRAND";
+      editDropdownContainer.classList.add("hide");
+      editSBUDropdownContainer.classList.add("hide");
+      editCategoryDropdownContainer.classList.add("hide");
       editDropdownContainer.classList.add("hide");
       editInputForm.value = selectedBrandEdit.innerText;
       editActiveContainer.classList.remove("hide");
@@ -339,7 +382,8 @@ async function start() {
    editSBU.addEventListener("click", function () {
       editKey = "SUB-BRAND";
       editDropdownContainer.classList.remove("hide");
-      editDropdownContainer.setAttribute("type", "Brands");
+      editSBUDropdownContainer.classList.add("hide");
+      editCategoryDropdownContainer.classList.add("hide");
 
       setEditValues(editDropdownFormSelected, currentDataToEdit["BRAND"]);
       removeOldList(editDropdownFormSelected);
@@ -353,14 +397,25 @@ async function start() {
    editCategory.addEventListener("click", function () {
       editKey = "PRODUCT";
       editDropdownContainer.classList.remove("hide");
-      editDropdownContainer.setAttribute("type", "Category");
+      editSBUDropdownContainer.classList.remove("hide");
+      editCategoryDropdownContainer.classList.remove("hide");
 
-      editDropdownFormSelected.innerText = `${currentDataToEdit["CATEGORY"]}`;
-      editDropdownFormSelected.setAttribute("data-value", currentDataToEdit["CATEGORY"]);
-      editDropdownFormSelected.setAttribute("data-value-child", currentDataToEdit["PRODUCT"]);
+      editDropdownFormSelected.innerText = `${currentDataToEdit["BRAND"]}`;
+      editDropdownFormSelected.setAttribute("data-value", currentDataToEdit["BRAND"]);
+
+      editSBUDropdownFormSelected.innerText = `${currentDataToEdit["SUB-BRAND"]}`;
+      editSBUDropdownFormSelected.setAttribute("data-value", currentDataToEdit["SUB-BRAND"]);
+
+      editCategoryDropdownFormSelected.innerText = `${currentDataToEdit["CATEGORY"]}`;
+      editCategoryDropdownFormSelected.setAttribute("data-value", currentDataToEdit["CATEGORY"]);
+      editCategoryDropdownFormSelected.setAttribute("data-value-child", currentDataToEdit["PRODUCT"]);
 
       removeOldList(editDropdownFormSelected);
-      createEncoderSelection(productsObject, editDropdownOptionsForm);
+      removeOldList(editSBUDropdownFormSelected);
+      removeOldList(editCategoryDropdownFormSelected);
+      createEncoderSelection(brands, editDropdownOptionsForm);
+      createEncoderSelection(sbuObject, editSBUDropdownOptionsForm);
+      createEncoderSelection(productsObject, editCategoryDropdownOptionsForm);
 
       editInputForm.value = currentDataToEdit["PRODUCT"];
       editActiveContainer.classList.remove("hide");
@@ -368,16 +423,50 @@ async function start() {
    });
 
    editSelected.addEventListener("click", function () {
+      editKey = "BRAND";
       editDropdownContainer.classList.add("hide");
-      if (editDropdownContainer.getAttribute("type") === "Brands") editKey = "BRAND";
-      else if (editDropdownContainer.getAttribute("type") === "Category") editKey = "CATEGORY";
+      editSBUDropdownContainer.classList.add("hide");
+      editCategoryDropdownContainer.classList.add("hide");
 
       editInputForm.value = editDropdownFormSelected.innerText;
+   });
+
+   editSBUSelected.addEventListener("click", function () {
+      editKey = "SUB-BRAND";
+
+      editDropdownContainer.classList.remove("hide");
+      editSBUDropdownContainer.classList.add("hide");
+      editCategoryDropdownContainer.classList.add("hide");
+
+      editInputForm.value = editSBUDropdownFormSelected.innerText;
+   });
+
+   editCategorySelected.addEventListener("click", function () {
+      editKey = "CATEGORY";
+      editDropdownContainer.classList.add("hide");
+      editSBUDropdownContainer.classList.add("hide");
+      editCategoryDropdownContainer.classList.add("hide");
+
+      editInputForm.value = editCategoryDropdownFormSelected.innerText;
    });
 
    updateButton.addEventListener("click", function () {
       if (currentDataToEdit[editKey] !== editInputForm.value) {
          currentDataToEdit[editKey] = editInputForm.value;
+         today = getDate();
+         ampm = getAMPM(today);
+         hour = getHours(today);
+         minutes = getMinutes(today);
+         time = getcurrentTime(hour, minutes, ampm);
+
+         result = today.toLocaleDateString("en-US", {
+            // you can use undefined as first argument
+            year: "2-digit",
+            month: "2-digit",
+            day: "2-digit",
+         });
+         currentDataToEdit["TIME"] = time;
+         currentDataToEdit["DATE"] = result;
          localStorage.setItem("encodeLogs", JSON.stringify(currentData));
          updateCurrentDataToDataForm();
       }
@@ -446,7 +535,7 @@ async function start() {
    });
 
    jobNumberInput.addEventListener("keyup", function () {
-      if(jobNumberInput.value === ""){
+      if (jobNumberInput.value === "") {
          errorMsgAddToSKU.classList.add("hide");
          errorMsgJR.classList.add("hide");
          jobNumberForm.classList.add("hide");
@@ -664,19 +753,19 @@ function save() {
    const encodedResult = document.getElementById("encodedResult");
 
    codeText.innerText = codeText.innerText.replace(/\*/g, "");
+   today = getDate();
+   ampm = getAMPM(today);
+   hour = getHours(today);
+   minutes = getMinutes(today);
+   time = getcurrentTime(hour, minutes, ampm);
 
-   let today = new Date();
-   let ampm = today.getHours() >= 12 ? "PM" : "AM";
-   let hour = (today.getHours() + 24) % 12 || 12;
-   let minutes = ("0" + today.getMinutes()).slice(-2);
-   let time = hour + ":" + minutes + " " + ampm;
-
-   let result = today.toLocaleDateString("en-US", {
+   result = today.toLocaleDateString("en-US", {
       // you can use undefined as first argument
       year: "2-digit",
       month: "2-digit",
       day: "2-digit",
    });
+
    let identiferObject = {};
    let selectedProduct = JSON.parse(localStorage.getItem("productsTemplates"))[selectedCategory.getAttribute("data-value") + " " + selectedCategory.getAttribute("data-value-child")];
    if (selectedProduct.length <= 0) {
@@ -739,6 +828,26 @@ function save() {
    localStorage.setItem("encodeLogs", JSON.stringify(newData));
    newData = [];
    dataToSave = {};
+}
+
+function getcurrentTime(hour, minutes, ampm) {
+   return hour + ":" + minutes + " " + ampm;
+}
+
+function getMinutes(today) {
+   return ("0" + today.getMinutes()).slice(-2);
+}
+
+function getHours(today) {
+   return (today.getHours() + 24) % 12 || 12;
+}
+
+function getAMPM(today) {
+   return today.getHours() >= 12 ? "PM" : "AM";
+}
+
+function getDate() {
+   return new Date();
 }
 
 function setEditValues(targetInput, dataInput) {
@@ -809,7 +918,10 @@ function updateCurrentDataToDataForm() {
    selectedCategoryEdit.setAttribute("data-value", `${currentDataToEdit["CATEGORY"]}`);
    selectedCategoryEdit.setAttribute("data-value-child", `${currentDataToEdit["PRODUCT"]} `);
    setEditValues(selectedIndentifierEdit, Object.keys(currentDataToEdit["INDENTIFIER"]).at(-1));
-   setEditValues(selectedjrEdit, Object.values(currentDataToEdit["JOB"].at(-1))[0]);
+   if (currentDataToEdit["JOB"] != null || currentDataToEdit["JOB"] != undefined) {
+      console.log(currentDataToEdit["JOB"]);
+      setEditValues(selectedjrEdit, Object.values(currentDataToEdit["JOB"].at(-1))[0]);
+   }
    codeTextEdit.innerText = codeEdit.concat(codeCateEdit).join(" ");
 
    removeOldList(selectedBrandEdit);
@@ -823,7 +935,6 @@ function updateCurrentDataToDataForm() {
    createEncoderSelection(productsObject, categoryOptionContainerEdit, true);
 
    let templates = JSON.parse(localStorage.getItem("productsTemplates"))[decodeCategory.innerText + " " + decodeProduct.innerText];
-   let allTemplates = {};
    for (let key in templates) {
       for (let value in templates[key]) {
          allTemplates[value] = templates[key][value];
