@@ -24,7 +24,6 @@ let codeCateEdit = [];
 let productsTemplates = {};
 let allTemplates = {};
 
-
 let data = []; //0 - Brands, 1-Category, 2- encodedlogs
 let brands;
 let sbuObject = {};
@@ -95,7 +94,7 @@ const backButtonToDecoder = document.getElementById("backButtonToDecoder");
 const editInputForm = document.getElementById("editInputForm");
 const editBrand = document.getElementById("editBrand");
 const editSBU = document.getElementById("editSBU");
-const z = document.getElementById("editCategory");
+const editCategory = document.getElementById("editCategory");
 const editIdentifier = document.getElementById("editIdentifier");
 const editJr = document.getElementById("editJr");
 
@@ -111,6 +110,10 @@ const editCategoryDropdownContainer = document.getElementById("editCategoryDropd
 const editCategoryDropdownOptionsForm = document.getElementById("editCategoryDropdownOptionsForm");
 const editCategoryDropdownFormSelected = document.getElementById("editCategoryDropdownFormSelected");
 
+const editCategoryProductDropdownContainer = document.getElementById("editCategoryProductDropdownContainer");
+const editCategoryProductDropdownFormSelected = document.getElementById("editCategoryProductDropdownFormSelected");
+const editCategoryProductDropdownOptionsForm = document.getElementById("editCategoryProductDropdownOptionsForm");
+
 const editIdentifierDropdownContainer = document.getElementById("editIdentifierDropdownContainer");
 const editIdentifierDropdownOptionsForm = document.getElementById("editIdentifierDropdownOptionsForm");
 const editIdentifierDropdownFormSelected = document.getElementById("editIdentifierDropdownFormSelected");
@@ -119,8 +122,9 @@ const updateButton = document.querySelector(".updateButton");
 const editSelected = document.getElementById("editSelected");
 const editSBUSelected = document.getElementById("editSBUSelected");
 const editCategorySelected = document.getElementById("editCategorySelected");
-const editIdentifier = document.getElementById("editIdentifier");
-const editJr = document.getElementById("editJr");
+const editCategoryProductSelected = document.getElementById("editCategoryProductSelected");
+const editIdentifierSelected = document.getElementById("editIdentifierSelected");
+// const editJr = document.getElementById("editJr");
 
 async function getData(path) {
    try {
@@ -361,6 +365,7 @@ async function start() {
       decodeProduct.innerText = currentDataToEdit["PRODUCT"];
 
       decodeDate.innerText = `${currentDataToEdit["DATE"]} / ${currentDataToEdit["TIME"]} `;
+      decodeIdentifier.innerText = Object.keys(currentDataToEdit["INDENTIFIER"]).at(-1);
 
       if (selectedjrEdit.getAttribute("data-value") != "") decodedJR.innerText = selectedjrEdit.getAttribute("data-value");
 
@@ -373,7 +378,10 @@ async function start() {
       editDropdownContainer.classList.add("hide");
       editSBUDropdownContainer.classList.add("hide");
       editCategoryDropdownContainer.classList.add("hide");
+      editCategoryProductDropdownContainer.classList.add("hide");
       editDropdownContainer.classList.add("hide");
+      editIdentifierDropdownContainer.classList.add("hide");
+
       editInputForm.value = selectedBrandEdit.innerText;
       editActiveContainer.classList.remove("hide");
       editContainer.classList.add("hide");
@@ -384,6 +392,8 @@ async function start() {
       editDropdownContainer.classList.remove("hide");
       editSBUDropdownContainer.classList.add("hide");
       editCategoryDropdownContainer.classList.add("hide");
+      editCategoryProductDropdownContainer.classList.add("hide");
+      editIdentifierDropdownContainer.classList.add("hide");
 
       setEditValues(editDropdownFormSelected, currentDataToEdit["BRAND"]);
       removeOldList(editDropdownFormSelected);
@@ -399,6 +409,9 @@ async function start() {
       editDropdownContainer.classList.remove("hide");
       editSBUDropdownContainer.classList.remove("hide");
       editCategoryDropdownContainer.classList.remove("hide");
+      editIdentifierDropdownContainer.classList.add("hide");
+      editCategoryProductDropdownContainer.classList.add("hide");
+
 
       editDropdownFormSelected.innerText = `${currentDataToEdit["BRAND"]}`;
       editDropdownFormSelected.setAttribute("data-value", currentDataToEdit["BRAND"]);
@@ -410,14 +423,57 @@ async function start() {
       editCategoryDropdownFormSelected.setAttribute("data-value", currentDataToEdit["CATEGORY"]);
       editCategoryDropdownFormSelected.setAttribute("data-value-child", currentDataToEdit["PRODUCT"]);
 
+      setEditValues(selectedIndentifierEdit, Object.keys(currentDataToEdit["INDENTIFIER"]).at(-1));
+
       removeOldList(editDropdownFormSelected);
       removeOldList(editSBUDropdownFormSelected);
       removeOldList(editCategoryDropdownFormSelected);
+
       createEncoderSelection(brands, editDropdownOptionsForm);
       createEncoderSelection(sbuObject, editSBUDropdownOptionsForm);
       createEncoderSelection(productsObject, editCategoryDropdownOptionsForm);
 
       editInputForm.value = currentDataToEdit["PRODUCT"];
+      editActiveContainer.classList.remove("hide");
+      editContainer.classList.add("hide");
+   });
+
+   editIdentifier.addEventListener("click", function () {
+      editKey = "INDENTIFIER";
+      editDropdownContainer.classList.remove("hide");
+      editSBUDropdownContainer.classList.remove("hide");
+      editCategoryDropdownContainer.classList.add("hide");
+      editCategoryProductDropdownContainer.classList.remove("hide");
+
+      editIdentifierDropdownContainer.classList.add("hide");
+
+      editDropdownFormSelected.innerText = `${currentDataToEdit["BRAND"]}`;
+      editDropdownFormSelected.setAttribute("data-value", currentDataToEdit["BRAND"]);
+
+      editSBUDropdownFormSelected.innerText = `${currentDataToEdit["SUB-BRAND"]}`;
+      editSBUDropdownFormSelected.setAttribute("data-value", currentDataToEdit["SUB-BRAND"]);
+
+      editCategoryProductDropdownFormSelected.innerText = `${currentDataToEdit["PRODUCT"]} | ${currentDataToEdit["CATEGORY"]}`;
+      editCategoryProductDropdownFormSelected.setAttribute("data-value", currentDataToEdit["CATEGORY"]);
+      editCategoryProductDropdownFormSelected.setAttribute("data-value-child", currentDataToEdit["PRODUCT"]);
+      
+      editCategoryDropdownFormSelected.innerText = `${currentDataToEdit["CATEGORY"]}`;
+      editCategoryDropdownFormSelected.setAttribute("data-value", currentDataToEdit["CATEGORY"]);
+      editCategoryDropdownFormSelected.setAttribute("data-value-child", currentDataToEdit["PRODUCT"]);
+
+      removeOldList(editDropdownFormSelected);
+      removeOldList(editSBUDropdownFormSelected);
+      removeOldList(editCategoryDropdownFormSelected);
+      removeOldList(editCategoryProductDropdownFormSelected);
+      removeOldList(editIdentifierDropdownFormSelected);
+
+      createEncoderSelection(brands, editDropdownOptionsForm);
+      createEncoderSelection(sbuObject, editSBUDropdownOptionsForm);
+      createEncoderSelection(productsObject, editCategoryProductDropdownOptionsForm, true);
+      createEncoderSelection(productsObject, editCategoryDropdownOptionsForm);
+      createEncoderSelection(allTemplates, editIdentifierDropdownOptionsForm);
+
+      editInputForm.value = selectedIndentifierEdit.innerText;
       editActiveContainer.classList.remove("hide");
       editContainer.classList.add("hide");
    });
@@ -450,9 +506,28 @@ async function start() {
       editInputForm.value = editCategoryDropdownFormSelected.innerText;
    });
 
+   editCategoryProductSelected.addEventListener('click', function(){
+      editKey = "PRODUCT";
+      editDropdownContainer.classList.remove("hide");
+      editSBUDropdownContainer.classList.remove("hide");
+      editCategoryDropdownContainer.classList.remove("hide");
+      editCategoryProductDropdownContainer.classList.add("hide");
+
+      editInputForm.value = currentDataToEdit["PRODUCT"];
+   })
+
    updateButton.addEventListener("click", function () {
       if (currentDataToEdit[editKey] !== editInputForm.value) {
-         currentDataToEdit[editKey] = editInputForm.value;
+         if (editKey === "INDENTIFIER") {
+            // currentDataToEdit[editKey] = Object.keys(currentDataToEdit["INDENTIFIER"]).at(-1);
+            let newIdentifier = {};
+            newIdentifier[`${editInputForm.value}`] = Object.values(currentDataToEdit[editKey]).at(-1);
+
+            currentDataToEdit[editKey] = newIdentifier;
+         } else {
+            currentDataToEdit[editKey] = editInputForm.value;
+         }
+
          today = getDate();
          ampm = getAMPM(today);
          hour = getHours(today);
