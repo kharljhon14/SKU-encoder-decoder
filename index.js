@@ -233,11 +233,10 @@ async function start() {
             if (selectSBUContainer.classList.contains("hide")) selectSBUContainer.classList.remove("hide");
             encodedContent.classList.remove("hide");
 
-            removeOldList(selectedSBU);
-
             if (selectedBrand.getAttribute("data-value") === "Global") resetSelectedValues(selectedSBU, "Choose a division");
             else if (selectedBrand.getAttribute("data-value") === "Vision Care") resetSelectedValues(selectedSBU, "Choose a SBU");
             else resetSelectedValues(selectedSBU, "Choose a brand");
+            removeOldList(selectedSBU);
 
             createEncoderSelection(sbuObject[selectedBrand.getAttribute("data-value")], sbuOptionContainer);
 
@@ -622,6 +621,37 @@ async function start() {
 
    addButton.addEventListener("click", function () {
       if (currentDataToEdit[editKey] !== editInputForm.value && (editInputForm.value !== "" || editInputForm.value !== " ")) {
+         if (editKey === "SUB-BRAND") {
+            console.log("Updated SBU");
+            let sbuKey;
+            let sbuLength;
+            if (editDropdownFormSelected.getAttribute("data-value") === "Global") sbuKey = "Division";
+            else if (editDropdownFormSelected.getAttribute("data-value") === "Vision Care") sbuKey = "SBUs";
+            else sbuKey = "Brand";
+            if (
+               Object.values(brands[editDropdownFormSelected.getAttribute("data-value")][sbuKey]).at(-1) != null ||
+               Object.values(brands[editDropdownFormSelected.getAttribute("data-value")][sbuKey]).at(-1) != undefined
+            )
+               sbuLength = parseInt(Object.values(brands[editDropdownFormSelected.getAttribute("data-value")][sbuKey]).at(-1));
+            else sbuLength = 00;
+            sbuLength += 1;
+            let sbus = brands[editDropdownFormSelected.getAttribute("data-value")][sbuKey];
+
+            sbus[editInputForm.value] = sbuLength.toString().padStart(2, "0");
+            localStorage.setItem("SBU", JSON.stringify(sbus));
+            brands[editDropdownFormSelected.getAttribute("data-value")][sbuKey] = sbus;
+            sbus = JSON.parse(localStorage.getItem("SBU"));
+
+            localStorage.setItem("Brands", JSON.stringify(brands));
+            brands = JSON.parse(localStorage.getItem("Brands"));
+            currentEntryText.innerText = `Entry ${editInputForm.value} added `;
+
+            for (let key in brands) {
+               sbuObject[key] = Object.values(brands[key])[1];
+            }
+         
+         }
+
          if (editKey === "BRAND") {
             console.log("Updated Brands");
             let brandsArray = Object.values(brands);
@@ -637,28 +667,106 @@ async function start() {
 
             updateMSGContainer.classList.remove("hide");
             currentEntryText.innerText = `Entry ${editInputForm.value} added`;
+
+            editKey = "SUB-BRAND";
+            editDropdownContainer.classList.remove("hide");
+            editSBUDropdownContainer.classList.add("hide");
+            editCategoryDropdownContainer.classList.add("hide");
+            editCategoryProductDropdownContainer.classList.add("hide");
+            editIdentifierDropdownContainer.classList.add("hide");
+
+            setEditValues(editDropdownFormSelected, editInputForm.value);
+            removeOldList(editDropdownFormSelected);
+            createEncoderSelection(brands, editDropdownOptionsForm);
+
+            currentEntryText.innerText = `Entry ${editInputForm.value} added `;
+
+            editInputForm.value = selectedSBUEdit.innerText;
+            editActiveContainer.classList.remove("hide");
+            editContainer.classList.add("hide");
+
+            removeOldList(selectedBrand);
+            createEncoderSelection(brands, brandOptionContainer);
          }
 
-         if (editKey === "SUB-BRAND") {
-            console.log("Updated SBU");
-            let sbuKey;
+         if (editKey === "PRODUCT") {
+            console.log("Updated Products");
+            let productLength;
+            if (
+               Object.values(category[editCategoryDropdownFormSelected.getAttribute("data-value")]["Product"]).at(-1) != null ||
+               Object.values(category[editCategoryDropdownFormSelected.getAttribute("data-value")]["Product"]).at(-1) != undefined
+            )
+               productLength = parseInt(Object.values(category[editCategoryDropdownFormSelected.getAttribute("data-value")]["Product"]).at(-1));
+            else productLength = 00;
 
-            if (editDropdownFormSelected.getAttribute("data-value") === "Global") sbuKey = "Division";
-            else if (editDropdownFormSelected.getAttribute("data-value") === "Vision Care") sbuKey = "SBUs";
-            else sbuKey = "Brand";
+            productLength += 1;
+            let products = category[editCategoryDropdownFormSelected.getAttribute("data-value")]["Product"];
 
-            let sbuLength = parseInt(Object.values(brands[editDropdownFormSelected.getAttribute("data-value")][sbuKey]).at(-1));
-            sbuLength += 1;
-            let sbus = brands[editDropdownFormSelected.getAttribute("data-value")][sbuKey];
+            products[editInputForm.value] = productLength.toString().padStart(3, "0");
+            localStorage.setItem("product", JSON.stringify(products));
+            category[editCategoryDropdownFormSelected.getAttribute("data-value")]["Product"] = products;
+            products = JSON.parse(localStorage.getItem("product"));
 
-            sbus[editInputForm.value] = sbuLength.toString().padStart(2, "0");
-            localStorage.setItem("SBU", JSON.stringify(sbus));
-            brands[editDropdownFormSelected.getAttribute("data-value")][sbuKey] = sbus;
-            sbus = JSON.parse(localStorage.getItem("SBU"));
+            localStorage.setItem("Category", JSON.stringify(category));
+            category = JSON.parse(localStorage.getItem("Category"));
+            currentEntryText.innerText = `Entry ${editInputForm.value} added `;
 
-            localStorage.setItem("Brands", JSON.stringify(brands));
-            brands = JSON.parse(localStorage.getItem("Brands"));
+            for (let key in category) {
+               for (let value in category[key]["Product"]) {
+                  productsTemplates[key + " " + value] = [];
+               }
+            }
+
+            localStorage.setItem("productsTemplates", JSON.stringify(productsTemplates));
+            console.log(JSON.parse(localStorage.getItem("productsTemplates")));
+
+            for (let key in category) {
+               productsObject[key] = Object.values(category[key])[1];
+            }
+
+            removeOldList(selectedCategory);
+            createEncoderSelection(productsObject, categoryOptionContainer, true);
+            
          }
+
+         if (editKey === "CATEGORY") {
+            console.log("Updated Category");
+            let categoryArray = Object.values(category);
+            let newCategory = {};
+
+            newCategory["Number"] = categoryArray.length.toString().padStart(2, "0");
+            newCategory["Product"] = {};
+
+            category[editInputForm.value] = newCategory;
+
+            localStorage.setItem("Category", JSON.stringify(category));
+            category = JSON.parse(localStorage.getItem("Category"));
+
+            editKey = "PRODUCT";
+            editDropdownContainer.classList.remove("hide");
+            editSBUDropdownContainer.classList.remove("hide");
+            editCategoryDropdownContainer.classList.remove("hide");
+            editIdentifierDropdownContainer.classList.add("hide");
+            editCategoryProductDropdownContainer.classList.add("hide");
+            editCategoryDropdownFormSelected.setAttribute("data-value", editInputForm.value);
+            for (let key in category) {
+               productsObject[key] = Object.values(category[key])[1];
+            }
+
+            removeOldList(editCategoryDropdownFormSelected);
+            createEncoderSelection(productsObject, editCategoryDropdownOptionsForm);
+
+            removeOldList(selectedCategory);
+            createEncoderSelection(productsObject, categoryOptionContainer, true);
+
+            currentEntryText.innerText = `Entry ${editInputForm.value} added `;
+
+            editInputForm.value = selectedCategoryEdit.getAttribute("data-value-child");
+            editActiveContainer.classList.remove("hide");
+
+           
+         }
+         updateCurrentDataToDataForm();
       }
    });
 
