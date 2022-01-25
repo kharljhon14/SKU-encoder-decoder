@@ -33,8 +33,11 @@ let productsObject = {};
 const jobNumberContainer = document.getElementById("jobNumberContainer");
 const jobNumberInput = document.getElementById("jobNumberInput");
 const jobNumberForm = document.getElementById("jobNumberForm");
+const jrNumberSKUCodeContainer = document.getElementById("jrNumberSKUCodeContainer");
+const jrNumberFoundSKUCode = document.getElementById("jrNumberFoundSKUCode");
 const errorMsgJR = document.querySelector(".errorMsgJR");
 const errorMsgAddToSKU = document.querySelector(".errorMsgAddToSKU");
+const jrNumberErrorSKUCode = document.getElementById("jrNumberErrorSKUCode");
 const addToSkuButton = document.getElementById("addToSkuButton");
 const searchButton = document.getElementById("searchButton");
 
@@ -89,6 +92,7 @@ const selectedjrEdit = document.getElementById("selectedjrEdit");
 const codeTextEdit = document.getElementById("codeTextEdit");
 
 const backButtonToDecoder = document.getElementById("backButtonToDecoder");
+const backButtonToStart = document.getElementById("backButtonToStart");
 
 // Edit forrm
 const editInputForm = document.getElementById("editInputForm");
@@ -125,6 +129,9 @@ const editCategorySelected = document.getElementById("editCategorySelected");
 const editCategoryProductSelected = document.getElementById("editCategoryProductSelected");
 const editIdentifierSelected = document.getElementById("editIdentifierSelected");
 // const editJr = document.getElementById("editJr");
+
+const updateMSGContainer = document.querySelector(".updateMSGContainer");
+const currentEntryText = document.getElementById("currentEntryText");
 
 async function getData(path) {
    try {
@@ -352,6 +359,8 @@ async function start() {
       console.log(currentDataToEdit);
       editContainer.classList.remove("hide");
       decoderContainer.classList.add("hide");
+      backButtonToDecoder.classList.remove("hide");
+      backButtonToStart.classList.add("hide");
       updateCurrentDataToDataForm();
    });
 
@@ -371,6 +380,12 @@ async function start() {
       editContainer.classList.add("hide");
       decoderContainer.classList.remove("hide");
    });
+   backButtonToStart.addEventListener("click", function () {
+      editContainer.classList.add("hide");
+      tableConatainer.classList.remove("hide");
+   });
+
+   let currentlyEditingCode;
 
    editBrand.addEventListener("click", function () {
       editKey = "BRAND";
@@ -380,6 +395,10 @@ async function start() {
       editCategoryProductDropdownContainer.classList.add("hide");
       editDropdownContainer.classList.add("hide");
       editIdentifierDropdownContainer.classList.add("hide");
+
+      updateMSGContainer.classList.remove("hide");
+      currentlyEditingCode = `${codeTextEdit.innerText[0]}${codeTextEdit.innerText[1]}`;
+      currentEntryText.innerText = currentlyEditingCode;
 
       editInputForm.value = selectedBrandEdit.innerText;
       editActiveContainer.classList.remove("hide");
@@ -397,6 +416,10 @@ async function start() {
       setEditValues(editDropdownFormSelected, currentDataToEdit["BRAND"]);
       removeOldList(editDropdownFormSelected);
       createEncoderSelection(brands, editDropdownOptionsForm);
+
+      updateMSGContainer.classList.remove("hide");
+      currentlyEditingCode = `${codeTextEdit.innerText[3]}${codeTextEdit.innerText[4]}`;
+      currentEntryText.innerText = currentlyEditingCode;
 
       editInputForm.value = selectedSBUEdit.innerText;
       editActiveContainer.classList.remove("hide");
@@ -420,6 +443,10 @@ async function start() {
       editCategoryDropdownFormSelected.innerText = `${currentDataToEdit["CATEGORY"]}`;
       editCategoryDropdownFormSelected.setAttribute("data-value", currentDataToEdit["CATEGORY"]);
       editCategoryDropdownFormSelected.setAttribute("data-value-child", currentDataToEdit["PRODUCT"]);
+
+      updateMSGContainer.classList.remove("hide");
+      currentlyEditingCode = `${codeTextEdit.innerText[9]}${codeTextEdit.innerText[10]}${codeTextEdit.innerText[11]}`;
+      currentEntryText.innerText = currentlyEditingCode;
 
       setEditValues(selectedIndentifierEdit, Object.keys(currentDataToEdit["INDENTIFIER"]).at(-1));
 
@@ -459,6 +486,10 @@ async function start() {
       editCategoryDropdownFormSelected.setAttribute("data-value", currentDataToEdit["CATEGORY"]);
       editCategoryDropdownFormSelected.setAttribute("data-value-child", currentDataToEdit["PRODUCT"]);
 
+      updateMSGContainer.classList.remove("hide");
+      currentlyEditingCode = `${codeTextEdit.innerText[13]}${codeTextEdit.innerText[14]}${codeTextEdit.innerText[15]}`;
+      currentEntryText.innerText = currentlyEditingCode;
+
       removeOldList(editDropdownFormSelected);
       removeOldList(editSBUDropdownFormSelected);
       removeOldList(editCategoryDropdownFormSelected);
@@ -482,6 +513,11 @@ async function start() {
       editSBUDropdownContainer.classList.add("hide");
       editCategoryDropdownContainer.classList.add("hide");
 
+      updateButton.src = "./Symbol-Update.svg";
+      updateButton.style.cursor = "pointer";
+      currentlyEditingCode = `${codeTextEdit.innerText[0]}${codeTextEdit.innerText[1]}`;
+      currentEntryText.innerText = currentlyEditingCode;
+
       editInputForm.value = editDropdownFormSelected.innerText;
    });
 
@@ -492,6 +528,11 @@ async function start() {
       editSBUDropdownContainer.classList.add("hide");
       editCategoryDropdownContainer.classList.add("hide");
 
+      updateButton.src = "./Symbol-Update.svg";
+      updateButton.style.cursor = "pointer";
+      currentlyEditingCode = `${codeTextEdit.innerText[3]}${codeTextEdit.innerText[4]}`;
+      currentEntryText.innerText = currentlyEditingCode;
+
       editInputForm.value = editSBUDropdownFormSelected.innerText;
    });
 
@@ -500,6 +541,12 @@ async function start() {
       editDropdownContainer.classList.add("hide");
       editSBUDropdownContainer.classList.add("hide");
       editCategoryDropdownContainer.classList.add("hide");
+
+      updateButton.src = "./Symbol-Update.svg";
+      updateButton.style.cursor = "pointer";
+      updateMSGContainer.classList.remove("hide");
+      currentlyEditingCode = `${codeTextEdit.innerText[6]}${codeTextEdit.innerText[7]}`;
+      currentEntryText.innerText = currentlyEditingCode;
 
       editInputForm.value = editCategoryDropdownFormSelected.innerText;
    });
@@ -510,12 +557,27 @@ async function start() {
       editSBUDropdownContainer.classList.remove("hide");
       editCategoryDropdownContainer.classList.remove("hide");
       editCategoryProductDropdownContainer.classList.add("hide");
+      
+      updateButton.src = "./Symbol-Update.svg";
+      updateButton.style.cursor = "pointer";
 
       editInputForm.value = currentDataToEdit["PRODUCT"];
    });
 
+   editInputForm.addEventListener("keyup", function () {
+      if (currentDataToEdit[editKey] !== editInputForm.value) {
+         updateButton.src = "./Symbol-Update.svg";
+         updateButton.style.cursor = "pointer";
+      }
+   });
+
    updateButton.addEventListener("click", function () {
       if (currentDataToEdit[editKey] !== editInputForm.value) {
+         updateButton.src = "./Symbol-Update copy.svg";
+         updateButton.style.cursor = "default";
+         updateMSGContainer.classList.remove("hide");
+         currentEntryText.innerText = `Entry ${currentlyEditingCode} updated!`;
+
          if (editKey === "INDENTIFIER") {
             // currentDataToEdit[editKey] = Object.keys(currentDataToEdit["INDENTIFIER"]).at(-1);
             let newIdentifier = {};
@@ -546,12 +608,21 @@ async function start() {
    });
 
    cancelButtonEdit.addEventListener("click", function () {
+      updateButton.src = "./Symbol-Update.svg";
+      updateButton.style.cursor = "pointer";
       editActiveContainer.classList.add("hide");
       editContainer.classList.remove("hide");
    });
 
    //GenerateTable
    generateTable();
+   let skuLinks = document.querySelectorAll(".skuLink");
+
+   skuLinks.forEach(function (skuLink) {
+      skuLink.addEventListener("click", function () {
+         console.log(skuLink);
+      });
+   });
 
    //Download CSV
    const keys = Object.keys(JSON.parse(localStorage.getItem("encodeLogs"))[0]);
@@ -573,6 +644,7 @@ async function start() {
       encoderContainer.classList.remove("hide");
       decoderContainer.classList.remove("hide");
       allCodeBtn.classList.remove("hide");
+      jrNumberSKUCodeContainer.classList.add("hide");
    };
 
    searchButton.addEventListener("click", function () {
@@ -583,6 +655,7 @@ async function start() {
             for (let key in encodeLogData[i]) {
                if (key === "JOB") {
                   if (jobNumberInput.value.toLowerCase() === Object.values(Object.values(encodeLogData[i]["JOB"])[0])[0].toLowerCase()) {
+                     jrNumberSKUCodeContainer.classList.remove("hide");
                      jrDate.innerText = encodeLogData[i]["DATE"] + " / " + encodeLogData[i]["TIME"];
                      jrBrand.innerText = encodeLogData[i]["BRAND"];
                      jrSBU.innerText = encodeLogData[i]["SUB-BRAND"];
@@ -590,6 +663,17 @@ async function start() {
                      jrProduct.innerText = encodeLogData[i]["PRODUCT"];
                      jrIdentifier.innerText = Object.keys(encodeLogData[i]["INDENTIFIER"]);
                      jrRelatedJobs.innerText = Object.values(Object.values(encodeLogData[i]["JOB"])[0])[0];
+
+                     let codeFirstHalfSKU = encodeLogData[i]["CODE"].slice(0, 6);
+                     let codeSecondHalfSKU = encodeLogData[i]["CODE"].slice(6);
+                     codeFirstHalfSKU = codeFirstHalfSKU.match(/.{1,2}/g).join(" ");
+                     codeSecondHalfSKU = codeSecondHalfSKU.match(/.{1,3}/g).join(" ");
+
+                     let co = codeFirstHalfSKU.split(/\s+/);
+                     let de = codeSecondHalfSKU.split(/\s+/);
+
+                     jrNumberFoundSKUCode.innerText = co.concat(de).join(" ");
+
                      jobNumberForm.classList.remove("hide");
                      errorMsgAddToSKU.classList.add("hide");
                      jobNumberForm.classList.remove("errorMsgColor");
@@ -605,6 +689,7 @@ async function start() {
          errorMsgJR.classList.remove("hide");
          jobNumberForm.classList.add("hide");
       }
+      jrNumberSKUCodeContainer.classList.add("hide");
    });
 
    jobNumberInput.addEventListener("keyup", function () {
@@ -622,6 +707,8 @@ async function start() {
             for (let key in encodeLogData[i]) {
                if (key === "JOB") {
                   if (jobNumberInput.value.toLowerCase() === Object.values(Object.values(encodeLogData[i]["JOB"])[0])[0].toLowerCase()) {
+                     jrNumberSKUCodeContainer.classList.add("hide");
+
                      jrDate.innerText = encodeLogData[i]["DATE"] + " / " + encodeLogData[i]["TIME"];
                      jrBrand.innerText = encodeLogData[i]["BRAND"];
                      jrSBU.innerText = encodeLogData[i]["SUB-BRAND"];
@@ -629,6 +716,16 @@ async function start() {
                      jrProduct.innerText = encodeLogData[i]["PRODUCT"];
                      jrIdentifier.innerText = Object.keys(encodeLogData[i]["INDENTIFIER"]);
                      jrRelatedJobs.innerText = Object.values(Object.values(encodeLogData[i]["JOB"])[0])[0];
+
+                     let codeFirstHalfSKU = encodeLogData[i]["CODE"].slice(0, 6);
+                     let codeSecondHalfSKU = encodeLogData[i]["CODE"].slice(6);
+                     codeFirstHalfSKU = codeFirstHalfSKU.match(/.{1,2}/g).join(" ");
+                     codeSecondHalfSKU = codeSecondHalfSKU.match(/.{1,3}/g).join(" ");
+
+                     let co = codeFirstHalfSKU.split(/\s+/);
+                     let de = codeSecondHalfSKU.split(/\s+/);
+
+                     jrNumberErrorSKUCode.innerText = co.concat(de).join(" ");
 
                      errorMsgAddToSKU.classList.remove("hide");
                      jobNumberForm.classList.add("errorMsgColor");
@@ -648,6 +745,7 @@ async function start() {
          encoderContainer.classList.remove("hide");
          decoderContainer.classList.remove("hide");
          allCodeBtn.classList.remove("hide");
+         jrNumberSKUCodeContainer.classList.add("hide");
       }
    });
 
@@ -690,8 +788,29 @@ function generateTable() {
 
          if (i === 0) {
             let newLink = document.createElement("a");
-            newLink.href = "#";
+            newLink.href = "javascript:;";
             newLink.innerText = Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[i];
+
+            newLink.addEventListener("click", function () {
+               editContainer.classList.remove("hide");
+               tableConatainer.classList.add("hide");
+               backButtonToStart.classList.remove("hide");
+               backButtonToDecoder.classList.add("hide");
+               currentData = JSON.parse(localStorage.getItem("encodeLogs"));
+               currentDataToEdit = currentData[key];
+               console.log(Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[i]);
+
+               decodeCode = Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[0];
+               // .match(/.{1,2}/g).join(" ");
+               let codeFirstHalfList = decodeCode.slice(0, 6);
+               let codeSecondHalfList = decodeCode.slice(6);
+               codeFirstHalfList = codeFirstHalfList.match(/.{1,2}/g).join(" ");
+               codeSecondHalfList = codeSecondHalfList.match(/.{1,3}/g).join(" ");
+               codeEdit = codeFirstHalfList.split(/\s+/);
+               codeCateEdit = codeSecondHalfList.split(/\s+/);
+               updateCurrentDataToDataForm();
+            });
+
             newTD.appendChild(newLink);
          } else if (i === 7) {
             newTD.innerText = Object.keys(Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[i]);
@@ -706,7 +825,6 @@ function generateTable() {
          newTr.appendChild(newTD);
       }
       tableBody.appendChild(newTr);
-      
    }
 
    allCodeData = document.querySelectorAll(".codeData");
@@ -1004,6 +1122,7 @@ function updateCurrentDataToDataForm() {
       console.log(currentDataToEdit["JOB"]);
       setEditValues(selectedjrEdit, Object.values(currentDataToEdit["JOB"].at(-1))[0]);
    }
+
    codeTextEdit.innerText = codeEdit.concat(codeCateEdit).join(" ");
 
    removeOldList(selectedBrandEdit);

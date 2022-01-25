@@ -32,8 +32,13 @@
                      Error: Job Number already exists. <br />
                      Please choose Encoder to generate this code.
                   </p>
+                  <p id="jrNumberErrorSKUCode">Error Code</p>
                </div>
             </div>
+            <div id="jrNumberSKUCodeContainer" class="hide">
+               <p id="jrNumberFoundSKUCode">code</p>
+            </div>
+
             <div class="resultContent hide" id="jobNumberForm">
                <div style="display: table-cell; text-align: right">
                   <p><strong>CREATED:</strong></p>
@@ -232,8 +237,8 @@
                </div>
             </div>
             <div class="groupCenterRow">
-               <div id="backButtonToDecoder" class="backBtn" style="flex: 3; text-align: center; z-index: 100"><button>BACK TO DECODER</button></div>
-               <div class="backBtn hide" style="flex: 3; text-align: center; z-index: 100"><button>BACK TO START</button></div>
+               <div id="backButtonToDecoder" class="backBtn hide" style="flex: 3; text-align: center; z-index: 100"><button>BACK TO DECODER</button></div>
+               <div id="backButtonToStart" class="backBtn hide" style="flex: 3; text-align: center; z-index: 100"><button>BACK TO START</button></div>
             </div>
          </div>
          <!-- //Edit Form -->
@@ -325,6 +330,9 @@
                   "BACK TO START" and choose Encoder option to create code
                </p>
             </div>
+            <div class="updateMSGContainer border2Top hide" style="width: 100%; text-align: center; padding: 20px 0px;">
+               <p id="currentEntryText">Entry 01 Updated</p>
+            </div>
             <div class="groupCenterRow">
                <div id="cancelButtonEdit" style="flex: 1; text-align: center"><button>CANCEL</button></div>
                <div id="backButtonEdit" class="backBtn" style="flex: 1; text-align: center"><button>BACK TO START</button></div>
@@ -382,25 +390,24 @@
                <input type="number" class="inputs" id="tableSearchInput" />
             </div>
             <div class="tableContent">
-            <table id="dataTable">
-               <thead id="tableHead">
-                  <tr>
-                     <th scope="col">Code</th>
-                     <th scope="col">Time</th>
-                     <th scope="col">Date</th>
-                     <th scope="col">Brand</th>
-                     <th scope="col">Sub-Brand/SBU</th>
-                     <th scope="col">Category</th>
-                     <th scope="col">Product</th>
-                     <th scope="col">Identifier</th>
-                     <th scope="col">Related Jobs</th>
-                  </tr>
-               </thead>
-    
+               <table id="dataTable">
+                  <thead id="tableHead">
+                     <tr>
+                        <th scope="col">Code</th>
+                        <th scope="col">Time</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Brand</th>
+                        <th scope="col">Sub-Brand/SBU</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Product</th>
+                        <th scope="col">Identifier</th>
+                        <th scope="col">Related Jobs</th>
+                     </tr>
+                  </thead>
+
                   <tbody id="tableBody"></tbody>
-       
-            </table>
-         </div>
+               </table>
+            </div>
             <div class="groupCenterRow" style="width: 50%">
                <div id="downloadButton" style="flex: 1; text-align: center; margin-top: 20px">
                   <a id="downloadCSV" download="VSP_SKU_Encoder_Decoder.csv"><button>DOWNLOAD</button> </a>

@@ -422,6 +422,7 @@ input[type="number"] {
 
 .updateButton {
    background: url("./Symbol-Update.svg");
+   background-color: gray;
    background-size: contain;
    background-repeat: no-repeat;
    background-position: center;
