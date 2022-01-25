@@ -123,6 +123,7 @@ const editIdentifierDropdownOptionsForm = document.getElementById("editIdentifie
 const editIdentifierDropdownFormSelected = document.getElementById("editIdentifierDropdownFormSelected");
 
 const updateButton = document.querySelector(".updateButton");
+const addButton = document.querySelector(".addButton");
 const editSelected = document.getElementById("editSelected");
 const editSBUSelected = document.getElementById("editSBUSelected");
 const editCategorySelected = document.getElementById("editCategorySelected");
@@ -197,6 +198,13 @@ async function start() {
 
    brands = data[0];
    category = data[1];
+
+   if (localStorage.getItem("Brands") === null) localStorage.setItem("Brands", JSON.stringify(brands));
+
+   if (localStorage.getItem("Category") === null) localStorage.setItem("Category", JSON.stringify(category));
+
+   brands = JSON.parse(localStorage.getItem("Brands"));
+   category = JSON.parse(localStorage.getItem("Category"));
 
    for (let key in brands) {
       sbuObject[key] = Object.values(brands[key])[1];
@@ -361,6 +369,10 @@ async function start() {
       decoderContainer.classList.add("hide");
       backButtonToDecoder.classList.remove("hide");
       backButtonToStart.classList.add("hide");
+      brandOberserverEdit.observe(selectedBrandEdit, { attributes: true });
+      sbuOberserverEdit.observe(selectedSBUEdit, { attributes: true });
+      categoryOberserverEdit.observe(selectedCategoryEdit, { attributes: true });
+
       updateCurrentDataToDataForm();
    });
 
@@ -380,6 +392,7 @@ async function start() {
       editContainer.classList.add("hide");
       decoderContainer.classList.remove("hide");
    });
+
    backButtonToStart.addEventListener("click", function () {
       editContainer.classList.add("hide");
       tableConatainer.classList.remove("hide");
@@ -557,7 +570,7 @@ async function start() {
       editSBUDropdownContainer.classList.remove("hide");
       editCategoryDropdownContainer.classList.remove("hide");
       editCategoryProductDropdownContainer.classList.add("hide");
-      
+
       updateButton.src = "./Symbol-Update.svg";
       updateButton.style.cursor = "pointer";
 
@@ -572,7 +585,7 @@ async function start() {
    });
 
    updateButton.addEventListener("click", function () {
-      if (currentDataToEdit[editKey] !== editInputForm.value) {
+      if (currentDataToEdit[editKey] !== editInputForm.value && editInputForm.value !== "" && editInputForm.value !== " ") {
          updateButton.src = "./Symbol-Update copy.svg";
          updateButton.style.cursor = "default";
          updateMSGContainer.classList.remove("hide");
@@ -607,6 +620,48 @@ async function start() {
       }
    });
 
+   addButton.addEventListener("click", function () {
+      if (currentDataToEdit[editKey] !== editInputForm.value && (editInputForm.value !== "" || editInputForm.value !== " ")) {
+         if (editKey === "BRAND") {
+            console.log("Updated Brands");
+            let brandsArray = Object.values(brands);
+            let newValues = {};
+
+            newValues["Number"] = brandsArray.length.toString().padStart(2, "0");
+            newValues["Brand"] = {};
+
+            brands[editInputForm.value] = newValues;
+
+            localStorage.setItem("Brands", JSON.stringify(brands));
+            brands = JSON.parse(localStorage.getItem("Brands"));
+
+            updateMSGContainer.classList.remove("hide");
+            currentEntryText.innerText = `Entry ${editInputForm.value} added`;
+         }
+
+         if (editKey === "SUB-BRAND") {
+            console.log("Updated SBU");
+            let sbuKey;
+
+            if (editDropdownFormSelected.getAttribute("data-value") === "Global") sbuKey = "Division";
+            else if (editDropdownFormSelected.getAttribute("data-value") === "Vision Care") sbuKey = "SBUs";
+            else sbuKey = "Brand";
+
+            let sbuLength = parseInt(Object.values(brands[editDropdownFormSelected.getAttribute("data-value")][sbuKey]).at(-1));
+            sbuLength += 1;
+            let sbus = brands[editDropdownFormSelected.getAttribute("data-value")][sbuKey];
+
+            sbus[editInputForm.value] = sbuLength.toString().padStart(2, "0");
+            localStorage.setItem("SBU", JSON.stringify(sbus));
+            brands[editDropdownFormSelected.getAttribute("data-value")][sbuKey] = sbus;
+            sbus = JSON.parse(localStorage.getItem("SBU"));
+
+            localStorage.setItem("Brands", JSON.stringify(brands));
+            brands = JSON.parse(localStorage.getItem("Brands"));
+         }
+      }
+   });
+
    cancelButtonEdit.addEventListener("click", function () {
       updateButton.src = "./Symbol-Update.svg";
       updateButton.style.cursor = "pointer";
@@ -616,13 +671,6 @@ async function start() {
 
    //GenerateTable
    generateTable();
-   let skuLinks = document.querySelectorAll(".skuLink");
-
-   skuLinks.forEach(function (skuLink) {
-      skuLink.addEventListener("click", function () {
-         console.log(skuLink);
-      });
-   });
 
    //Download CSV
    const keys = Object.keys(JSON.parse(localStorage.getItem("encodeLogs"))[0]);
@@ -764,6 +812,52 @@ async function start() {
       encodedContent.classList.remove("errorMsgColor");
    });
 }
+
+const brandOberserverEdit = new MutationObserver(function (mutations) {
+   mutations.forEach(function (mutation) {
+      if (mutation.type === "attributes") {
+         removeOldList(selectedSBUEdit);
+
+         // if (selectedBrandEdit.getAttribute("data-value") === "Global") resetSelectedValues(selectedSBUEdit, "Choose a division");
+         // else if (selectedBrandEdit.getAttribute("data-value") === "Vision Care") resetSelectedValues(selectedSBUEdit, "Choose a SBU");
+         // else resetSelectedValues(selectedSBUEdit, "Choose a brand");
+
+         createEncoderSelection(sbuObject[selectedBrandEdit.getAttribute("data-value")], sbuOptionContainerEdit);
+
+         if (codeEdit[0]) codeEdit[0] = Object.values(brands[selectedBrandEdit.innerText])[0];
+         else codeEdit.push(Object.values(brands[selectedBrandEdit.innerText])[0]);
+
+         // codeTextEdit.innerText = codeEdit.concat(codeCateEdit).join(" ");
+      }
+   });
+});
+
+const sbuOberserverEdit = new MutationObserver(function (mutations) {
+   mutations.forEach(function (mutation) {
+      if (mutation.type === "attributes") {
+         console.log(selectedSBUEdit.getAttribute("data-value"));
+         let selectedSbu = sbuObject[selectedBrandEdit.getAttribute("data-value")][selectedSBUEdit.getAttribute("data-value")];
+
+         codeEdit[1] = selectedSbu;
+         // codeTextEdit.innerText = codeEdit.concat(codeCateEdit).join(" ");
+      }
+   });
+});
+
+const categoryOberserverEdit = new MutationObserver(function (mutations) {
+   mutations.forEach(function (mutation) {
+      if (mutation.type === "attributes") {
+         let categoryChildrenEdit = Object.values(category[selectedCategoryEdit.getAttribute("data-value")])[1];
+
+         if (codeCateEdit[0]) codeCateEdit[0] = Object.values(category[selectedCategoryEdit.getAttribute("data-value")])[0];
+         else codeCate.push(Object.values(category[selectedCategoryEdit.getAttribute("data-value")])[0]);
+
+         if (codeCateEdit[1]) codeCateEdit[1] = categoryChildrenEdit[selectedCategoryEdit.getAttribute("data-value-child")];
+         else codeCate.push(categoryChildrenEdit[selectedCategoryEdit.getAttribute("data-value-child")]);
+         // codeTextEdit.innerText = codeEdit.concat(codeCateEdit).join(" ");
+      }
+   });
+});
 
 function generateTable() {
    let allCodeData = document.querySelectorAll(".codeData");
