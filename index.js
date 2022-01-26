@@ -124,6 +124,8 @@ const editIdentifierDropdownFormSelected = document.getElementById("editIdentifi
 
 const updateButton = document.querySelector(".updateButton");
 const addButton = document.querySelector(".addButton");
+const removeButton = document.querySelector(".removeButton");
+const removeButtonEdit = document.getElementById("removeButtonEdit");
 const editSelected = document.getElementById("editSelected");
 const editSBUSelected = document.getElementById("editSBUSelected");
 const editCategorySelected = document.getElementById("editCategorySelected");
@@ -649,7 +651,6 @@ async function start() {
             for (let key in brands) {
                sbuObject[key] = Object.values(brands[key])[1];
             }
-         
          }
 
          if (editKey === "BRAND") {
@@ -726,7 +727,6 @@ async function start() {
 
             removeOldList(selectedCategory);
             createEncoderSelection(productsObject, categoryOptionContainer, true);
-            
          }
 
          if (editKey === "CATEGORY") {
@@ -763,10 +763,44 @@ async function start() {
 
             editInputForm.value = selectedCategoryEdit.getAttribute("data-value-child");
             editActiveContainer.classList.remove("hide");
-
-           
          }
          updateCurrentDataToDataForm();
+      }
+   });
+
+   removeButton.addEventListener("click", function () {
+      //Add the msg laterr
+      alert("Click “REMOVE” to delete.");
+
+      removeButtonEdit.classList.remove("hide");
+   });
+
+   removeButtonEdit.addEventListener("click", function () {
+      let list = JSON.parse(localStorage.getItem("encodeLogs"));
+      let newList = [];
+      if (editKey === "BRAND") {
+         for (let i = 0; i < list.length; i++) {
+            if (list[i]["BRAND"] !== editInputForm.value) newList.push(list[i]);
+         }
+
+         console.log(newList);
+         localStorage.setItem("encodeLogs", JSON.stringify(newList));
+         generateTable();
+
+         delete brands[editInputForm.value];
+         localStorage.setItem("Brands", JSON.stringify(brands));
+         brands = JSON.parse(localStorage.getItem("Brands"));
+      }
+
+      if (editKey === "SUB-BRAND") {
+         let sbuList = brands[editDropdownFormSelected.getAttribute("data-value")]["SBUs"];
+         delete sbuList[editInputForm.value];
+
+         brands[editDropdownFormSelected.getAttribute("data-value")]["SBUs"] = sbuList;
+
+         localStorage.setItem("Brands", JSON.stringify(brands));
+
+         brands = JSON.parse(localStorage.getItem("Brands"));
       }
    });
 
