@@ -529,6 +529,20 @@ async function start() {
 
       updateButton.src = "./Symbol-Update.svg";
       updateButton.style.cursor = "pointer";
+
+      addButton.src = "./Symbol-Add.svg";
+      addButton.style.cursor = "pointer";
+      addButton.style.pointerEvents = "all";
+
+      removeButtonEdit.querySelector("button").style.backgroundColor = "#000";
+      removeButtonEdit.querySelector("button").style.cursor = "pointer";
+      removeButtonEdit.querySelector("button").style.pointerEvents = "all";
+      removeButtonEdit.classList.add("hide");
+
+      removeButton.src = "./Symbol-Remove.svg";
+      removeButton.style.cursor = "pointer";
+      removeButton.style.pointerEvents = "all";
+
       currentlyEditingCode = `${codeTextEdit.innerText[0]}${codeTextEdit.innerText[1]}`;
       currentEntryText.innerText = currentlyEditingCode;
 
@@ -544,6 +558,20 @@ async function start() {
 
       updateButton.src = "./Symbol-Update.svg";
       updateButton.style.cursor = "pointer";
+
+      addButton.src = "./Symbol-Add.svg";
+      addButton.style.cursor = "pointer";
+      addButton.style.pointerEvents = "all";
+
+      removeButtonEdit.querySelector("button").style.backgroundColor = "#000";
+      removeButtonEdit.querySelector("button").style.cursor = "pointer";
+      removeButtonEdit.querySelector("button").style.pointerEvents = "all";
+      removeButtonEdit.classList.add("hide");
+
+      removeButton.src = "./Symbol-Remove.svg";
+      removeButton.style.cursor = "pointer";
+      removeButton.style.pointerEvents = "all";
+
       currentlyEditingCode = `${codeTextEdit.innerText[3]}${codeTextEdit.innerText[4]}`;
       currentEntryText.innerText = currentlyEditingCode;
 
@@ -558,6 +586,20 @@ async function start() {
 
       updateButton.src = "./Symbol-Update.svg";
       updateButton.style.cursor = "pointer";
+
+      addButton.src = "./Symbol-Add.svg";
+      addButton.style.cursor = "pointer";
+      addButton.style.pointerEvents = "all";
+
+      removeButtonEdit.querySelector("button").style.backgroundColor = "#000";
+      removeButtonEdit.querySelector("button").style.cursor = "pointer";
+      removeButtonEdit.querySelector("button").style.pointerEvents = "all";
+      removeButtonEdit.classList.add("hide");
+
+      removeButton.src = "./Symbol-Remove.svg";
+      removeButton.style.cursor = "pointer";
+      removeButton.style.pointerEvents = "all";
+
       updateMSGContainer.classList.remove("hide");
       currentlyEditingCode = `${codeTextEdit.innerText[6]}${codeTextEdit.innerText[7]}`;
       currentEntryText.innerText = currentlyEditingCode;
@@ -574,6 +616,19 @@ async function start() {
 
       updateButton.src = "./Symbol-Update.svg";
       updateButton.style.cursor = "pointer";
+
+      addButton.src = "./Symbol-Add.svg";
+      addButton.style.cursor = "pointer";
+      addButton.style.pointerEvents = "all";
+
+      removeButtonEdit.querySelector("button").style.backgroundColor = "#000";
+      removeButtonEdit.querySelector("button").style.cursor = "pointer";
+      removeButtonEdit.querySelector("button").style.pointerEvents = "all";
+      removeButtonEdit.classList.add("hide");
+
+      removeButton.src = "./Symbol-Remove.svg";
+      removeButton.style.cursor = "pointer";
+      removeButton.style.pointerEvents = "all";
 
       editInputForm.value = currentDataToEdit["PRODUCT"];
    });
@@ -622,7 +677,11 @@ async function start() {
    });
 
    addButton.addEventListener("click", function () {
-      if (currentDataToEdit[editKey] !== editInputForm.value && (editInputForm.value !== "" || editInputForm.value !== " ")) {
+      if (currentDataToEdit[editKey] !== editInputForm.value && editInputForm.value !== "" && editInputForm.value !== " ") {
+         addButton.src = "./Symbol-Add Copy.svg";
+         addButton.style.cursor = "default";
+         addButton.style.pointerEvents = "none";
+
          if (editKey === "SUB-BRAND") {
             console.log("Updated SBU");
             let sbuKey;
@@ -633,10 +692,11 @@ async function start() {
             if (
                Object.values(brands[editDropdownFormSelected.getAttribute("data-value")][sbuKey]).at(-1) != null ||
                Object.values(brands[editDropdownFormSelected.getAttribute("data-value")][sbuKey]).at(-1) != undefined
-            )
+            ) {
                sbuLength = parseInt(Object.values(brands[editDropdownFormSelected.getAttribute("data-value")][sbuKey]).at(-1));
-            else sbuLength = 00;
-            sbuLength += 1;
+               sbuLength += 1;
+            } else sbuLength = 00;
+
             let sbus = brands[editDropdownFormSelected.getAttribute("data-value")][sbuKey];
 
             sbus[editInputForm.value] = sbuLength.toString().padStart(2, "0");
@@ -685,6 +745,10 @@ async function start() {
             editInputForm.value = selectedSBUEdit.innerText;
             editActiveContainer.classList.remove("hide");
             editContainer.classList.add("hide");
+
+            addButton.src = "./Symbol-Add.svg";
+            addButton.style.cursor = "pointer";
+            addButton.style.pointerEvents = "all";
 
             removeOldList(selectedBrand);
             createEncoderSelection(brands, brandOptionContainer);
@@ -764,6 +828,20 @@ async function start() {
             editInputForm.value = selectedCategoryEdit.getAttribute("data-value-child");
             editActiveContainer.classList.remove("hide");
          }
+
+         if (editKey === "INDENTIFIER") {
+            let productsTemplate = JSON.parse(localStorage.getItem("productsTemplates"));
+            let key = `${editCategoryDropdownFormSelected.getAttribute("data-value")} ${editCategoryDropdownFormSelected.getAttribute("data-value-child")}`;
+            let newTemplate = {};
+            let templateLength = productsTemplate[key].length;
+
+            newTemplate[editInputForm.value] = templateLength.toString().padStart(3, "0");
+
+            productsTemplate[key].push(newTemplate);
+
+            localStorage.setItem("productsTemplates", JSON.stringify(productsTemplate));
+         }
+
          updateCurrentDataToDataForm();
       }
    });
@@ -771,6 +849,9 @@ async function start() {
    removeButton.addEventListener("click", function () {
       //Add the msg laterr
       alert("Click “REMOVE” to delete.");
+      removeButton.src = "./Symbol-Remove Copy.svg";
+      removeButton.style.cursor = "default";
+      removeButton.style.pointerEvents = "none";
 
       removeButtonEdit.classList.remove("hide");
    });
@@ -778,6 +859,11 @@ async function start() {
    removeButtonEdit.addEventListener("click", function () {
       let list = JSON.parse(localStorage.getItem("encodeLogs"));
       let newList = [];
+
+      removeButtonEdit.querySelector("button").style.backgroundColor = "#B4B4B4";
+      removeButtonEdit.querySelector("button").style.cursor = "default";
+      removeButtonEdit.querySelector("button").style.pointerEvents = "none";
+
       if (editKey === "BRAND") {
          for (let i = 0; i < list.length; i++) {
             if (list[i]["BRAND"] !== editInputForm.value) newList.push(list[i]);
@@ -793,8 +879,22 @@ async function start() {
       }
 
       if (editKey === "SUB-BRAND") {
-         let sbuList = brands[editDropdownFormSelected.getAttribute("data-value")]["SBUs"];
+         let sbuKeyRemove;
+
+         if (editDropdownFormSelected.getAttribute("data-value") === "Global") sbuKeyRemove = "Division";
+         else if (editDropdownFormSelected.getAttribute("data-value") === "Vision Care") sbuKeyRemove = "SBUs";
+         else sbuKeyRemove = "Brand";
+
+         let sbuList = brands[editDropdownFormSelected.getAttribute("data-value")][sbuKeyRemove];
+
+         for (let i = 0; i < list.length; i++) {
+            if (list[i]["SUB-BRAND"] !== editInputForm.value) newList.push(list[i]);
+         }
+
          delete sbuList[editInputForm.value];
+
+         localStorage.setItem("encodeLogs", JSON.stringify(newList));
+         generateTable();
 
          brands[editDropdownFormSelected.getAttribute("data-value")]["SBUs"] = sbuList;
 
@@ -802,13 +902,82 @@ async function start() {
 
          brands = JSON.parse(localStorage.getItem("Brands"));
       }
+
+      if (editKey === "CATEGORY") {
+         for (let i = 0; i < list.length; i++) {
+            if (list[i]["CATEGORY"] !== editInputForm.value) newList.push(list[i]);
+         }
+
+         localStorage.setItem("encodeLogs", JSON.stringify(newList));
+         generateTable();
+
+         delete category[editInputForm.value];
+         localStorage.setItem("Category", JSON.stringify(category));
+         category = JSON.parse(localStorage.getItem("Category"));
+      }
+
+      if (editKey === "PRODUCT") {
+         let proList = category[editCategoryDropdownFormSelected.getAttribute("data-value")]["Product"];
+
+         for (let i = 0; i < list.length; i++) {
+            if (list[i]["PRODUCT"] !== editInputForm.value) newList.push(list[i]);
+         }
+         localStorage.setItem("encodeLogs", JSON.stringify(newList));
+         generateTable();
+
+         delete proList[editInputForm.value];
+
+         category[editCategoryDropdownFormSelected.getAttribute("data-value")]["Product"] = proList;
+         localStorage.setItem("Category", JSON.stringify(category));
+
+         category = JSON.parse(localStorage.getItem("Category"));
+      }
+
+      if (editKey === "INDENTIFIER") {
+         let productsTemplate = JSON.parse(localStorage.getItem("productsTemplates"));
+         let key = `${editCategoryDropdownFormSelected.getAttribute("data-value")} ${editCategoryDropdownFormSelected.getAttribute("data-value-child")}`;
+         let elements = Object.values(productsTemplate[key]);
+
+         for (let i = 0; i < list.length; i++) {
+            if (Object.keys(list[i]["INDENTIFIER"]) !== editInputForm.value) newList.push(list[i]);
+         }
+
+         localStorage.setItem("encodeLogs", JSON.stringify(newList));
+         generateTable();
+
+         for (let key in elements) {
+            if (Object.keys(elements[key]) == editInputForm.value) {
+               elements.splice(key, 1);
+            }
+         }
+
+         productsTemplate[key] = elements;
+
+         localStorage.setItem("productsTemplates", JSON.stringify(productsTemplate));
+      }
+
+      currentEntryText.innerText = `${editInputForm.value} removed`;
    });
 
    cancelButtonEdit.addEventListener("click", function () {
       updateButton.src = "./Symbol-Update.svg";
       updateButton.style.cursor = "pointer";
+
+      addButton.src = "./Symbol-Add.svg";
+      addButton.style.cursor = "pointer";
+      addButton.style.pointerEvents = "all";
+
       editActiveContainer.classList.add("hide");
       editContainer.classList.remove("hide");
+
+      removeButtonEdit.querySelector("button").style.backgroundColor = "#000";
+      removeButtonEdit.querySelector("button").style.cursor = "pointer";
+      removeButtonEdit.querySelector("button").style.pointerEvents = "all";
+      removeButtonEdit.classList.add("hide");
+
+      removeButton.src = "./Symbol-Remove.svg";
+      removeButton.style.cursor = "pointer";
+      removeButton.style.pointerEvents = "all";
    });
 
    //GenerateTable
