@@ -341,24 +341,7 @@
             "PRODUCT": "Business Cards",
             "INDENTIFIER": {
                 "Template": "000"
-            },
-            "JOB": [
-                {
-                    "JR": "1234567890-z",
-                    "TIME": "11:50 PM",
-                    "DATE": "01/11/22"
-                },
-                {
-                    "JR": "1234567890-x",
-                    "TIME": "11:51 PM",
-                    "DATE": "01/21/22"
-                },
-                {
-                    "JR": "1234567890-c",
-                    "TIME": "11:52 PM",
-                    "DATE": "01/30/22"
-                }
-            ]
+            }
         },
         {
             "CODE": "060003000001",
@@ -371,35 +354,6 @@
             "INDENTIFIER": {
                 "Union": "001"
             }
-        },
-        {
-            "CODE": "000000000000",
-            "TIME": "1:30 PM",
-            "DATE": "12/18/21",
-            "BRAND": "Onsite Clinics",
-            "SUB-BRAND": "Onsite Clinics",
-            "CATEGORY": "Stationery",
-            "PRODUCT": "Business Cards",
-            "INDENTIFIER": {
-                "Union": "001"
-            },
-            "JOB": [
-                {
-                    "JR": "1234567890-1",
-                    "TIME": "11:50 PM",
-                    "DATE": "01/21/22"
-                },
-                {
-                    "JR": "1234567890-2",
-                    "TIME": "11:51 PM",
-                    "DATE": "01/11/22"
-                },
-                {
-                    "JR": "1234567890-3",
-                    "TIME": "11:52 PM",
-                    "DATE": "01/31/22"
-                }
-            ]
         }
     ]
 }

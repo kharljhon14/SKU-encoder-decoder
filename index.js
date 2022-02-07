@@ -16,6 +16,9 @@ let dataToSave = {};
 let currentData;
 let currentDataToEdit;
 
+let currentEncoData;
+let currentEncoDataEdit;
+
 let code = [];
 let codeCate = [];
 let codeEdit = [];
@@ -309,9 +312,26 @@ async function start() {
    generateCodeBtn.onclick = function () {
       saveButton.querySelector("button").disabled = false;
       let templates = JSON.parse(localStorage.getItem("productsTemplates"))[selectedCategory.getAttribute("data-value") + " " + selectedCategory.getAttribute("data-value-child")];
+
       let lastValue = Object.values(templates).at(-1);
-      if (lastValue !== undefined) codeCate[2] = ("00" + Object.values(templates).length).slice(-3);
-      else codeCate[2] = "000";
+
+      if (templates.length != 0) {
+         for (let i = 0; i < templates.length; i++) {
+            let identifer = Object.keys(templates[i]);
+
+            if (identifer[0].trim().replace(/\s/g, "") === capitalizeFirstLetter(indentifierInput.value.trim().replace(/\s/g, ""))) {
+               codeCate[2] = Object.values(templates[i]);
+               break;
+            } else {
+               if (lastValue !== undefined) codeCate[2] = ("00" + Object.values(templates).length).slice(-3);
+               else codeCate[2] = "000";
+            }
+         }
+      } else {
+         if (lastValue !== undefined) codeCate[2] = ("00" + Object.values(templates).length).slice(-3);
+         else codeCate[2] = "000";
+      }
+
       codeText.innerText = code.concat(codeCate).join(" ") + "*";
       saveButton.classList.remove("hide");
       copyButton.classList.remove("hide");
@@ -417,6 +437,7 @@ async function start() {
       editInputForm.value = selectedBrandEdit.innerText;
       editActiveContainer.classList.remove("hide");
       editContainer.classList.add("hide");
+      console.log(currentData);
    });
 
    editSBU.addEventListener("click", function () {
@@ -671,7 +692,38 @@ async function start() {
          });
          currentDataToEdit["TIME"] = time;
          currentDataToEdit["DATE"] = result;
-         localStorage.setItem("encodeLogs", JSON.stringify(currentData));
+
+         currentEncoDataEdit = currentDataToEdit;
+
+         for (let i = 0; i < currentEncoData.length; i++) {
+            if (currentEncoData[i]["CODE"] === currentEncoDataEdit["CODE"]) {
+               if (currentEncoDataEdit["JOB"] != "N/A") {
+                  for (let key in currentEncoData[i]["JOB"]) {
+                     if (currentEncoData[i]["JOB"][key]["JR"] == currentEncoDataEdit["JOB"]) {
+                        let newJob = currentEncoData[i]["JOB"];
+                        let temp = currentEncoDataEdit["JOB"];
+
+                        currentEncoDataEdit["JOB"] = newJob;
+                        currentEncoData[i] = currentEncoDataEdit;
+
+                        currentEncoData[i]["JOB"][key]["TIME"] = currentEncoDataEdit["TIME"];
+                        currentEncoData[i]["JOB"][key]["DATE"] = currentEncoDataEdit["DATE"];
+                        console.log(currentEncoData[i]);
+                        localStorage.setItem("encodeLogs", JSON.stringify(currentEncoData));
+                        currentEncoData[i]["JOB"] = temp;
+                        break;
+                     }
+                  }
+               } else {
+                  currentEncoData[i] = currentEncoDataEdit;
+                  delete currentEncoData[i]["JOB"];
+                  localStorage.setItem("encodeLogs", JSON.stringify(currentEncoData));
+                  break;
+               }
+            }
+         }
+         console.log(currentEncoData);
+         localStorage.setItem("tableData", JSON.stringify(currentData));
          updateCurrentDataToDataForm();
       }
    });
@@ -824,6 +876,10 @@ async function start() {
             createEncoderSelection(productsObject, categoryOptionContainer, true);
 
             currentEntryText.innerText = `Entry ${editInputForm.value} added `;
+
+            addButton.src = "./Symbol-Add.svg";
+            addButton.style.cursor = "pointer";
+            addButton.style.pointerEvents = "all";
 
             editInputForm.value = selectedCategoryEdit.getAttribute("data-value-child");
             editActiveContainer.classList.remove("hide");
@@ -984,15 +1040,48 @@ async function start() {
    generateTable();
 
    //Download CSV
-   const keys = Object.keys(JSON.parse(localStorage.getItem("encodeLogs"))[0]);
-   const commaSeparatedString = [
-      keys.join(","),
-      JSON.parse(localStorage.getItem("encodeLogs"))
-         .map((row) => keys.map((key) => row[key]).join(","))
-         .join("\n"),
-   ].join("\n");
-   const csvBlob = new Blob([commaSeparatedString]);
-   downloadCSV.href = URL.createObjectURL(csvBlob);
+
+   downloadCSV.addEventListener("click", function () {
+      const encoTable = JSON.parse(localStorage.getItem("tableData"));
+      const keys = Object.keys(encoTable[0]);
+      let t = [];
+      t = [];
+
+      for (let i = 0; i < encoTable.length; i++) {
+         let newObj = {};
+         if (encoTable[i]["JOB"]) {
+            newObj = {
+               CODE: encoTable[i]["CODE"],
+               TIME: encoTable[i]["TIME"],
+               DATE: encoTable[i]["DATE"],
+               BRAND: encoTable[i]["BRAND"],
+               "SUB-BRAND": encoTable[i]["SUB-BRAND"],
+               CATEGORY: encoTable[i]["CATEGORY"],
+               PRODUCT: encoTable[i]["PRODUCT"],
+               INDENTIFIER: Object.keys(encoTable[i]["INDENTIFIER"])[0],
+               JOB: encoTable[i]["JOB"],
+            };
+            t.push(newObj);
+         } else {
+            newObj = {
+               CODE: encoTable[i]["CODE"],
+               TIME: encoTable[i]["TIME"],
+               DATE: encoTable[i]["DATE"],
+               BRAND: encoTable[i]["BRAND"],
+               "SUB-BRAND": encoTable[i]["SUB-BRAND"],
+               CATEGORY: encoTable[i]["CATEGORY"],
+               PRODUCT: encoTable[i]["PRODUCT"],
+               INDENTIFIER: Object.keys(encoTable[i]["INDENTIFIER"])[0],
+               JOB: "N/A",
+            };
+            t.push(newObj);
+         }
+      }
+
+      const commaSeparatedString = [keys.join(","), t.map((row) => keys.map((key) => row[key]).join(",")).join("\n")].join("\n");
+      const csvBlob = new Blob([commaSeparatedString]);
+      downloadCSV.href = URL.createObjectURL(csvBlob);
+   });
 
    skipButton.onclick = function () {
       brandOberserver.observe(selectedBrand, { attributes: true });
@@ -1013,32 +1102,45 @@ async function start() {
          for (let i = 0; i < encodeLogData.length; i++) {
             for (let key in encodeLogData[i]) {
                if (key === "JOB") {
-                  if (jobNumberInput.value.toLowerCase() === Object.values(Object.values(encodeLogData[i]["JOB"])[0])[0].toLowerCase()) {
-                     jrNumberSKUCodeContainer.classList.remove("hide");
-                     jrDate.innerText = encodeLogData[i]["DATE"] + " / " + encodeLogData[i]["TIME"];
-                     jrBrand.innerText = encodeLogData[i]["BRAND"];
-                     jrSBU.innerText = encodeLogData[i]["SUB-BRAND"];
-                     jrCategory.innerText = encodeLogData[i]["CATEGORY"];
-                     jrProduct.innerText = encodeLogData[i]["PRODUCT"];
-                     jrIdentifier.innerText = Object.keys(encodeLogData[i]["INDENTIFIER"]);
-                     jrRelatedJobs.innerText = Object.values(Object.values(encodeLogData[i]["JOB"])[0])[0];
+                  for (let y = 0; y < encodeLogData[i]["JOB"].length; y++) {
+                     if (jobNumberInput.value.toLowerCase() === encodeLogData[i]["JOB"][y]["JR"].toLowerCase()) {
+                        jrNumberSKUCodeContainer.classList.remove("hide");
+                        jrDate.innerText = encodeLogData[i]["JOB"][y]["DATE"] + " / " + encodeLogData[i]["JOB"][y]["TIME"];
 
-                     let codeFirstHalfSKU = encodeLogData[i]["CODE"].slice(0, 6);
-                     let codeSecondHalfSKU = encodeLogData[i]["CODE"].slice(6);
-                     codeFirstHalfSKU = codeFirstHalfSKU.match(/.{1,2}/g).join(" ");
-                     codeSecondHalfSKU = codeSecondHalfSKU.match(/.{1,3}/g).join(" ");
+                        jrBrand.innerText = encodeLogData[i]["BRAND"];
+                        jrSBU.innerText = encodeLogData[i]["SUB-BRAND"];
+                        jrCategory.innerText = encodeLogData[i]["CATEGORY"];
+                        jrProduct.innerText = encodeLogData[i]["PRODUCT"];
+                        jrIdentifier.innerText = Object.keys(encodeLogData[i]["INDENTIFIER"]);
+                        console.log(encodeLogData[i]["JOB"]);
+                        jrRelatedJobs.innerText = "";
+                        for (let z = 0; z < encodeLogData[i]["JOB"].length; z++) {
+                           if (jobNumberInput.value.toLowerCase() === encodeLogData[i]["JOB"][z]["JR"].toLowerCase()) continue;
 
-                     let co = codeFirstHalfSKU.split(/\s+/);
-                     let de = codeSecondHalfSKU.split(/\s+/);
+                           let newSpan = document.createElement("span");
+                           newSpan.innerText = encodeLogData[i]["JOB"][z]["JR"];
+                           newSpan.style.display = "block";
+                           jrRelatedJobs.appendChild(newSpan);
+                        }
+                        // jrRelatedJobs.innerText = Object.values(Object.values(encodeLogData[i]["JOB"])[0])[0];s
 
-                     jrNumberFoundSKUCode.innerText = co.concat(de).join(" ");
+                        let codeFirstHalfSKU = encodeLogData[i]["CODE"].slice(0, 6);
+                        let codeSecondHalfSKU = encodeLogData[i]["CODE"].slice(6);
+                        codeFirstHalfSKU = codeFirstHalfSKU.match(/.{1,2}/g).join(" ");
+                        codeSecondHalfSKU = codeSecondHalfSKU.match(/.{1,3}/g).join(" ");
 
-                     jobNumberForm.classList.remove("hide");
-                     errorMsgAddToSKU.classList.add("hide");
-                     jobNumberForm.classList.remove("errorMsgColor");
+                        let co = codeFirstHalfSKU.split(/\s+/);
+                        let de = codeSecondHalfSKU.split(/\s+/);
 
-                     errorMsgJR.classList.add("hide");
-                     return;
+                        jrNumberFoundSKUCode.innerText = co.concat(de).join(" ");
+
+                        jobNumberForm.classList.remove("hide");
+                        errorMsgAddToSKU.classList.add("hide");
+                        jobNumberForm.classList.remove("errorMsgColor");
+
+                        errorMsgJR.classList.add("hide");
+                        return;
+                     }
                   }
                }
             }
@@ -1056,6 +1158,7 @@ async function start() {
          errorMsgAddToSKU.classList.add("hide");
          errorMsgJR.classList.add("hide");
          jobNumberForm.classList.add("hide");
+         jrNumberSKUCodeContainer.classList.add("hide");
       }
    });
 
@@ -1065,31 +1168,42 @@ async function start() {
          for (let i = 0; i < encodeLogData.length; i++) {
             for (let key in encodeLogData[i]) {
                if (key === "JOB") {
-                  if (jobNumberInput.value.toLowerCase() === Object.values(Object.values(encodeLogData[i]["JOB"])[0])[0].toLowerCase()) {
-                     jrNumberSKUCodeContainer.classList.add("hide");
+                  for (let y = 0; y < encodeLogData[i]["JOB"].length; y++) {
+                     if (jobNumberInput.value.toLowerCase() === encodeLogData[i]["JOB"][y]["JR"].toLowerCase()) {
+                        jrNumberSKUCodeContainer.classList.add("hide");
 
-                     jrDate.innerText = encodeLogData[i]["DATE"] + " / " + encodeLogData[i]["TIME"];
-                     jrBrand.innerText = encodeLogData[i]["BRAND"];
-                     jrSBU.innerText = encodeLogData[i]["SUB-BRAND"];
-                     jrCategory.innerText = encodeLogData[i]["CATEGORY"];
-                     jrProduct.innerText = encodeLogData[i]["PRODUCT"];
-                     jrIdentifier.innerText = Object.keys(encodeLogData[i]["INDENTIFIER"]);
-                     jrRelatedJobs.innerText = Object.values(Object.values(encodeLogData[i]["JOB"])[0])[0];
+                        jrDate.innerText = encodeLogData[i]["JOB"][y]["DATE"] + " / " + encodeLogData[i]["JOB"][y]["TIME"];
+                        jrBrand.innerText = encodeLogData[i]["BRAND"];
+                        jrSBU.innerText = encodeLogData[i]["SUB-BRAND"];
+                        jrCategory.innerText = encodeLogData[i]["CATEGORY"];
+                        jrProduct.innerText = encodeLogData[i]["PRODUCT"];
+                        jrIdentifier.innerText = Object.keys(encodeLogData[i]["INDENTIFIER"]);
 
-                     let codeFirstHalfSKU = encodeLogData[i]["CODE"].slice(0, 6);
-                     let codeSecondHalfSKU = encodeLogData[i]["CODE"].slice(6);
-                     codeFirstHalfSKU = codeFirstHalfSKU.match(/.{1,2}/g).join(" ");
-                     codeSecondHalfSKU = codeSecondHalfSKU.match(/.{1,3}/g).join(" ");
+                        jrRelatedJobs.innerText = "";
+                        for (let z = 0; z < encodeLogData[i]["JOB"].length; z++) {
+                           if (jobNumberInput.value.toLowerCase() === encodeLogData[i]["JOB"][z]["JR"].toLowerCase()) continue;
 
-                     let co = codeFirstHalfSKU.split(/\s+/);
-                     let de = codeSecondHalfSKU.split(/\s+/);
+                           let newSpan = document.createElement("span");
+                           newSpan.innerText = encodeLogData[i]["JOB"][z]["JR"];
+                           newSpan.style.display = "block";
+                           jrRelatedJobs.appendChild(newSpan);
+                        }
 
-                     jrNumberErrorSKUCode.innerText = co.concat(de).join(" ");
+                        let codeFirstHalfSKU = encodeLogData[i]["CODE"].slice(0, 6);
+                        let codeSecondHalfSKU = encodeLogData[i]["CODE"].slice(6);
+                        codeFirstHalfSKU = codeFirstHalfSKU.match(/.{1,2}/g).join(" ");
+                        codeSecondHalfSKU = codeSecondHalfSKU.match(/.{1,3}/g).join(" ");
 
-                     errorMsgAddToSKU.classList.remove("hide");
-                     jobNumberForm.classList.add("errorMsgColor");
-                     jobNumberForm.classList.remove("hide");
-                     return;
+                        let co = codeFirstHalfSKU.split(/\s+/);
+                        let de = codeSecondHalfSKU.split(/\s+/);
+
+                        jrNumberErrorSKUCode.innerText = co.concat(de).join(" ");
+
+                        errorMsgAddToSKU.classList.remove("hide");
+                        jobNumberForm.classList.add("errorMsgColor");
+                        jobNumberForm.classList.remove("hide");
+                        return;
+                     }
                   }
                }
             }
@@ -1177,35 +1291,71 @@ function generateTable() {
       codeData.remove();
    });
 
-   for (let key in JSON.parse(localStorage.getItem("encodeLogs"))) {
-      let size = Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key]).length;
-      let newTr = document.createElement("tr");
-      newTr.id = Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[0];
-      newTr.classList.add("codeData");
-      for (let i = 0; i < size; i++) {
-         let newTD = document.createElement("td");
-         //Check json
+   let enco = JSON.parse(localStorage.getItem("encodeLogs"));
 
-         if (size === 8 && i === 7) {
-            size = 9;
-            i == 8;
+   let updatedTable = [];
+   updatedTable = [];
+   for (let i = 0; i < enco.length; i++) {
+      let newObj = {};
+      if (enco[i]["JOB"]) {
+         for (let y = 0; y < enco[i]["JOB"].length; y++) {
+            newObj = {
+               CODE: enco[i]["CODE"],
+               TIME: enco[i]["JOB"][y]["TIME"],
+               DATE: enco[i]["JOB"][y]["DATE"],
+               BRAND: enco[i]["BRAND"],
+               "SUB-BRAND": enco[i]["SUB-BRAND"],
+               CATEGORY: enco[i]["CATEGORY"],
+               PRODUCT: enco[i]["PRODUCT"],
+               INDENTIFIER: enco[i]["INDENTIFIER"],
+               JOB: enco[i]["JOB"][y]["JR"],
+            };
+            updatedTable.push(newObj);
          }
+      } else {
+         newObj = {
+            CODE: enco[i]["CODE"],
+            TIME: enco[i]["TIME"],
+            DATE: enco[i]["DATE"],
+            BRAND: enco[i]["BRAND"],
+            "SUB-BRAND": enco[i]["SUB-BRAND"],
+            CATEGORY: enco[i]["CATEGORY"],
+            PRODUCT: enco[i]["PRODUCT"],
+            INDENTIFIER: enco[i]["INDENTIFIER"],
+            JOB: "N/A",
+         };
+         updatedTable.push(newObj);
+      }
+   }
 
-         if (i === 0) {
+   localStorage.setItem("tableData", JSON.stringify(updatedTable));
+
+   for (let i = 0; i < updatedTable.length; i++) {
+      let newTr = document.createElement("tr");
+      newTr.id = updatedTable[i]["CODE"];
+      newTr.classList.add(updatedTable[i]["CODE"]);
+      newTr.classList.add("codeData");
+
+      for (let key in updatedTable[i]) {
+         let newTD = document.createElement("td");
+
+         if (key === "CODE") {
             let newLink = document.createElement("a");
             newLink.href = "javascript:;";
-            newLink.innerText = Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[i];
+            newLink.innerText = updatedTable[i]["CODE"];
 
             newLink.addEventListener("click", function () {
                editContainer.classList.remove("hide");
                tableConatainer.classList.add("hide");
                backButtonToStart.classList.remove("hide");
                backButtonToDecoder.classList.add("hide");
-               currentData = JSON.parse(localStorage.getItem("encodeLogs"));
-               currentDataToEdit = currentData[key];
-               console.log(Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[i]);
+               currentData = updatedTable;
+               currentDataToEdit = updatedTable[i];
 
-               decodeCode = Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[0];
+               currentEncoData = enco;
+               currentEncoDataEdit = enco[i];
+
+               decodeCode = updatedTable[i]["CODE"];
                // .match(/.{1,2}/g).join(" ");
                let codeFirstHalfList = decodeCode.slice(0, 6);
                let codeSecondHalfList = decodeCode.slice(6);
@@ -1213,40 +1363,46 @@ function generateTable() {
                codeSecondHalfList = codeSecondHalfList.match(/.{1,3}/g).join(" ");
                codeEdit = codeFirstHalfList.split(/\s+/);
                codeCateEdit = codeSecondHalfList.split(/\s+/);
+
                updateCurrentDataToDataForm();
             });
 
             newTD.appendChild(newLink);
-         } else if (i === 7) {
-            newTD.innerText = Object.keys(Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[i]);
-         } else if (i === 8) {
-            if (Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[i] != undefined)
-               newTD.innerText = Object.values(Object.values(Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[i])[0])[0];
-            else newTD.innerText = "N/A";
+         } else if (key === "TIME") {
+            newTD.innerText = updatedTable[i]["TIME"];
+         } else if (key === "DATE") {
+            newTD.innerText = updatedTable[i]["DATE"];
+         } else if (key === "BRAND") {
+            newTD.innerText = updatedTable[i]["BRAND"];
+         } else if (key === "SUB-BRAND") {
+            newTD.innerText = updatedTable[i]["SUB-BRAND"];
+         } else if (key === "CATEGORY") {
+            newTD.innerText = updatedTable[i]["CATEGORY"];
+         } else if (key === "PRODUCT") {
+            newTD.innerText = updatedTable[i]["PRODUCT"];
+         } else if (key === "INDENTIFIER") {
+            newTD.innerText = Object.keys(updatedTable[i]["INDENTIFIER"]);
          } else {
-            newTD.innerText = Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[i];
+            newTD.innerText = updatedTable[i]["JOB"];
          }
 
          newTr.appendChild(newTD);
       }
+
       tableBody.appendChild(newTr);
    }
 
    allCodeData = document.querySelectorAll(".codeData");
    tableSearchInput.addEventListener("change", function () {
-      if (tableSearchInput.value !== "") {
+      if (tableSearchInput.value !== "" && tableSearchInput.value.length == 12) {
          allCodeData.forEach(function (codedData) {
             codedData.classList.add("hide");
          });
 
-         for (let i = 0; i < allCodeData.length; i++) {
-            if (tableSearchInput.value === allCodeData[i].id) {
-               allCodeData[i].classList.remove("hide");
-               return;
-            }
-         }
          allCodeData.forEach(function (codedData) {
-            codedData.classList.remove("hide");
+            if (codedData.classList.contains(tableSearchInput.value)) {
+               codedData.classList.remove("hide");
+            }
          });
       } else {
          allCodeData.forEach(function (codedData) {
@@ -1371,6 +1527,8 @@ function save() {
       day: "2-digit",
    });
 
+   let dataENCO = JSON.parse(localStorage.getItem("encodeLogs"));
+
    let identiferObject = {};
    let selectedProduct = JSON.parse(localStorage.getItem("productsTemplates"))[selectedCategory.getAttribute("data-value") + " " + selectedCategory.getAttribute("data-value-child")];
    if (selectedProduct.length <= 0) {
@@ -1378,23 +1536,52 @@ function save() {
    }
    identiferObject[indentifierInput.getAttribute("data-value")] = ("00" + Object.values(selectedProduct).length).slice(-3);
 
-   for (let key in JSON.parse(localStorage.getItem("encodeLogs"))) {
-      if (codeText.innerText.replace(/\s/g, "") === Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[0]) {
-         document.getElementById("encodedDate").innerText =
-            Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[2] + " / " + Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[1];
-         document.getElementById("encodedBrand").innerText = Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[3];
-         document.getElementById("encodedSBU").innerText = Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[4];
-         document.getElementById("encodedCategory").innerText = Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[5];
-         document.getElementById("encodedProduct").innerText = Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[6];
-         document.getElementById("encodedIdentifier").innerText = Object.keys(Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[key])[7]);
+   // If has jr number already
+   for (let i = 0; i < dataENCO.length; i++) {
+      for (let key in dataENCO[i]["JOB"]) {
+         if (jobNumberInput.getAttribute("data-value")) {
+            if (jobNumberInput.getAttribute("data-value").toUpperCase() === Object.values(dataENCO[i]["JOB"][key])[0]) {
+               document.getElementById("encodedDate").innerText = Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[i])[2] + " / " + Object.values(dataENCO[i])[1];
+               document.getElementById("encodedBrand").innerText = Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[i])[3];
+               document.getElementById("encodedSBU").innerText = Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[i])[4];
+               document.getElementById("encodedCategory").innerText = Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[i])[5];
+               document.getElementById("encodedProduct").innerText = Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[i])[6];
+               document.getElementById("encodedIdentifier").innerText = Object.keys(Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[i])[7]);
 
-         errorMsgContainer.classList.remove("hide");
-         encodedContent.classList.add("errorMsgColor");
-         encodedResult.classList.remove("hide");
-         return;
+               if (jobNumberInput.getAttribute("data-value")) document.getElementById("encodedJR").innerText = jobNumberInput.getAttribute("data-value").toUpperCase();
+               else document.getElementById("encodedJR").innerText = "";
+
+               errorMsgContainer.classList.remove("hide");
+               encodedContent.classList.add("errorMsgColor");
+               encodedResult.classList.remove("hide");
+               return;
+            }
+         }
       }
    }
 
+   for (let i = 0; i < dataENCO.length; i++) {
+      if (codeText.innerText.replace(/\s/g, "") === dataENCO[i]["CODE"]) {
+         if (jobNumberInput.getAttribute("data-value") == undefined || jobNumberInput.getAttribute("data-value") == null) {
+            console.log(dataENCO[i]["CODE"], codeText.innerText.replace(/\s/g, ""));
+
+            document.getElementById("encodedDate").innerText = Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[i])[2] + " / " + Object.values(dataENCO[i])[1];
+            document.getElementById("encodedBrand").innerText = Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[i])[3];
+            document.getElementById("encodedSBU").innerText = Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[i])[4];
+            document.getElementById("encodedCategory").innerText = Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[i])[5];
+            document.getElementById("encodedProduct").innerText = Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[i])[6];
+            document.getElementById("encodedIdentifier").innerText = Object.keys(Object.values(JSON.parse(localStorage.getItem("encodeLogs"))[i])[7]);
+
+            if (jobNumberInput.getAttribute("data-value")) document.getElementById("encodedJR").innerText = jobNumberInput.getAttribute("data-value").toUpperCase();
+            else document.getElementById("encodedJR").innerText = "";
+
+            errorMsgContainer.classList.remove("hide");
+            encodedContent.classList.add("errorMsgColor");
+            encodedResult.classList.remove("hide");
+            return;
+         }
+      }
+   }
    dataToSave["CODE"] = codeText.innerText.replace(/\s/g, "");
    dataToSave["TIME"] = time;
    dataToSave["DATE"] = result;
@@ -1405,11 +1592,34 @@ function save() {
    dataToSave["INDENTIFIER"] = identiferObject;
 
    productsTemplates = JSON.parse(localStorage.getItem("productsTemplates"));
-   productsTemplates[dataToSave["CATEGORY"] + " " + dataToSave["PRODUCT"]].push(identiferObject);
-   localStorage.setItem("productsTemplates", JSON.stringify(productsTemplates));
+   let currentProductTemplate = productsTemplates[dataToSave["CATEGORY"] + " " + dataToSave["PRODUCT"]];
 
-   if (jobNumberInput.getAttribute("data-value")) {
-      dataToSave["JOB"] = [{ JR: jobNumberInput.getAttribute("data-value").toUpperCase(), TIME: time, DATE: result }];
+   if (currentProductTemplate.length != 0) {
+      for (let i = 0; i < currentProductTemplate.length; i++) {
+         if (Object.keys(currentProductTemplate[i])[0].trim().replace(/\s/g, "") !== capitalizeFirstLetter(indentifierInput.value.trim().replace(/\s/g, ""))) {
+            productsTemplates[dataToSave["CATEGORY"] + " " + dataToSave["PRODUCT"]].push(identiferObject);
+            localStorage.setItem("productsTemplates", JSON.stringify(productsTemplates));
+         }
+      }
+   } else {
+      productsTemplates[dataToSave["CATEGORY"] + " " + dataToSave["PRODUCT"]].push(identiferObject);
+      localStorage.setItem("productsTemplates", JSON.stringify(productsTemplates));
+   }
+
+   for (let i = 0; i < dataENCO.length; i++) {
+      if (dataENCO[i]["CODE"] === codeText.innerText.replace(/\s/g, "")) {
+         if (jobNumberInput.getAttribute("data-value")) {
+            console.log("FOUND");
+            dataENCO[i]["JOB"].push({ JR: jobNumberInput.getAttribute("data-value").toUpperCase(), TIME: time, DATE: result });
+            dataToSave["JOB"] = dataENCO[i]["JOB"];
+            break;
+         }
+      } else {
+         if (jobNumberInput.getAttribute("data-value")) {
+            console.log("NEW");
+            dataToSave["JOB"] = [{ JR: jobNumberInput.getAttribute("data-value").toUpperCase(), TIME: time, DATE: result }];
+         }
+      }
    }
 
    document.getElementById("encodedDate").innerText = dataToSave["DATE"] + " " + dataToSave["TIME"];
@@ -1427,8 +1637,21 @@ function save() {
    encodedResult.classList.remove("hide");
 
    console.log(dataToSave);
-
    let newData = JSON.parse(localStorage.getItem("encodeLogs"));
+
+   //Adding jr number to a sku
+   for (let i = 0; i < dataENCO.length; i++) {
+      if (codeText.innerText.replace(/\s/g, "") === Object.values(dataENCO[i])[0]) {
+         dataENCO[i] = dataToSave;
+         localStorage.setItem("encodeLogs", JSON.stringify(dataENCO));
+         newData = [];
+         dataToSave = {};
+         return;
+      }
+   }
+
+   // when adding new SKU
+
    newData.push(dataToSave);
    localStorage.setItem("encodeLogs", JSON.stringify(newData));
    newData = [];
@@ -1517,6 +1740,7 @@ function resetValues() {
 }
 
 function updateCurrentDataToDataForm() {
+   console.log(currentDataToEdit);
    setEditValues(selectedBrandEdit, currentDataToEdit["BRAND"]);
    setEditValues(selectedSBUEdit, currentDataToEdit["SUB-BRAND"]);
    selectedCategoryEdit.innerText = `${currentDataToEdit["PRODUCT"]} | ${currentDataToEdit["CATEGORY"]}`;
@@ -1524,8 +1748,7 @@ function updateCurrentDataToDataForm() {
    selectedCategoryEdit.setAttribute("data-value-child", `${currentDataToEdit["PRODUCT"]} `);
    setEditValues(selectedIndentifierEdit, Object.keys(currentDataToEdit["INDENTIFIER"]).at(-1));
    if (currentDataToEdit["JOB"] != null || currentDataToEdit["JOB"] != undefined) {
-      console.log(currentDataToEdit["JOB"]);
-      setEditValues(selectedjrEdit, Object.values(currentDataToEdit["JOB"].at(-1))[0]);
+      setEditValues(selectedjrEdit, currentDataToEdit["JOB"]);
    }
 
    codeTextEdit.innerText = codeEdit.concat(codeCateEdit).join(" ");
