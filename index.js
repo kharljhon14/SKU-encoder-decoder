@@ -138,6 +138,7 @@ const editIdentifierSelected = document.getElementById("editIdentifierSelected")
 
 const updateMSGContainer = document.querySelector(".updateMSGContainer");
 const currentEntryText = document.getElementById("currentEntryText");
+const backButtonEdit = document.getElementById("backButtonEdit");
 
 async function getData(path) {
    try {
@@ -237,7 +238,7 @@ async function start() {
          if (mutation.type === "attributes") {
             if (selectSBUContainer.classList.contains("hide")) selectSBUContainer.classList.remove("hide");
             encodedContent.classList.remove("hide");
-
+            console.log("run");
             if (selectedBrand.getAttribute("data-value") === "Global") resetSelectedValues(selectedSBU, "Choose a division");
             else if (selectedBrand.getAttribute("data-value") === "Vision Care") resetSelectedValues(selectedSBU, "Choose a SBU");
             else resetSelectedValues(selectedSBU, "Choose a brand");
@@ -251,6 +252,7 @@ async function start() {
             saveButton.querySelector("button").disabled = false;
 
             codeText.innerText = code.concat(codeCate).join(" ");
+            brandOberserver.disconnect();
          }
       });
    });
@@ -390,9 +392,11 @@ async function start() {
       decoderContainer.classList.add("hide");
       backButtonToDecoder.classList.remove("hide");
       backButtonToStart.classList.add("hide");
+
       brandOberserverEdit.observe(selectedBrandEdit, { attributes: true });
       sbuOberserverEdit.observe(selectedSBUEdit, { attributes: true });
       categoryOberserverEdit.observe(selectedCategoryEdit, { attributes: true });
+      identifierOberserverEdit.observe(selectedIndentifierEdit, { attributes: true });
 
       updateCurrentDataToDataForm();
    });
@@ -417,6 +421,7 @@ async function start() {
    backButtonToStart.addEventListener("click", function () {
       editContainer.classList.add("hide");
       tableConatainer.classList.remove("hide");
+      generateTable();
    });
 
    let currentlyEditingCode;
@@ -538,6 +543,50 @@ async function start() {
       createEncoderSelection(allTemplates, editIdentifierDropdownOptionsForm);
 
       editInputForm.value = selectedIndentifierEdit.innerText;
+      editActiveContainer.classList.remove("hide");
+      editContainer.classList.add("hide");
+   });
+
+   editJr.addEventListener("click", function () {
+      editKey = "JOB";
+      editDropdownContainer.classList.remove("hide");
+      editSBUDropdownContainer.classList.remove("hide");
+      editCategoryDropdownContainer.classList.add("hide");
+      editCategoryProductDropdownContainer.classList.remove("hide");
+
+      editIdentifierDropdownContainer.classList.add("hide");
+
+      editDropdownFormSelected.innerText = `${currentDataToEdit["BRAND"]}`;
+      editDropdownFormSelected.setAttribute("data-value", currentDataToEdit["BRAND"]);
+
+      editSBUDropdownFormSelected.innerText = `${currentDataToEdit["SUB-BRAND"]}`;
+      editSBUDropdownFormSelected.setAttribute("data-value", currentDataToEdit["SUB-BRAND"]);
+
+      editCategoryProductDropdownFormSelected.innerText = `${currentDataToEdit["PRODUCT"]} | ${currentDataToEdit["CATEGORY"]}`;
+      editCategoryProductDropdownFormSelected.setAttribute("data-value", currentDataToEdit["CATEGORY"]);
+      editCategoryProductDropdownFormSelected.setAttribute("data-value-child", currentDataToEdit["PRODUCT"]);
+
+      editCategoryDropdownFormSelected.innerText = `${currentDataToEdit["CATEGORY"]}`;
+      editCategoryDropdownFormSelected.setAttribute("data-value", currentDataToEdit["CATEGORY"]);
+      editCategoryDropdownFormSelected.setAttribute("data-value-child", currentDataToEdit["PRODUCT"]);
+
+      updateMSGContainer.classList.remove("hide");
+      currentEntryText.innerText = selectedjrEdit.innerText;
+      currentlyEditingCode = undefined;
+
+      removeOldList(editDropdownFormSelected);
+      removeOldList(editSBUDropdownFormSelected);
+      removeOldList(editCategoryDropdownFormSelected);
+      removeOldList(editCategoryProductDropdownFormSelected);
+      removeOldList(editIdentifierDropdownFormSelected);
+
+      createEncoderSelection(brands, editDropdownOptionsForm);
+      createEncoderSelection(sbuObject, editSBUDropdownOptionsForm);
+      createEncoderSelection(productsObject, editCategoryProductDropdownOptionsForm, true);
+      createEncoderSelection(productsObject, editCategoryDropdownOptionsForm);
+      createEncoderSelection(allTemplates, editIdentifierDropdownOptionsForm);
+
+      editInputForm.value = selectedjrEdit.innerText;
       editActiveContainer.classList.remove("hide");
       editContainer.classList.add("hide");
    });
@@ -666,7 +715,13 @@ async function start() {
          updateButton.src = "./Symbol-Update copy.svg";
          updateButton.style.cursor = "default";
          updateMSGContainer.classList.remove("hide");
-         currentEntryText.innerText = `Entry ${currentlyEditingCode} updated!`;
+
+         if (currentlyEditingCode != undefined) currentEntryText.innerText = `Entry ${currentlyEditingCode} updated!`;
+         else {
+            currentEntryText.innerText = `JR ${editInputForm.value} updated!`;
+         }
+
+         let oldJR = currentDataToEdit[editKey];
 
          if (editKey === "INDENTIFIER") {
             // currentDataToEdit[editKey] = Object.keys(currentDataToEdit["INDENTIFIER"]).at(-1);
@@ -694,27 +749,28 @@ async function start() {
          currentDataToEdit["DATE"] = result;
 
          currentEncoDataEdit = currentDataToEdit;
-
          for (let i = 0; i < currentEncoData.length; i++) {
             if (currentEncoData[i]["CODE"] === currentEncoDataEdit["CODE"]) {
                if (currentEncoDataEdit["JOB"] != "N/A") {
                   for (let key in currentEncoData[i]["JOB"]) {
-                     if (currentEncoData[i]["JOB"][key]["JR"] == currentEncoDataEdit["JOB"]) {
+                     if (currentEncoData[i]["JOB"][key]["JR"] == oldJR) {
                         let newJob = currentEncoData[i]["JOB"];
                         let temp = currentEncoDataEdit["JOB"];
 
+                        console.log(temp, newJob);
                         currentEncoDataEdit["JOB"] = newJob;
                         currentEncoData[i] = currentEncoDataEdit;
-
+                        currentEncoData[i]["JOB"][key]["JR"] = temp;
                         currentEncoData[i]["JOB"][key]["TIME"] = currentEncoDataEdit["TIME"];
                         currentEncoData[i]["JOB"][key]["DATE"] = currentEncoDataEdit["DATE"];
-                        console.log(currentEncoData[i]);
+
                         localStorage.setItem("encodeLogs", JSON.stringify(currentEncoData));
                         currentEncoData[i]["JOB"] = temp;
                         break;
                      }
                   }
                } else {
+                  console.log("na");
                   currentEncoData[i] = currentEncoDataEdit;
                   delete currentEncoData[i]["JOB"];
                   localStorage.setItem("encodeLogs", JSON.stringify(currentEncoData));
@@ -722,7 +778,18 @@ async function start() {
                }
             }
          }
-         console.log(currentEncoData);
+
+         if (editKey == "JOB")
+            for (let i = 0; i < currentEncoData.length; i++) {
+               if (currentEncoData[i]["CODE"] === currentEncoDataEdit["CODE"]) {
+                  if (currentEncoData[i]["JOB"] == undefined) {
+                     currentEncoData[i]["JOB"] = [{ JR: editInputForm.value, TIME: time, DATE: result }];
+
+                     localStorage.setItem("encodeLogs", JSON.stringify(currentEncoData));
+                     break;
+                  }
+               }
+            }
          localStorage.setItem("tableData", JSON.stringify(currentData));
          updateCurrentDataToDataForm();
       }
@@ -898,6 +965,44 @@ async function start() {
             localStorage.setItem("productsTemplates", JSON.stringify(productsTemplate));
          }
 
+         if (editKey === "JOB") {
+            let enco = JSON.parse(localStorage.getItem("encodeLogs"));
+            for (let i = 0; i < enco.length; i++) {
+               if (enco[i]["CODE"] == currentDataToEdit["CODE"]) {
+                  for (let y = 0; y < enco[i]["JOB"].length; y++) {
+                     if (enco[i]["JOB"][y]["JR"] === editInputForm.value) {
+                        alert("duplicate");
+                        return;
+                     } else {
+                        let newObj = {};
+                        today = getDate();
+                        ampm = getAMPM(today);
+                        hour = getHours(today);
+                        minutes = getMinutes(today);
+                        time = getcurrentTime(hour, minutes, ampm);
+
+                        result = today.toLocaleDateString("en-US", {
+                           // you can use undefined as first argument
+                           year: "2-digit",
+                           month: "2-digit",
+                           day: "2-digit",
+                        });
+                        newObj = currentDataToEdit;
+
+                        newObj["JR"] = editInputForm.value;
+                        newObj["TIME"] = time;
+                        newObj["DATE"] = result;
+
+                        enco[i]["JOB"].push(newObj);
+                        localStorage.setItem("encodeLogs", JSON.stringify(enco));
+                        return;
+                     }
+                  }
+                  break;
+               }
+            }
+         }
+
          updateCurrentDataToDataForm();
       }
    });
@@ -1010,6 +1115,24 @@ async function start() {
          productsTemplate[key] = elements;
 
          localStorage.setItem("productsTemplates", JSON.stringify(productsTemplate));
+      }
+
+      if (editKey === "JOB") {
+         let enco = JSON.parse(localStorage.getItem("encodeLogs"));
+
+         for (let i = 0; i < enco.length; i++) {
+            if (enco[i]["CODE"] == currentDataToEdit["CODE"]) {
+               for (let y = 0; y < enco[i]["JOB"].length; y++) {
+                  if (enco[i]["JOB"][y]["JR"] === editInputForm.value) {
+                     enco[i]["JOB"].splice(y, 1);
+                     localStorage.setItem("encodeLogs", JSON.stringify(enco));
+                     generateTable();
+
+                     break;
+                  }
+               }
+            }
+         }
       }
 
       currentEntryText.innerText = `${editInputForm.value} removed`;
@@ -1239,48 +1362,65 @@ async function start() {
 }
 
 const brandOberserverEdit = new MutationObserver(function (mutations) {
-   mutations.forEach(function (mutation) {
-      if (mutation.type === "attributes") {
-         removeOldList(selectedSBUEdit);
-
-         // if (selectedBrandEdit.getAttribute("data-value") === "Global") resetSelectedValues(selectedSBUEdit, "Choose a division");
-         // else if (selectedBrandEdit.getAttribute("data-value") === "Vision Care") resetSelectedValues(selectedSBUEdit, "Choose a SBU");
-         // else resetSelectedValues(selectedSBUEdit, "Choose a brand");
-
-         createEncoderSelection(sbuObject[selectedBrandEdit.getAttribute("data-value")], sbuOptionContainerEdit);
-
-         if (codeEdit[0]) codeEdit[0] = Object.values(brands[selectedBrandEdit.innerText])[0];
-         else codeEdit.push(Object.values(brands[selectedBrandEdit.innerText])[0]);
-
-         // codeTextEdit.innerText = codeEdit.concat(codeCateEdit).join(" ");
-      }
-   });
+   // let firstTime = 0;
+   // mutations.forEach(function (mutation) {
+   //    if (mutation.type === "attributes") {
+   //       firstTime = 1;
+   //       if (firstTime == 0) {
+   //          if (selectedBrandEdit.getAttribute("data-value") === "Global") resetSelectedValues(selectedSBUEdit, "Choose a division");
+   //          else if (selectedBrandEdit.getAttribute("data-value") === "Vision Care") resetSelectedValues(selectedSBUEdit, "Choose a SBU");
+   //          else resetSelectedValues(selectedSBUEdit, "Choose a brand");
+   //       }
+   //       removeOldList(selectedSBUEdit);
+   //       createEncoderSelection(sbuObject[selectedBrandEdit.getAttribute("data-value")], sbuOptionContainerEdit);
+   //       if (codeEdit[0]) codeEdit[0] = Object.values(brands[selectedBrandEdit.innerText])[0];
+   //       else codeEdit.push(Object.values(brands[selectedBrandEdit.innerText])[0]);
+   //       codeTextEdit.innerText = codeEdit.concat(codeCateEdit).join(" ");
+   //    }
+   // });
 });
 
 const sbuOberserverEdit = new MutationObserver(function (mutations) {
    mutations.forEach(function (mutation) {
-      if (mutation.type === "attributes") {
-         console.log(selectedSBUEdit.getAttribute("data-value"));
-         let selectedSbu = sbuObject[selectedBrandEdit.getAttribute("data-value")][selectedSBUEdit.getAttribute("data-value")];
-
-         codeEdit[1] = selectedSbu;
-         // codeTextEdit.innerText = codeEdit.concat(codeCateEdit).join(" ");
-      }
+      // if (mutation.type === "attributes") {
+      //    console.log(selectedSBUEdit.getAttribute("data-value"));
+      //    let selectedSbu = sbuObject[selectedBrandEdit.getAttribute("data-value")][selectedSBUEdit.getAttribute("data-value")];
+      //    codeEdit[1] = selectedSbu;
+      //    codeTextEdit.innerText = codeEdit.concat(codeCateEdit).join(" ");
+      // }
    });
 });
 
 const categoryOberserverEdit = new MutationObserver(function (mutations) {
+   // mutations.forEach(function (mutation) {
+   //    if (mutation.type === "attributes") {
+   //       let categoryChildren = Object.values(category[selectedCategoryEdit.getAttribute("data-value")])[1];
+
+   //       if (codeEdit[2]) codeEdit[2] = Object.values(category[selectedCategoryEdit.getAttribute("data-value")])[0];
+   //       else codeEdit.push(Object.values(category[selectedCategoryEdit.getAttribute("data-value")])[0]);
+
+   //       if (codeCateEdit[0]) codeCateEdit[0] = categoryChildren[selectedCategoryEdit.getAttribute("data-value-child")];
+   //       codeTextEdit.innerText = codeEdit.concat(codeCateEdit).join(" ");
+   //    }
+   // });
+});
+
+const identifierOberserverEdit = new MutationObserver(function (mutations) {
    mutations.forEach(function (mutation) {
-      if (mutation.type === "attributes") {
-         let categoryChildrenEdit = Object.values(category[selectedCategoryEdit.getAttribute("data-value")])[1];
-
-         if (codeCateEdit[0]) codeCateEdit[0] = Object.values(category[selectedCategoryEdit.getAttribute("data-value")])[0];
-         else codeCate.push(Object.values(category[selectedCategoryEdit.getAttribute("data-value")])[0]);
-
-         if (codeCateEdit[1]) codeCateEdit[1] = categoryChildrenEdit[selectedCategoryEdit.getAttribute("data-value-child")];
-         else codeCate.push(categoryChildrenEdit[selectedCategoryEdit.getAttribute("data-value-child")]);
-         // codeTextEdit.innerText = codeEdit.concat(codeCateEdit).join(" ");
-      }
+      // if (mutation.type === "attributes") {
+      //    let template = JSON.parse(localStorage.getItem("productsTemplates"));
+      //    for (let key in template) {
+      //       if (key == currentDataToEdit["CATEGORY"] + " " + currentDataToEdit["PRODUCT"]) {
+      //          if (template[key].length <= 0) {
+      //             console.log(Object.values(currentDataToEdit["INDENTIFIER"]));
+      //             codeCateEdit[1] = Object.values(currentDataToEdit["INDENTIFIER"])[0];
+      //          } else {
+      //             codeCateEdit[1] = Object.values(template[currentDataToEdit["CATEGORY"] + " " + currentDataToEdit["PRODUCT"]]);
+      //          }
+      //       }
+      //    }
+      //    codeTextEdit.innerText = codeEdit.concat(codeCateEdit).join(" ");
+      // }
    });
 });
 
@@ -1364,6 +1504,10 @@ function generateTable() {
                codeEdit = codeFirstHalfList.split(/\s+/);
                codeCateEdit = codeSecondHalfList.split(/\s+/);
 
+               brandOberserverEdit.observe(selectedBrandEdit, { attributes: true });
+               sbuOberserverEdit.observe(selectedSBUEdit, { attributes: true });
+               categoryOberserverEdit.observe(selectedCategoryEdit, { attributes: true });
+               identifierOberserverEdit.observe(selectedIndentifierEdit, { attributes: true });
                updateCurrentDataToDataForm();
             });
 
@@ -1415,6 +1559,12 @@ function generateTable() {
 //This is the onclick events for the encoder dropdown
 function dropdownOnClickEvents() {
    const dropdownSelectedAll = document.querySelectorAll(".selected");
+   // const brands = document.getElementsByName("brand");
+
+   // brands.forEach(brand =>{
+   //    console.log(brand.value)
+
+   // })
 
    dropdownSelectedAll.forEach((selected) => {
       let optionList = selected.previousElementSibling.querySelectorAll(".option");
@@ -1438,6 +1588,7 @@ function dropdownOnClickEvents() {
             if (option.querySelector("input").getAttribute("data-value-child")) {
                selected.setAttribute("data-value-child", option.querySelector("input").getAttribute("data-value-child"));
             }
+
             optionsContainer.classList.remove("active");
          });
       });
@@ -1466,11 +1617,20 @@ function createEncoderSelection(data, parentElement, hasCombinedValues) {
             inputElement.innerText = `${value} | ${key}`;
             inputElement.setAttribute("data-value", key);
             inputElement.setAttribute("data-value-child", value);
+            inputElement.setAttribute("value", key);
 
             labelElement.innerText = `${value} | ${key}`;
 
             optionElement.appendChild(inputElement);
             optionElement.appendChild(labelElement);
+
+            if (parentElement.id == "brandOptionContainer") {
+               inputElement.setAttribute("name", "brand");
+            } else if (parentElement.id == "sbuOptionContainer") {
+               inputElement.setAttribute("name", "sbu");
+            } else if (parentElement.id == "categoryOptionContainer") {
+               inputElement.setAttribute("name", "category");
+            }
 
             parentElement.appendChild(optionElement);
          }
@@ -1483,12 +1643,22 @@ function createEncoderSelection(data, parentElement, hasCombinedValues) {
          inputElement.classList.add("radio");
 
          inputElement.innerText = key;
+
          inputElement.setAttribute("data-value", key);
+         inputElement.setAttribute("value", key);
 
          labelElement.innerText = key;
 
          optionElement.appendChild(inputElement);
          optionElement.appendChild(labelElement);
+
+         if (parentElement.id == "brandOptionContainer") {
+            inputElement.setAttribute("name", "brand");
+         } else if (parentElement.id == "sbuOptionContainer") {
+            inputElement.setAttribute("name", "sbu");
+         } else if (parentElement.id == "categoryOptionContainer") {
+            inputElement.setAttribute("name", "category");
+         }
 
          parentElement.appendChild(optionElement);
       }
@@ -1740,35 +1910,70 @@ function resetValues() {
 }
 
 function updateCurrentDataToDataForm() {
-   console.log(currentDataToEdit);
    setEditValues(selectedBrandEdit, currentDataToEdit["BRAND"]);
    setEditValues(selectedSBUEdit, currentDataToEdit["SUB-BRAND"]);
    selectedCategoryEdit.innerText = `${currentDataToEdit["PRODUCT"]} | ${currentDataToEdit["CATEGORY"]}`;
    selectedCategoryEdit.setAttribute("data-value", `${currentDataToEdit["CATEGORY"]}`);
    selectedCategoryEdit.setAttribute("data-value-child", `${currentDataToEdit["PRODUCT"]} `);
    setEditValues(selectedIndentifierEdit, Object.keys(currentDataToEdit["INDENTIFIER"]).at(-1));
-   if (currentDataToEdit["JOB"] != null || currentDataToEdit["JOB"] != undefined) {
-      setEditValues(selectedjrEdit, currentDataToEdit["JOB"]);
+
+   removeOldList(selectedjrEdit);
+
+   if (Array.isArray(currentDataToEdit["JOB"])) {
+      setEditValues(selectedjrEdit, Object.values(currentDataToEdit["JOB"][0])[0]);
+
+      let jobObject = {};
+      for (let i = 0; i < currentDataToEdit["JOB"].length; i++) {
+         let newObj = {};
+         newObj["int"] = i;
+         jobObject[Object.values(currentDataToEdit["JOB"][i])[0]] = newObj;
+      }
+      createEncoderSelection(jobObject, jrOptionContainerEdit);
+   } else {
+      let encodeLogs = JSON.parse(localStorage.getItem("encodeLogs"));
+
+      for (let i = 0; i < encodeLogs.length; i++) {
+         if (currentDataToEdit["CODE"] === encodeLogs[i]["CODE"]) {
+            if (Array.isArray(encodeLogs[i]["JOB"])) {
+               if (currentDataToEdit["JOB"] != null || currentDataToEdit["JOB"] != undefined) {
+                  setEditValues(selectedjrEdit, currentDataToEdit["JOB"]);
+               }
+
+               let jobObject = {};
+               for (let y = 0; y < encodeLogs[i]["JOB"].length; y++) {
+                  let newObj = {};
+                  newObj["int"] = y;
+                  jobObject[Object.values(encodeLogs[i]["JOB"][y])[0]] = newObj;
+               }
+               createEncoderSelection(jobObject, jrOptionContainerEdit);
+            }
+            else{
+               setEditValues(selectedjrEdit, currentDataToEdit["JOB"]);
+            }
+         }
+      }
    }
 
    codeTextEdit.innerText = codeEdit.concat(codeCateEdit).join(" ");
+   console.log(codeTextEdit);
 
    removeOldList(selectedBrandEdit);
    removeOldList(selectedSBUEdit);
    removeOldList(selectedCategoryEdit);
    removeOldList(selectedIndentifierEdit);
-   //removeOldList(selectedjrEdit);
 
    createEncoderSelection(brands, brandOptionContainerEdit);
    createEncoderSelection(sbuObject[selectedBrandEdit.getAttribute("data-value")], sbuOptionContainerEdit);
    createEncoderSelection(productsObject, categoryOptionContainerEdit, true);
 
-   let templates = JSON.parse(localStorage.getItem("productsTemplates"))[decodeCategory.innerText + " " + decodeProduct.innerText];
+   let templates = JSON.parse(localStorage.getItem("productsTemplates"))[currentDataToEdit["CATEGORY"] + " " + currentDataToEdit["PRODUCT"]];
    for (let key in templates) {
       for (let value in templates[key]) {
          allTemplates[value] = templates[key][value];
       }
    }
+
+   console.log(currentDataToEdit["JOB"]);
    createEncoderSelection(allTemplates, indentifierOptionContainerEdit);
 }
 
@@ -1803,6 +2008,14 @@ backButtonTable.addEventListener("click", function () {
    document.querySelectorAll(".codeData").forEach(function (codedData) {
       codedData.classList.remove("hide");
    });
+});
+
+backButtonEdit.addEventListener("click", function () {
+   jobNumberContainer.classList.remove("hide");
+   encoderContainer.classList.add("hide");
+   decoderContainer.classList.add("hide");
+   editActiveContainer.classList.add("hide");
+   allCodeBtn.classList.add("hide");
 });
 
 saveButton.onclick = function () {

@@ -1,8 +1,11 @@
-<!--Scalable Vector Graphic-->
-<svg id="Update" data-name="Update" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36">
-  <g id="UpdateRectangle" data-name="UpdateRectangle" fill="#B4B4B4" stroke="#6F6E6E" stroke-width="1">
-    <rect width="36" height="36" stroke="none"/>
-    <rect x="0.5" y="0.5" width="35" height="35" fill="none"/>
+<svg id="Update" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 35">
+  <g id="Rectangle_21" data-name="Rectangle 21" fill="#B4B4B4" stroke="#6F6E6E" stroke-width="1">
+    <rect width="36" height="35" stroke="none"/>
+    <rect x="0.5" y="0.5" width="35" height="34" fill="none"/>
   </g>
-  <circle id="UpdateEllipse" data-name="UpdateEllipse" cx="9" cy="9" r="9" transform="translate(9 9)"/>
+  <circle id="Ellipse_4" data-name="Ellipse 4" cx="9" cy="9" r="9" transform="translate(9 9)"/>
+  <g id="Group_89" data-name="Group 89" transform="translate(0 1.57)">
+    <line id="Line_6" data-name="Line 6" y2="10" transform="translate(18 12.5)" fill="none" stroke="#fff" stroke-width="3"/>
+    <path id="Path_4" data-name="Path 4" d="M13.99,16.234l3.984-3.8,4,3.8" fill="none" stroke="#fff" stroke-width="3"/>
+  </g>
 </svg>
