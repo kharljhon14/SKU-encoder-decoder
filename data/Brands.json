@@ -1,0 +1,1241 @@
+{
+    "brands": {
+        "Global": {
+            "Number": "00",
+            "Division": {
+                "Eyes of Hope": "00",
+                "Facilities": "01",
+                "Global": "02",
+                "Global Innovation Center": "03",
+                "VSP Mobile Eyes": "04",
+                "DE&I": "05"
+            }
+        },
+        "Vision Care": {
+            "Number": "01",
+            "SBUs": {
+                "Commerical Market - Inside": "00",
+                "Commerical Market - Field": "01",
+                "Direct to Consumer": "02",
+                "Health and Government Markets": "03",
+                "International Vision Care": "04",
+                "Strategic Alliance": "05",
+                "Other": "06"
+            }
+        },
+        "Optics": {
+            "Number": "02",
+            "Brand": {
+                "Dtec": "00",
+                "Ethos": "01",
+                "Optics": "02",
+                "Plexus Optix": "03",
+                "SunSync": "04",
+                "TechShield AR": "05",
+                "Unity": "06",
+                "Unity Relieve": "07",
+                "uUniversity": "08",
+                "VSPOne": "09"
+            }
+        },
+        "Eyefinity": {
+            "Number": "03",
+            "Brand": {
+                "Acuity Logic": "00",
+                "ExamWriter": "01",
+                "Eyefinity": "02",
+                "Eyefinity EHR": "03",
+                "Eyefinity EPM": "04",
+                "OfficeMate": "05"
+            }
+        },
+        "Retail": {
+            "Number": "04",
+            "Brand": {
+                "Eye Designs": "00",
+                "Eyeconic": "01",
+                "Visionworks": "02"
+            }
+        },
+        "Ventures": {
+            "Number": "05",
+            "Brand": {
+                "Ventures": "00"
+            }
+        },
+        "Onsite Clinics": {
+            "Number": "06",
+            "Brand": {
+                "Onsite Clinics": "01"
+            }
+        },
+        "Altair": {
+            "Number": "07",
+            "Brand": {
+                "Altair": "00",
+                "Anne Klein": "01",
+                "Bebe": "02",
+                "Calvin Klein Jeans": "03",
+                "Cole Haan": "04",
+                "Draper James": "05",
+                "Evolution": "06",
+                "JOE": "07",
+                "Joseph Abboud": "08",
+                "Genesis": "09",
+                "Kilter": "10",
+                "Lenton & Rusby": "11",
+                "McAllister": "12",
+                "Otis & Piper": "13",
+                "Spyder": "14",
+                "Sunlites": "15",
+                "Corporate": "16",
+                "Zeiss": "17"
+            }
+        },
+        "Marchon": {
+            "Number": "08",
+            "Brand": {
+                "Autoflex": "00",
+                "Calvin Klein": "01",
+                "Calvin Klein Jeans": "02",
+                "Columbia": "03",
+                "Converse": "04",
+                "Cutler & Gross": "05",
+                "DKNY": "06",
+                "Donna Karen": "07",
+                "Dragon": "08",
+                "DVF": "09",
+                "Flexon": "10",
+                "Karl Lagerfeld": "11",
+                "Lacoste": "12",
+                "Lanvin": "13",
+                "Liu Jo": "14",
+                "Longchamp": "15",
+                "Marchon - Corporate": "16",
+                "Marchon NYC": "17",
+                "Marni": "18",
+                "MCM": "19",
+                "Nautica": "20",
+                "Nike": "21",
+                "Nine West": "22",
+                "Paul Smith": "23",
+                "Pilgrim": "24",
+                "Pure": "25",
+                "Salvatore Ferragamo": "26",
+                "Skaga": "27",
+                "Victoria Beckham": "28",
+                "Zeiss": "29"
+            }
+        },
+        "Provider Solutions": {
+            "Number": "09",
+            "Brand": {
+                "Premier": "00",
+                "Provider Solutions": "01",
+                "My Marketing Team": "02"
+            }
+        }
+    },
+    "category": {
+        "Marketing Materials": {
+            "Number": "00",
+            "Product": {
+                "Award/Certificate": "000",
+                "Brochure": "001",
+                "Buckslip/Insert": "002",
+                "Catalog/Manual": "003",
+                "Direct Mail": "004",
+                "Flyer": "005",
+                "Newsletter": "006",
+                "Presentation": "007",
+                "Sales Sheet": "008",
+                "Letter": "009",
+                "Single Card Handout": "010"
+            }
+        },
+        "Promotional/Display Items": {
+            "Number": "01",
+            "Product": {
+                "Counter Card": "000",
+                "Table Tent": "001",
+                "Packaging": "002",
+                "POP": "003",
+                "Swag": "004",
+                "Consignment Set": "005"
+            }
+        },
+        "Signage": {
+            "Number": "02",
+            "Product": {
+                "Banner": "000",
+                "Booth Graphic": "001",
+                "Duratran": "002",
+                "Poster/Sign": "003",
+                "Window Cling": "004"
+            }
+        },
+        "Stationery": {
+            "Number": "03",
+            "Product": {
+                "Business Cards": "000",
+                "Envelope": "001",
+                "Folder": "002",
+                "Form/Notepad": "003",
+                "Letterhead": "004",
+                "Invitation": "005"
+            }
+        },
+        "Digital/Web": {
+            "Number": "04",
+            "Product": {
+                "Carousel Graphic": "000",
+                "Envision Tile": "001",
+                "Global Eyewear Marketplace": "002",
+                "Promo Tile": "003",
+                "Social Media Tile": "004",
+                "Banner": "005",
+                "Digital Signage": "006"
+            }
+        }
+    },
+    "encodeLogs": [
+        {
+            "id": 0,
+            "CODE": "010600009000",
+            "TIME": "1:30 PM",
+            "DATE": "12/18/21",
+            "BRAND": "Vision Care",
+            "SUB-BRAND": "Other",
+            "CATEGORY": "Stationery",
+            "PRODUCT": "Letterhead",
+            "INDENTIFIER": {
+                "Template": "000"
+            }
+        },
+        {
+            "id": 1,
+            "CODE": "010603001000",
+            "TIME": "1:30 PM",
+            "DATE": "12/18/21",
+            "BRAND": "Vision Care",
+            "SUB-BRAND": "Other",
+            "CATEGORY": "Stationery",
+            "PRODUCT": "Envelope",
+            "INDENTIFIER": {
+                "Template": "000"
+            }
+        },
+        {
+            "id": 2,
+            "CODE": "050000010001",
+            "TIME": "1:30 PM",
+            "DATE": "12/18/21",
+            "BRAND": "Ventures",
+            "SUB-BRAND": "Ventures",
+            "CATEGORY": "Marketing Materials",
+            "PRODUCT": "Single Card Handout",
+            "INDENTIFIER": {
+                "Union": "001"
+            }
+        },
+        {
+            "id": 3,
+            "CODE": "050000010000",
+            "TIME": "1:30 PM",
+            "DATE": "12/18/21",
+            "BRAND": "Ventures",
+            "SUB-BRAND": "Ventures",
+            "CATEGORY": "Marketing Materials",
+            "PRODUCT": "Single Card Handout",
+            "INDENTIFIER": {
+                "Template": "000"
+            }
+        },
+        {
+            "id": 4,
+            "CODE": "050000005001",
+            "TIME": "1:30 PM",
+            "DATE": "12/18/21",
+            "BRAND": "Ventures",
+            "SUB-BRAND": "Ventures",
+            "CATEGORY": "Marketing Materials",
+            "PRODUCT": "Flyer",
+            "INDENTIFIER": {
+                "Union": "001"
+            }
+        },
+        {
+            "id": 5,
+            "CODE": "050000005000",
+            "TIME": "1:30 PM",
+            "DATE": "12/18/21",
+            "BRAND": "Ventures",
+            "SUB-BRAND": "Ventures",
+            "CATEGORY": "Marketing Materials",
+            "PRODUCT": "Flyer",
+            "INDENTIFIER": {
+                "Template": "000"
+            }
+        },
+        {
+            "id": 6,
+            "CODE": "050002003000",
+            "TIME": "1:30 PM",
+            "DATE": "12/18/21",
+            "BRAND": "Ventures",
+            "SUB-BRAND": "Ventures",
+            "CATEGORY": "Signage",
+            "PRODUCT": "Poster/Sign",
+            "INDENTIFIER": {
+                "5x5": "000"
+            }
+        },
+        {
+            "id": 7,
+            "CODE": "050004006000",
+            "TIME": "1:30 PM",
+            "DATE": "12/18/21",
+            "BRAND": "Ventures",
+            "SUB-BRAND": "Ventures",
+            "CATEGORY": "Digital/Web",
+            "PRODUCT": "Digital Signage",
+            "INDENTIFIER": {
+                "Template": "000"
+            }
+        },
+        {
+            "id": 8,
+            "CODE": "050002003001",
+            "TIME": "1:30 PM",
+            "DATE": "12/18/21",
+            "BRAND": "Ventures",
+            "SUB-BRAND": "Ventures",
+            "CATEGORY": "Signage",
+            "PRODUCT": "Poster/Sign",
+            "INDENTIFIER": {
+                "17x11 Landscape": "001"
+            }
+        },
+        {
+            "id": 9,
+            "CODE": "050002003002",
+            "TIME": "1:30 PM",
+            "DATE": "12/18/21",
+            "BRAND": "Ventures",
+            "SUB-BRAND": "Ventures",
+            "CATEGORY": "Signage",
+            "PRODUCT": "Poster/Sign",
+            "INDENTIFIER": {
+                "11x17 Portrait": "002"
+            }
+        },
+        {
+            "id": 10,
+            "CODE": "050001004000",
+            "TIME": "1:30 PM",
+            "DATE": "12/18/21",
+            "BRAND": "Ventures",
+            "SUB-BRAND": "Ventures",
+            "CATEGORY": "Promotional",
+            "PRODUCT": "Swag",
+            "INDENTIFIER": {
+                "Template": "000"
+            }
+        },
+        {
+            "id": 11,
+            "CODE": "060003000000",
+            "TIME": "1:30 PM",
+            "DATE": "12/18/21",
+            "BRAND": "Onsite Clinics",
+            "SUB-BRAND": "Onsite Clinics",
+            "CATEGORY": "Stationery",
+            "PRODUCT": "Business Cards",
+            "INDENTIFIER": {
+                "Template": "000"
+            }
+        },
+        {
+            "id": 12,
+            "CODE": "060003000001",
+            "TIME": "1:30 PM",
+            "DATE": "12/18/21",
+            "BRAND": "Onsite Clinics",
+            "SUB-BRAND": "Onsite Clinics",
+            "CATEGORY": "Stationery",
+            "PRODUCT": "Business Cards",
+            "INDENTIFIER": {
+                "Union": "001"
+            }
+        },
+        {
+            "CODE": "000203000001",
+            "TIME": "12:07 PM",
+            "DATE": "03/01/22",
+            "BRAND": "Global",
+            "SUB-BRAND": "Global",
+            "CATEGORY": "Stationery",
+            "PRODUCT": "Business Cards",
+            "INDENTIFIER": {
+                "Global Business Cards": "000"
+            }
+        },
+        {
+            "CODE": "000200010002",
+            "TIME": "12:48 PM",
+            "DATE": "03/01/22",
+            "BRAND": "Global",
+            "SUB-BRAND": "Global",
+            "CATEGORY": "Marketing Materials",
+            "PRODUCT": "Single Card Handout",
+            "INDENTIFIER": {
+                "Career Cards": "000"
+            }
+        },
+        {
+            "CODE": "000200005002",
+            "TIME": "12:51 PM",
+            "DATE": "03/01/22",
+            "BRAND": "Global",
+            "SUB-BRAND": "Global",
+            "CATEGORY": "Marketing Materials",
+            "PRODUCT": "Flyer",
+            "INDENTIFIER": {
+                "DE&I Quarterly Overview Flyer": "000"
+            },
+            "JOB": [
+                {
+                    "JR": "100541-22-VG",
+                    "TIME": "12:57 PM",
+                    "DATE": "03/01/22"
+                }
+            ]
+        },
+        {
+            "CODE": "050000005003",
+            "TIME": "12:52 PM",
+            "DATE": "03/01/22",
+            "BRAND": "Ventures",
+            "SUB-BRAND": "Ventures",
+            "CATEGORY": "Marketing Materials",
+            "PRODUCT": "Flyer",
+            "INDENTIFIER": {
+                "Due Diligence FAQs": "000"
+            },
+            "JOB": [
+                {
+                    "JR": "101892-22-VN",
+                    "TIME": "12:53 PM",
+                    "DATE": "03/01/22"
+                }
+            ]
+        },
+        {
+            "CODE": "010600005004",
+            "TIME": "12:58 PM",
+            "DATE": "03/01/22",
+            "BRAND": "Vision Care",
+            "SUB-BRAND": "Other",
+            "CATEGORY": "Marketing Materials",
+            "PRODUCT": "Flyer",
+            "INDENTIFIER": {
+                "Elevate your Medicare Business": "000"
+            }
+        },
+        {
+            "CODE": "000200005005",
+            "TIME": "1:00 PM",
+            "DATE": "03/01/22",
+            "BRAND": "Global",
+            "SUB-BRAND": "Global",
+            "CATEGORY": "Marketing Materials",
+            "PRODUCT": "Flyer",
+            "INDENTIFIER": {
+                "Enterprise Foundational Assets | Enterprise Narrative ": "000"
+            },
+            "JOB": [
+                {
+                    "JR": "101611-22-VG",
+                    "TIME": "1:00 PM",
+                    "DATE": "03/01/22"
+                }
+            ]
+        },
+        {
+            "CODE": "000200005006",
+            "TIME": "1:00 PM",
+            "DATE": "03/01/22",
+            "BRAND": "Global",
+            "SUB-BRAND": "Global",
+            "CATEGORY": "Marketing Materials",
+            "PRODUCT": "Flyer",
+            "INDENTIFIER": {
+                "Enterprise Foundational Assets | Enterprise Strategy Map": "000"
+            },
+            "JOB": [
+                {
+                    "JR": "101529-22-VG",
+                    "TIME": "1:00 PM",
+                    "DATE": "03/01/22"
+                }
+            ]
+        },
+        {
+            "CODE": "000200005007",
+            "TIME": "1:06 PM",
+            "DATE": "03/01/22",
+            "BRAND": "Global",
+            "SUB-BRAND": "Global",
+            "CATEGORY": "Marketing Materials",
+            "PRODUCT": "Flyer",
+            "INDENTIFIER": {
+                "Enterprise Foundational Assets | Purpose Decision Making Filter": "000"
+            },
+            "JOB": [
+                {
+                    "JR": "101614-22-VG",
+                    "TIME": "1:06 PM",
+                    "DATE": "03/01/22"
+                }
+            ]
+        },
+        {
+            "CODE": "000200005008",
+            "TIME": "1:09 PM",
+            "DATE": "03/01/22",
+            "BRAND": "Global",
+            "SUB-BRAND": "Global",
+            "CATEGORY": "Marketing Materials",
+            "PRODUCT": "Flyer",
+            "INDENTIFIER": {
+                "Enterprise Foundational Assets | Purpose-led Messaging Map": "000"
+            },
+            "JOB": [
+                {
+                    "JR": "101613-22-VG",
+                    "TIME": "1:09 PM",
+                    "DATE": "03/01/22"
+                }
+            ]
+        },
+        {
+            "CODE": "010600005009",
+            "TIME": "1:13 PM",
+            "DATE": "03/01/22",
+            "BRAND": "Vision Care",
+            "SUB-BRAND": "Other",
+            "CATEGORY": "Marketing Materials",
+            "PRODUCT": "Flyer",
+            "INDENTIFIER": {
+                "Experts Agree...trust your eyes to VSP": "000"
+            },
+            "JOB": [
+                {
+                    "JR": "101642-22-VC",
+                    "TIME": "1:13 PM",
+                    "DATE": "03/01/22"
+                }
+            ]
+        },
+        {
+            "CODE": "000000005010",
+            "TIME": "1:16 PM",
+            "DATE": "03/01/22",
+            "BRAND": "Global",
+            "SUB-BRAND": "Eyes of Hope",
+            "CATEGORY": "Marketing Materials",
+            "PRODUCT": "Flyer",
+            "INDENTIFIER": {
+                "Eyes of Hope Gift Certificates Partner Flier": "000"
+            },
+            "JOB": [
+                {
+                    "JR": "101328-22-VG",
+                    "TIME": "1:16 PM",
+                    "DATE": "03/01/22"
+                }
+            ]
+        },
+        {
+            "CODE": "000000005011",
+            "TIME": "1:17 PM",
+            "DATE": "03/01/22",
+            "BRAND": "Global",
+            "SUB-BRAND": "Eyes of Hope",
+            "CATEGORY": "Marketing Materials",
+            "PRODUCT": "Flyer",
+            "INDENTIFIER": {
+                "Eyes of Hope Overview Flier": "000"
+            },
+            "JOB": [
+                {
+                    "JR": "101778-22-VG",
+                    "TIME": "1:17 PM",
+                    "DATE": "03/01/22"
+                }
+            ]
+        },
+        {
+            "CODE": "000000005012",
+            "TIME": "1:17 PM",
+            "DATE": "03/01/22",
+            "BRAND": "Global",
+            "SUB-BRAND": "Eyes of Hope",
+            "CATEGORY": "Marketing Materials",
+            "PRODUCT": "Flyer",
+            "INDENTIFIER": {
+                "Eyewear Donations Program Flier": "000"
+            }
+        },
+        {
+            "CODE": "000000005013",
+            "TIME": "1:19 PM",
+            "DATE": "03/01/22",
+            "BRAND": "Global",
+            "SUB-BRAND": "Eyes of Hope",
+            "CATEGORY": "Marketing Materials",
+            "PRODUCT": "Flyer",
+            "INDENTIFIER": {
+                "Gift Certificates Design Templates for EOH, EOH DR, EOH DR ARC co-branded, Contact Lens": "000"
+            },
+            "JOB": [
+                {
+                    "JR": "099909-21-VG",
+                    "TIME": "1:19 PM",
+                    "DATE": "03/01/22"
+                }
+            ]
+        },
+        {
+            "CODE": "010600005014",
+            "TIME": "1:19 PM",
+            "DATE": "03/01/22",
+            "BRAND": "Vision Care",
+            "SUB-BRAND": "Other",
+            "CATEGORY": "Marketing Materials",
+            "PRODUCT": "Flyer",
+            "INDENTIFIER": {
+                "KidsCare (Client)": "000"
+            },
+            "JOB": [
+                {
+                    "JR": "101652-22-VC",
+                    "TIME": "1:19 PM",
+                    "DATE": "03/01/22"
+                }
+            ]
+        },
+        {
+            "CODE": "050000005015",
+            "TIME": "1:21 PM",
+            "DATE": "03/01/22",
+            "BRAND": "Ventures",
+            "SUB-BRAND": "Ventures",
+            "CATEGORY": "Marketing Materials",
+            "PRODUCT": "Flyer",
+            "INDENTIFIER": {
+                "LOI Cover Letter & Template": "000"
+            },
+            "JOB": [
+                {
+                    "JR": "101888-22-VN",
+                    "TIME": "1:21 PM",
+                    "DATE": "03/01/22"
+                }
+            ]
+        },
+        {
+            "CODE": "050000005016",
+            "TIME": "1:23 PM",
+            "DATE": "03/01/22",
+            "BRAND": "Ventures",
+            "SUB-BRAND": "Ventures",
+            "CATEGORY": "Marketing Materials",
+            "PRODUCT": "Flyer",
+            "INDENTIFIER": {
+                "Marketing Program Flyer": "000"
+            },
+            "JOB": [
+                {
+                    "JR": "101887-22-VN",
+                    "TIME": "1:23 PM",
+                    "DATE": "03/01/22"
+                }
+            ]
+        },
+        {
+            "CODE": "000200005017",
+            "TIME": "1:23 PM",
+            "DATE": "03/01/22",
+            "BRAND": "Global",
+            "SUB-BRAND": "Global",
+            "CATEGORY": "Marketing Materials",
+            "PRODUCT": "Flyer",
+            "INDENTIFIER": {
+                "Meet VSP Vision Flyer": "000"
+            },
+            "JOB": [
+                {
+                    "JR": "101573-22-VG",
+                    "TIME": "1:23 PM",
+                    "DATE": "03/01/22"
+                }
+            ]
+        },
+        {
+            "CODE": "010200004000",
+            "TIME": "1:24 PM",
+            "DATE": "03/01/22",
+            "BRAND": "Vision Care",
+            "SUB-BRAND": "Direct to Consumer",
+            "CATEGORY": "Marketing Materials",
+            "PRODUCT": "Direct Mail",
+            "INDENTIFIER": {
+                "Member Letter + Member ID (4 panel + perf)": "000"
+            }
+        },
+        {
+            "CODE": "000400005018",
+            "TIME": "1:25 PM",
+            "DATE": "03/01/22",
+            "BRAND": "Global",
+            "SUB-BRAND": "VSP Mobile Eyes",
+            "CATEGORY": "Marketing Materials",
+            "PRODUCT": "Flyer",
+            "INDENTIFIER": {
+                "Mobile Clinics Program Flier": "000"
+            },
+            "JOB": [
+                {
+                    "JR": "91453",
+                    "TIME": "1:28 PM",
+                    "DATE": "03/01/22"
+                }
+            ]
+        },
+        {
+            "CODE": "010600005019",
+            "TIME": "1:29 PM",
+            "DATE": "03/01/22",
+            "BRAND": "Vision Care",
+            "SUB-BRAND": "Other",
+            "CATEGORY": "Marketing Materials",
+            "PRODUCT": "Flyer",
+            "INDENTIFIER": {
+                "Open Enrollment - Enroll in VSP Member Flier": "000"
+            }
+        },
+        {
+            "CODE": "010600005020",
+            "TIME": "1:29 PM",
+            "DATE": "03/01/22",
+            "BRAND": "Vision Care",
+            "SUB-BRAND": "Other",
+            "CATEGORY": "Marketing Materials",
+            "PRODUCT": "Flyer",
+            "INDENTIFIER": {
+                "Open Enrollment - Enroll in VSP Member Flier (Spanish)": "000"
+            }
+        },
+        {
+            "CODE": "010100005021",
+            "TIME": "12:50 PM",
+            "DATE": "03/02/22",
+            "BRAND": "Vision Care",
+            "SUB-BRAND": "Commerical Market - Field",
+            "CATEGORY": "Marketing Materials",
+            "PRODUCT": "Flyer",
+            "INDENTIFIER": {
+                "Enroll in VSP with Savings Chart - Progressive Lenses (Member)": "000"
+            },
+            "JOB": [
+                {
+                    "JR": "096746-21-VC",
+                    "TIME": "12:50 PM",
+                    "DATE": "03/02/22"
+                }
+            ]
+        },
+        {
+            "CODE": "010100005022",
+            "TIME": "12:53 PM",
+            "DATE": "03/02/22",
+            "BRAND": "Vision Care",
+            "SUB-BRAND": "Commerical Market - Field",
+            "CATEGORY": "Marketing Materials",
+            "PRODUCT": "Flyer",
+            "INDENTIFIER": {
+                "Enroll in VSP with Savings Chart - Single Vision Lenses (Member)": "000"
+            },
+            "JOB": [
+                {
+                    "JR": "096745-21-VC",
+                    "TIME": "12:53 PM",
+                    "DATE": "03/02/22"
+                }
+            ]
+        },
+        {
+            "CODE": "010602003003",
+            "TIME": "12:55 PM",
+            "DATE": "03/02/22",
+            "BRAND": "Vision Care",
+            "SUB-BRAND": "Other",
+            "CATEGORY": "Signage",
+            "PRODUCT": "Poster/Sign",
+            "INDENTIFIER": {
+                "Enroll in VSP (Member) Poster ": "000"
+            },
+            "JOB": [
+                {
+                    "JR": "099571-21-VC",
+                    "TIME": "12:55 PM",
+                    "DATE": "03/02/22"
+                }
+            ]
+        },
+        {
+            "CODE": "010200004001",
+            "TIME": "2:03 PM",
+            "DATE": "03/02/22",
+            "BRAND": "Vision Care",
+            "SUB-BRAND": "Commerical Market - Inside",
+            "CATEGORY": "Marketing Materials",
+            "PRODUCT": "Direct Mail",
+            "INDENTIFIER": {
+                "Open Enrollment Dual Plan Tri-fold Mailer": "000"
+            },
+            "JOB": [
+                {
+                    "JR": "100314-22-VC",
+                    "TIME": "12:58 PM",
+                    "DATE": "03/02/22"
+                }
+            ]
+        },
+        {
+            "CODE": "010200004002",
+            "TIME": "2:03 PM",
+            "DATE": "03/02/22",
+            "BRAND": "Vision Care",
+            "SUB-BRAND": "Commerical Market - Inside",
+            "CATEGORY": "Marketing Materials",
+            "PRODUCT": "Direct Mail",
+            "INDENTIFIER": {
+                "Open Enrollment EasyOptions Tri-fold Mailer": "000"
+            },
+            "JOB": [
+                {
+                    "JR": "100755-22-VC",
+                    "TIME": "1:59 PM",
+                    "DATE": "03/02/22"
+                }
+            ]
+        },
+        {
+            "CODE": "010000004002",
+            "TIME": "1:59 PM",
+            "DATE": "03/02/22",
+            "BRAND": "Vision Care",
+            "SUB-BRAND": "Commerical Market - Inside",
+            "CATEGORY": "Marketing Materials",
+            "PRODUCT": "Direct Mail",
+            "INDENTIFIER": {
+                "Open Enrollment EasyOptions Tri-fold Mailer": "000"
+            },
+            "JOB": [
+                {
+                    "JR": "100755-22-VC",
+                    "TIME": "1:59 PM",
+                    "DATE": "03/02/22"
+                }
+            ]
+        },
+        {
+            "CODE": "010000004003",
+            "TIME": "2:04 PM",
+            "DATE": "03/02/22",
+            "BRAND": "Vision Care",
+            "SUB-BRAND": "Commerical Market - Inside",
+            "CATEGORY": "Marketing Materials",
+            "PRODUCT": "Direct Mail",
+            "INDENTIFIER": {
+                "Open Enrollment QR Code Postcard": "000"
+            },
+            "JOB": [
+                {
+                    "JR": "097890-21-VC",
+                    "TIME": "2:04 PM",
+                    "DATE": "03/02/22"
+                }
+            ]
+        },
+        {
+            "CODE": "010000004004",
+            "TIME": "2:05 PM",
+            "DATE": "03/02/22",
+            "BRAND": "Vision Care",
+            "SUB-BRAND": "Commerical Market - Inside",
+            "CATEGORY": "Marketing Materials",
+            "PRODUCT": "Direct Mail",
+            "INDENTIFIER": {
+                "Open Enrollment Single Plan Bi-fold Mailer": "000"
+            },
+            "JOB": [
+                {
+                    "JR": "100414-22-VC",
+                    "TIME": "2:05 PM",
+                    "DATE": "03/02/22"
+                }
+            ]
+        },
+        {
+            "CODE": "000000005023",
+            "TIME": "2:07 PM",
+            "DATE": "03/02/22",
+            "BRAND": "Global",
+            "SUB-BRAND": "Eyes of Hope",
+            "CATEGORY": "Marketing Materials",
+            "PRODUCT": "Flyer",
+            "INDENTIFIER": {
+                "Partner Cover Letter Template for EOH, Contact Lens": "000"
+            },
+            "JOB": [
+                {
+                    "JR": "101142-22-VG",
+                    "TIME": "2:07 PM",
+                    "DATE": "03/02/22"
+                }
+            ]
+        },
+        {
+            "CODE": "010100004005",
+            "TIME": "2:18 PM",
+            "DATE": "03/02/22",
+            "BRAND": "Vision Care",
+            "SUB-BRAND": "Commerical Market - Field",
+            "CATEGORY": "Marketing Materials",
+            "PRODUCT": "Direct Mail",
+            "INDENTIFIER": {
+                "Post-enrollment Postcard": "000"
+            },
+            "JOB": [
+                {
+                    "JR": "094083-21-VC",
+                    "TIME": "2:18 PM",
+                    "DATE": "03/02/22"
+                }
+            ]
+        },
+        {
+            "CODE": "010100004006",
+            "TIME": "2:18 PM",
+            "DATE": "03/02/22",
+            "BRAND": "Vision Care",
+            "SUB-BRAND": "Commerical Market - Field",
+            "CATEGORY": "Marketing Materials",
+            "PRODUCT": "Direct Mail",
+            "INDENTIFIER": {
+                "Post-enrollment Tri-fold Mailer": "000"
+            },
+            "JOB": [
+                {
+                    "JR": "092844-21-VC",
+                    "TIME": "2:18 PM",
+                    "DATE": "03/02/22"
+                }
+            ]
+        },
+        {
+            "CODE": "010600005024",
+            "TIME": "2:24 PM",
+            "DATE": "03/02/22",
+            "BRAND": "Vision Care",
+            "SUB-BRAND": "Other",
+            "CATEGORY": "Marketing Materials",
+            "PRODUCT": "Flyer",
+            "INDENTIFIER": {
+                "VEE-Put Your Eyes at Ease...LightCare (Spanish)": "000"
+            },
+            "JOB": [
+                {
+                    "JR": "091855-21-VC",
+                    "TIME": "2:24 PM",
+                    "DATE": "03/02/22"
+                }
+            ]
+        },
+        {
+            "CODE": "090100008003",
+            "TIME": "2:28 PM",
+            "DATE": "03/02/22",
+            "BRAND": "Provider Solutions",
+            "SUB-BRAND": "Provider Solutions",
+            "CATEGORY": "Marketing Materials",
+            "PRODUCT": "Sales Sheet",
+            "INDENTIFIER": {
+                "Premier Lens Partner Reference Sheet": "000"
+            },
+            "JOB": [
+                {
+                    "JR": "099859-21-VG",
+                    "TIME": "2:28 PM",
+                    "DATE": "03/02/22"
+                }
+            ]
+        },
+        {
+            "CODE": "090100005025",
+            "TIME": "2:33 PM",
+            "DATE": "03/02/22",
+            "BRAND": "Provider Solutions",
+            "SUB-BRAND": "Provider Solutions",
+            "CATEGORY": "Marketing Materials",
+            "PRODUCT": "Flyer",
+            "INDENTIFIER": {
+                "Premier Pathways Resume Tips PDF": "000"
+            },
+            "JOB": [
+                {
+                    "JR": "064131-20-VG",
+                    "TIME": "2:33 PM",
+                    "DATE": "03/02/22"
+                }
+            ]
+        },
+        {
+            "CODE": "010600005026",
+            "TIME": "2:37 PM",
+            "DATE": "03/02/22",
+            "BRAND": "Vision Care",
+            "SUB-BRAND": "Other",
+            "CATEGORY": "Marketing Materials",
+            "PRODUCT": "Flyer",
+            "INDENTIFIER": {
+                "Put Your Eyes at Ease...LightCare (English)": "000"
+            }
+        },
+        {
+            "CODE": "050000010004",
+            "TIME": "2:38 PM",
+            "DATE": "03/02/22",
+            "BRAND": "Ventures",
+            "SUB-BRAND": "Ventures",
+            "CATEGORY": "Marketing Materials",
+            "PRODUCT": "Single Card Handout",
+            "INDENTIFIER": {
+                "Recruiting Cards": "000"
+            },
+            "JOB": [
+                {
+                    "JR": "101890-22-VN",
+                    "TIME": "2:38 PM",
+                    "DATE": "03/02/22"
+                }
+            ]
+        },
+        {
+            "CODE": "000200005027",
+            "TIME": "2:39 PM",
+            "DATE": "03/02/22",
+            "BRAND": "Global",
+            "SUB-BRAND": "Global",
+            "CATEGORY": "Marketing Materials",
+            "PRODUCT": "Flyer",
+            "INDENTIFIER": {
+                "Resume Tips Infographic": "000"
+            },
+            "JOB": [
+                {
+                    "JR": "068115-20-VG",
+                    "TIME": "2:39 PM",
+                    "DATE": "03/02/22"
+                }
+            ]
+        },
+        {
+            "CODE": "050000001000",
+            "TIME": "2:42 PM",
+            "DATE": "03/02/22",
+            "BRAND": "Ventures",
+            "SUB-BRAND": "Ventures",
+            "CATEGORY": "Marketing Materials",
+            "PRODUCT": "Brochure",
+            "INDENTIFIER": {
+                "Lead Generation Trifold": "000"
+            },
+            "JOB": [
+                {
+                    "JR": "101927-22-VN",
+                    "TIME": "2:42 PM",
+                    "DATE": "03/02/22"
+                }
+            ]
+        },
+        {
+            "CODE": "010600005028",
+            "TIME": "2:44 PM",
+            "DATE": "03/02/22",
+            "BRAND": "Vision Care",
+            "SUB-BRAND": "Other",
+            "CATEGORY": "Marketing Materials",
+            "PRODUCT": "Flyer",
+            "INDENTIFIER": {
+                "Ultimate Provider Playlist": "000"
+            },
+            "JOB": [
+                {
+                    "JR": "101654-22-VC",
+                    "TIME": "2:44 PM",
+                    "DATE": "03/02/22"
+                }
+            ]
+        },
+        {
+            "CODE": "000000005029",
+            "TIME": "2:46 PM",
+            "DATE": "03/02/22",
+            "BRAND": "Global",
+            "SUB-BRAND": "Eyes of Hope",
+            "CATEGORY": "Marketing Materials",
+            "PRODUCT": "Flyer",
+            "INDENTIFIER": {
+                "Vision Care Sales Flier for Client School Districts": "000"
+            },
+            "JOB": [
+                {
+                    "JR": "101332-22-VG",
+                    "TIME": "2:46 PM",
+                    "DATE": "03/02/22"
+                }
+            ]
+        },
+        {
+            "CODE": "000000005030",
+            "TIME": "2:47 PM",
+            "DATE": "03/02/22",
+            "BRAND": "Global",
+            "SUB-BRAND": "Eyes of Hope",
+            "CATEGORY": "Marketing Materials",
+            "PRODUCT": "Flyer",
+            "INDENTIFIER": {
+                "Vision Care Sales Flier for Top 15 Clients Pilot": "000"
+            }
+        },
+        {
+            "CODE": "000200005031",
+            "TIME": "2:48 PM",
+            "DATE": "03/02/22",
+            "BRAND": "Global",
+            "SUB-BRAND": "Global",
+            "CATEGORY": "Marketing Materials",
+            "PRODUCT": "Flyer",
+            "INDENTIFIER": {
+                "VSP Global Locations Flyer": "000"
+            },
+            "JOB": [
+                {
+                    "JR": "024594-18-VG",
+                    "TIME": "2:48 PM",
+                    "DATE": "03/02/22"
+                }
+            ]
+        },
+        {
+            "CODE": "020203000002",
+            "TIME": "2:55 PM",
+            "DATE": "03/02/22",
+            "BRAND": "Optics",
+            "SUB-BRAND": "Optics",
+            "CATEGORY": "Stationery",
+            "PRODUCT": "Business Cards",
+            "INDENTIFIER": {
+                "Business Cards - Optics": "000"
+            }
+        },
+        {
+            "CODE": "010603000003",
+            "TIME": "2:56 PM",
+            "DATE": "03/02/22",
+            "BRAND": "Vision Care",
+            "SUB-BRAND": "Other",
+            "CATEGORY": "Stationery",
+            "PRODUCT": "Business Cards",
+            "INDENTIFIER": {
+                "Business Cards - Vision Care": "000"
+            }
+        },
+        {
+            "CODE": "000203000004",
+            "TIME": "2:51 PM",
+            "DATE": "03/24/22",
+            "BRAND": "Global",
+            "SUB-BRAND": "Global",
+            "CATEGORY": "Stationery",
+            "PRODUCT": "Business Cards",
+            "INDENTIFIER": {
+                "VSP Vision Business Card": "000"
+            }
+        },
+        {
+            "CODE": "010603000005",
+            "TIME": "7:36 AM",
+            "DATE": "03/25/22",
+            "BRAND": "Vision Care",
+            "SUB-BRAND": "Other",
+            "CATEGORY": "Stationery",
+            "PRODUCT": "Business Cards",
+            "INDENTIFIER": {
+                "VSP Vision Care Business Card": "000"
+            }
+        },
+        {
+            "CODE": "020203000006",
+            "TIME": "7:41 AM",
+            "DATE": "03/25/22",
+            "BRAND": "Optics",
+            "SUB-BRAND": "Optics",
+            "CATEGORY": "Stationery",
+            "PRODUCT": "Business Cards",
+            "INDENTIFIER": {
+                "VSP Optics Business Cards": "000"
+            }
+        },
+        {
+            "CODE": "050003000007",
+            "TIME": "7:41 AM",
+            "DATE": "03/25/22",
+            "BRAND": "Ventures",
+            "SUB-BRAND": "Ventures",
+            "CATEGORY": "Stationery",
+            "PRODUCT": "Business Cards",
+            "INDENTIFIER": {
+                "VSP Ventures Business Card": "000"
+            }
+        },
+        {
+            "CODE": "030203000008",
+            "TIME": "7:44 AM",
+            "DATE": "03/25/22",
+            "BRAND": "Eyefinity",
+            "SUB-BRAND": "Eyefinity",
+            "CATEGORY": "Stationery",
+            "PRODUCT": "Business Cards",
+            "INDENTIFIER": {
+                "Eyefinity Business Cards": "000"
+            }
+        },
+        {
+            "CODE": "090003000009",
+            "TIME": "7:52 AM",
+            "DATE": "03/25/22",
+            "BRAND": "Provider Solutions",
+            "SUB-BRAND": "Premier",
+            "CATEGORY": "Stationery",
+            "PRODUCT": "Business Cards",
+            "INDENTIFIER": {
+                "Premier Program Business Cards": "000"
+            }
+        }
+    ]
+}

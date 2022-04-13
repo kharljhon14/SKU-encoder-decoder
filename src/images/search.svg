@@ -1,7 +1,7 @@
 
 <!--Scalable Vector Graphic-->
 <svg id="Search" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36">
-  <g id="SearchRectangle" data-name="SearchRectangle" fill="#fff" stroke="#000" stroke-width="1">
+  <g id="SearchRectangle" data-name="SearchRectangle" fill="#fff" stroke="#fff" stroke-width="1">
     <rect width="36" height="36" stroke="none"/>
     <rect x="0.5" y="0.5" width="35" height="35" fill="none"/>
   </g>
